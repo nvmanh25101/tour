@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('admin.layouts.master')
 @push('css')
     <link href="{{ asset('css/home_admin.css') }}" rel="stylesheet" type="text/css">
 @endpush

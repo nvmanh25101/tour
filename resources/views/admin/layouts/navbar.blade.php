@@ -1,14 +1,15 @@
+@php use App\Enums\AdminType;use App\Enums\TeacherLevelEnum; @endphp
 <div class="navbar-custom">
     <ul class="list-unstyled topbar-right-menu float-right mb-0">
         <li class="dropdown notification-list d-lg-none">
             <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button"
-                aria-haspopup="false" aria-expanded="false">
+               aria-haspopup="false" aria-expanded="false">
                 <i class="dripicons-search noti-icon"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
                 <form class="p-3">
                     <input type="text" class="form-control" placeholder="Search ..."
-                        aria-label="Recipient's username">
+                           aria-label="Recipient's username">
                 </form>
             </div>
         </li>
@@ -148,11 +149,11 @@
 
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#"
-                role="button" aria-haspopup="false" aria-expanded="false">
+               role="button" aria-haspopup="false" aria-expanded="false">
                 <span>
-                    <span class="account-user-name">{{ Auth::user()->name }}</span>
+                    <span class="account-user-name">{{ Auth::guard('admin')->user()->name }}</span>
                     <span
-                        class="account-position">{{ \App\Enums\TeacherLevelEnum::getKeyByValue(Auth::user()->level) }}</span>
+                        class="account-position">{{ AdminType::getKeyByValue(Auth::guard('admin')->user()->role) }}</span>
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
@@ -168,7 +169,7 @@
                 </a>
 
                 <!-- item-->
-                <a href="{{ route('logout') }}" class="dropdown-item notify-item">
+                <a href="" class="dropdown-item notify-item">
                     <i class="mdi mdi-logout mr-1"></i>
                     <span>Logout</span>
                 </a>
@@ -226,7 +227,7 @@
                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                     <div class="media">
                         <img class="d-flex mr-2 rounded-circle" src="assets/images/users/avatar-2.jpg"
-                            alt="Generic placeholder image" height="32">
+                             alt="Generic placeholder image" height="32">
                         <div class="media-body">
                             <h5 class="m-0 font-14">Erwin Brown</h5>
                             <span class="font-12 mb-0">UI Designer</span>
@@ -238,7 +239,7 @@
                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                     <div class="media">
                         <img class="d-flex mr-2 rounded-circle" src="assets/images/users/avatar-5.jpg"
-                            alt="Generic placeholder image" height="32">
+                             alt="Generic placeholder image" height="32">
                         <div class="media-body">
                             <h5 class="m-0 font-14">Jacob Deo</h5>
                             <span class="font-12 mb-0">Developer</span>

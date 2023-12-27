@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
+ * @extends Factory<Admin>
  */
 class AdminFactory extends Factory
 {
@@ -17,7 +18,12 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+            'password' => $this->faker->password,
+            'phone' => $this->faker->e164PhoneNumber,
+            'address' => $this->faker->address,
+            'role' => 0,
         ];
     }
 }

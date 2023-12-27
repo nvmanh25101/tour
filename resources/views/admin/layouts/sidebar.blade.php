@@ -1,0 +1,71 @@
+<div class="left-side-menu">
+
+    <!-- LOGO -->
+    <a href="index.html" class="logo text-center logo-light">
+        <span class="logo-lg">
+            <img src="assets/images/logo.png" alt="" height="16">
+        </span>
+        <span class="logo-sm">
+            <img src="assets/images/logo_sm.png" alt="" height="16">
+        </span>
+    </a>
+
+    <div class="h-100" id="left-side-menu-container" data-simplebar>
+
+        <div class="clearfix"></div>
+
+    </div>
+    <!-- Sidebar -left -->
+
+</div>
+<div class="left-side-menu">
+
+    <!-- LOGO -->
+    <a href="index.html" class="logo text-center logo-light">
+        <span class="logo-lg">
+            <img src="assets/images/logo.png" alt="" height="16">
+        </span>
+        <span class="logo-sm">
+            <img src="assets/images/logo_sm.png" alt="" height="16">
+        </span>
+    </a>
+
+    <div class="h-100" id="left-side-menu-container" data-simplebar>
+
+        <!--- Sidemenu -->
+        <ul class="metismenu side-nav">
+
+            <li class="side-nav-title side-nav-item">Navigation</li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('admin.dashboard') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Dashboards</span>
+                </a>
+            </li>
+            {{--            @if (Auth::user()->email === 'admin@gmail.com')--}}
+
+            {{--            @endif--}}
+            {{-- <li class="side-nav-item">
+                <a href="{{ route('course.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Học phần </span>
+                </a>
+            </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('courseDetail.index') }}" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Xếp lịch học </span>
+                </a>
+            </li> --}}
+
+        </ul>
+        <!-- End Sidebar -->
+
+        <div class="clearfix"></div>
+
+    </div>
+    <!-- Sidebar -left -->
+
+</div>
