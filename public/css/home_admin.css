@@ -1,0 +1,31 @@
+.dash-item {
+    display: block;
+    height: 160px;
+    width: 100%;
+    margin: 8px 0;
+    background-color: #0071C6;
+    border-radius: 2%;
+}
+
+.dash-item_icon {
+    font-size: 70px;
+    position: absolute;
+    top: 10%;
+    right: calc(50% - 32px);
+    color: #dadada;
+}
+
+.dash-item_span {
+    font-size: 22px;
+    position: absolute;
+    bottom: 12px;
+    width: 90%;
+    display: block;
+    text-align: center;
+    color: #dadada;
+}
+
+.dash-item:hover .dash-item_span,
+.dash-item:hover .dash-item_icon {
+    color: #fff;
+}
