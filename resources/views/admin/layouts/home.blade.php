@@ -9,14 +9,9 @@
             <span class="dash-item_span"> Niên khóa</span>
         </a>
     </div>
+    
     <div class="col-3">
-        <a href="{{ route('faculty.index') }}" class="dash-item">
-            <i class="mdi mdi-school dash-item_icon"></i>
-            <span class="dash-item_span"> Khoa </span>
-        </a>
-    </div>
-    <div class="col-3">
-        <a href="{{ route('teachers.index') }}" class="dash-item">
+        <a href="{{ route('employees.index') }}" class="dash-item">
             <i class="mdi mdi-school dash-item_icon"></i>
             <span class="dash-item_span"> Giảng viên </span>
         </a>

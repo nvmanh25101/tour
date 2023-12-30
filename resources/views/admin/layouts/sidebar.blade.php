@@ -1,3 +1,4 @@
+@php use App\Enums\AdminType; @endphp
 <div class="left-side-menu">
 
     <!-- LOGO -->
@@ -43,9 +44,18 @@
                     <span> Dashboards</span>
                 </a>
             </li>
-            {{--            @if (Auth::user()->email === 'admin@gmail.com')--}}
-
-            {{--            @endif--}}
+            @if (Auth::guard('admin')->user()->role === AdminType::QUAN_LY)
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.employees.index') }}" class="side-nav-link">
+                        <span> Quản lý nhân viên</span>
+                    </a>
+                    <ul class="side-nav-second-level mm-collapse mm-show" aria-expanded="false" style="">
+                        <li>
+                            <a href="{{ route('admin.employees.resign') }}">Nhân viên nghỉ việc</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
             {{-- <li class="side-nav-item">
                 <a href="{{ route('course.index') }}" class="side-nav-link">
                     <i class="uil-home-alt"></i>

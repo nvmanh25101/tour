@@ -1,4 +1,4 @@
-@php use App\Enums\AdminType;use App\Enums\TeacherLevelEnum; @endphp
+@php use App\Enums\AdminType; @endphp
 <div class="navbar-custom">
     <ul class="list-unstyled topbar-right-menu float-right mb-0">
         <li class="dropdown notification-list d-lg-none">
@@ -159,19 +159,19 @@
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                 <!-- item-->
                 <div class=" dropdown-header noti-title">
-                    <h6 class="text-overflow m-0">Welcome !</h6>
+                    <h6 class="text-overflow m-0">Xin chào !</h6>
                 </div>
 
                 <!-- item-->
                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                     <i class="mdi mdi-account-circle mr-1"></i>
-                    <span>My Account</span>
+                    <span>Tài khoản</span>
                 </a>
 
                 <!-- item-->
-                <a href="" class="dropdown-item notify-item">
+                <a href="{{ route("admin.logout") }}" class="dropdown-item notify-item">
                     <i class="mdi mdi-logout mr-1"></i>
-                    <span>Logout</span>
+                    <span>Đăng xuất</span>
                 </a>
 
             </div>
@@ -198,55 +198,11 @@
                 <h5 class="text-overflow mb-2">Found <span class="text-danger">17</span> results
                 </h5>
             </div>
-
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <i class="uil-notes font-16 mr-1"></i>
-                <span>Analytics Report</span>
-            </a>
-
             <!-- item-->
             <a href="javascript:void(0);" class="dropdown-item notify-item">
                 <i class="uil-life-ring font-16 mr-1"></i>
                 <span>How can I help you?</span>
             </a>
-
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <i class="uil-cog font-16 mr-1"></i>
-                <span>User profile settings</span>
-            </a>
-
-            <!-- item-->
-            <div class="dropdown-header noti-title">
-                <h6 class="text-overflow mb-2 text-uppercase">Users</h6>
-            </div>
-
-            <div class="notification-list">
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <div class="media">
-                        <img class="d-flex mr-2 rounded-circle" src="assets/images/users/avatar-2.jpg"
-                             alt="Generic placeholder image" height="32">
-                        <div class="media-body">
-                            <h5 class="m-0 font-14">Erwin Brown</h5>
-                            <span class="font-12 mb-0">UI Designer</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <div class="media">
-                        <img class="d-flex mr-2 rounded-circle" src="assets/images/users/avatar-5.jpg"
-                             alt="Generic placeholder image" height="32">
-                        <div class="media-body">
-                            <h5 class="m-0 font-14">Jacob Deo</h5>
-                            <span class="font-12 mb-0">Developer</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
 </div>

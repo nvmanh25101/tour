@@ -30,7 +30,15 @@
                 <!-- title-->
                 <h4 class="mt-0">Đăng nhập</h4>
                 <p class="text-muted mb-4">Nhập email và mật khẩu để truy cập.</p>
-
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <!-- form -->
                 <form action="{{ route('admin.processLogin') }}" method="post">
                     @csrf
@@ -57,12 +65,10 @@
                     <p class="text-muted">2023 © TP</p>
                 </footer>
 
-            </div> <!-- end .card-body -->
-        </div> <!-- end .align-items-center.d-flex.h-100-->
+            </div>
+        </div>
     </div>
-    <!-- end auth-fluid-form-box-->
 
-    <!-- Auth fluid right content -->
     <div class="auth-fluid-right text-center">
         <div class="auth-user-testimonial">
             <h2 class="mb-3">Lotus Spa!</h2>
@@ -72,16 +78,12 @@
             <p>
                 - Admin User
             </p>
-        </div> <!-- end auth-user-testimonial-->
+        </div>
     </div>
-    <!-- end Auth fluid right content -->
 </div>
-<!-- end auth-fluid-->
 
-<!-- bundle -->
 <script src="{{ asset('js/vendor.min.js') }}"></script>
 <script src="{{ asset('js/app.min.js') }}"></script>
 @stack('js')
 </body>
-
 </html>

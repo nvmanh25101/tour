@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\AuthRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -13,17 +13,17 @@ class AuthController extends Controller
         return view('admin.login');
     }
 
-    public function processLogin(Request $request)
+    public function processLogin(AuthRequest $request)
     {
-        $user = [
-            'email' => $request->get('email'),
-            'password' => $request->get('password'),
-        ];
-
-        if (Auth::guard('admin')->attempt($user)) {
-            $request->session()->regenerate();
-            return redirect('admin/');
+        if (Auth::guard('admin')->attempt($request->validated())) {
+            return redirect()->route('admin.dashboard');
         }
-        return redirect()->back()->withErrors(['status' => 'Email hoặc Password không chính xác']);
+        return redirect()->back()->withErrors(['message' => 'Email hoặc Password không chính xác']);
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.login');
     }
 }

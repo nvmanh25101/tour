@@ -9,6 +9,7 @@ final class AdminType extends Enum
 {
     public const NHAN_VIEN = 0;
     public const QUAN_LY = 1;
+    public const VAN_CHUYEN = 2;
 
     public static function getKeyByValue($value): string
     {
@@ -20,6 +21,7 @@ final class AdminType extends Enum
         return [
             'Nhân viên' => self::NHAN_VIEN,
             'Quản lý' => self::QUAN_LY,
+            'Vận chuyển' => self::VAN_CHUYEN,
         ];
     }
 }

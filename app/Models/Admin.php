@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AdminStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,7 @@ class Admin extends Authenticatable
     use SoftDeletes;
 
     protected $guard = 'admin';
-    
+
     protected $fillable = [
         'name',
         'email',
@@ -21,7 +22,14 @@ class Admin extends Authenticatable
         'phone',
         'address',
         'role',
+        'status',
     ];
+
+    public static function destroy($ids)
+    {
+        self::where('id', $ids)->update(['status' => AdminStatusEnum::NGHI_VIEC]);
+        parent::destroy($ids);
+    }
 
     public function blogs(): HasMany
     {
