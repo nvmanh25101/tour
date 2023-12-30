@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Admin\Admin;
+namespace App\Http\Requests\Admin\Category;
 
-use App\Enums\AdminStatusEnum;
-use App\Enums\AdminType;
+use App\Enums\Category\StatusEnum;
+use App\Enums\Category\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,28 +23,21 @@ class UpdateRequest extends FormRequest
             "name" => [
                 'required',
                 'string',
-                'max:50'
+                'max:100'
             ],
-            'address' => [
-                'required',
+            "description" => [
+                'nullable',
                 'string',
-                'max:255'
             ],
-            'phone' => [
-                'required',
-                'string',
-                'min:10',
-                'max:15'
-            ],
-            'role' => [
+            'type' => [
                 'required',
                 'integer',
-                Rule::in(AdminType::asArray()),
+                Rule::in(TypeEnum::asArray()),
             ],
             'status' => [
                 'required',
                 'integer',
-                Rule::in(AdminStatusEnum::asArray()),
+                Rule::in(StatusEnum::asArray()),
             ],
         ];
     }
@@ -54,17 +47,21 @@ class UpdateRequest extends FormRequest
         return [
             'name.required' => ':attribute không được để trống.',
             'name.max' => ':attribute không được vượt quá :max ký tự.',
-            'address.required' => ':attribute không được để trống.',
-            'address.max' => ':attribute không được vượt quá :max ký tự.',
-            'phone.required' => ':attribute không được để trống.',
-            'phone.min' => ':attribute phải có ít nhất :min ký tự.',
-            'phone.max' => ':attribute không được vượt quá :max ký tự.',
-            'role.required' => ':attribute không được để trống.',
-            'role.integer' => ':attribute không chính xác.',
-            'role.in' => ':attribute không hợp lệ.',
+            'type.required' => ':attribute không được để trống.',
+            'type.integer' => ':attribute không hợp lệ.',
+            'type.in' => ':attribute không hợp lệ.',
             'status.required' => ':attribute không được để trống.',
-            'status.integer' => ':attribute phải chính xác.',
+            'status.integer' => ':attribute không hợp lệ.',
             'status.in' => ':attribute không hợp lệ.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Tên danh mục',
+            'type' => 'Loại danh mục',
+            'status' => 'Trạng thái',
         ];
     }
 }

@@ -71,7 +71,7 @@ class StoreRequest extends FormRequest
             'phone.min' => ':attribute phải có ít nhất :min ký tự.',
             'phone.max' => ':attribute không được vượt quá :max ký tự.',
             'role.required' => ':attribute không được để trống.',
-            'role.integer' => ':attribute phải là số.',
+            'role.integer' => ':attribute không hợp lệ.',
             'role.in' => ':attribute không hợp lệ.',
         ];
     }

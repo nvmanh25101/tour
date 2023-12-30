@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -33,6 +34,18 @@ Route::group([
                 Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('edit');
                 Route::put('/{id}', [AdminController::class, 'update'])->name('update');
                 Route::delete('/{id}', [AdminController::class, 'destroy'])->name('destroy');
+            });
+            Route::group([
+                'as' => 'categories.',
+                'prefix' => 'categories',
+            ], function () {
+                Route::get('/', [CategoryController::class, 'index'])->name('index');
+                Route::get('/api', [CategoryController::class, 'api'])->name('api');
+                Route::get('/create', [CategoryController::class, 'create'])->name('create');
+                Route::post('/', [CategoryController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
+                Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
             });
         });
     });

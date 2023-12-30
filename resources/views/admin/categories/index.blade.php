@@ -5,10 +5,22 @@
 @endpush
 @section('content')
     <div class="col-4 d-flex mb-1">
-        <label>Chức vụ</label>
-        <select class="form-control" id="select-level">
+        <label class="me-1 d-flex align-items-center">Loại</label>
+        <select class="form-control" id="select-type">
             <option value="-1">Tất cả</option>
-            @foreach($arrAdminLevel as $key => $value)
+            @foreach($arrCategoryType as $key => $value)
+                <option value="{{ $value }}">
+                    {{ $key }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-4 d-flex mb-1">
+        <label>Trạng thái</label>
+        <select class="form-control" id="select-status">
+            <option value="-1">Tất cả</option>
+            @foreach($arrCategoryStatus as $key => $value)
                 <option value="{{ $value }}">
                     {{ $key }}
                 </option>
@@ -17,15 +29,14 @@
     </div>
 
     <div class="col-12">
-        <a href="{{ route('admin.employees.create') }}" class="btn btn-outline-primary">Thêm mới</a>
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-primary">Thêm mới</a>
 
         <table id="data-table" class="table table-striped dt-responsive nowrap w-100">
             <thead>
             <tr>
                 <th>#</th>
                 <th>Tên</th>
-                <th>Email</th>
-                <th>Chức vụ</th>
+                <th>Loại</th>
                 <th>Trạng thái</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
@@ -49,12 +60,11 @@
                 dom: 'BRSlrtip',
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.employees.api') }}',
+                ajax: '{{ route('admin.categories.api') }}',
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'email', name: 'email'},
-                    {data: 'role', name: 'role'},
+                    {data: 'type', name: 'type'},
                     {data: 'status', name: 'status'},
                     {
                         data: 'edit',
@@ -123,18 +133,22 @@
                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                         swalWithBootstrapButtons.fire({
                             title: "Hủy!",
-                            text: "Nhân viên của bạn an toàn :)",
+                            text: "An toàn :)",
                             icon: "error"
                         });
                     }
                 });
             });
 
-            $('#select-level').change(function () {
+            $('#select-type').change(function () {
+                let value = this.value;
+                table.column(2).search(value).draw();
+            });
+
+            $('#select-status').change(function () {
                 let value = this.value;
                 table.column(3).search(value).draw();
             });
-
             @if(session('success'))
             $.notify('{{ session('success') }}', "success");
             @endif

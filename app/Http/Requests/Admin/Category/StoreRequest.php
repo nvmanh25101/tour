@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Admin\Admin;
+namespace App\Http\Requests\Admin\Category;
 
-use App\Enums\AdminType;
+use App\Enums\Category\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,34 +22,16 @@ class StoreRequest extends FormRequest
             "name" => [
                 'required',
                 'string',
-                'max:50'
+                'max:100'
             ],
-            "email" => [
-                'required',
-                'email',
-                'unique:App\Models\Admin,email'
-            ],
-            "password" => [
-                'required',
+            "description" => [
+                'nullable',
                 'string',
-                'min:8',
-                'max:255',
             ],
-            'address' => [
-                'required',
-                'string',
-                'max:255'
-            ],
-            'phone' => [
-                'required',
-                'string',
-                'min:10',
-                'max:15'
-            ],
-            'role' => [
+            'type' => [
                 'required',
                 'integer',
-                Rule::in(AdminType::asArray()),
+                Rule::in(TypeEnum::asArray()),
             ],
         ];
     }
@@ -57,22 +39,19 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => ':attribute không được để trống.',
-            'email.email' => ':attribute không đúng định dạng.',
-            'email.unique' => ':attribute đã tồn tại.',
             'name.required' => ':attribute không được để trống.',
             'name.max' => ':attribute không được vượt quá :max ký tự.',
-            'address.required' => ':attribute không được để trống.',
-            'address.max' => ':attribute không được vượt quá :max ký tự.',
-            'password.required' => ':attribute không được để trống.',
-            'password.min' => ':attribute phải có ít nhất :min ký tự.',
-            'password.max' => ':attribute không được vượt quá :max ký tự.',
-            'phone.required' => ':attribute không được để trống.',
-            'phone.min' => ':attribute phải có ít nhất :min ký tự.',
-            'phone.max' => ':attribute không được vượt quá :max ký tự.',
-            'role.required' => ':attribute không được để trống.',
-            'role.integer' => ':attribute phải là số.',
-            'role.in' => ':attribute không hợp lệ.',
+            'type.required' => ':attribute không được để trống.',
+            'type.integer' => ':attribute không hợp lệ.',
+            'type.in' => ':attribute không hợp lệ.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Tên danh mục',
+            'type' => 'Loại danh mục',
         ];
     }
 }
