@@ -50,22 +50,6 @@
                 </select>
             </div>
 
-            <div class="form-group mb-3">
-                <label>Trạng thái</label>
-                @foreach($arrAdminStatus as $option => $value)
-                    <br>
-                    <div class="d-flex align-content-center font-16">
-                        <label for="status{{ $value }}">
-                            <input id="status{{ $value }}" type="radio" name="status" value="{{ $value }}" class="mr-1"
-                                   @if ($admin->status === $value)
-                                       checked
-                                @endif
-                            >
-                            {{ $option }}
-                        </label>
-                    </div>
-                @endforeach
-            </div>
             <button class="btn btn-primary mb-3" type="submit">Cập nhật</button>
         </form>
     </div>

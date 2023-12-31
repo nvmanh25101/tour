@@ -61,6 +61,11 @@
                     <span>Danh mục</span>
                 </a>
             </li>
+            <li class="side-nav-item">
+                <a href="{{ route('admin.services.index') }}" class="side-nav-link">
+                    <span>Dịch vụ</span>
+                </a>
+            </li>
         </ul>
         <!-- End Sidebar -->
 

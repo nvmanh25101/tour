@@ -17,7 +17,7 @@ class IsSuperAdmin
             if ($user->role === AdminType::QUAN_LY) {
                 return $next($request);
             }
-            return redirect()->route('admin.login')->withErrors(['message' => 'Bạn không có quyền truy cập']);
+            return redirect()->route('admin.dashboard')->withErrors(['message' => 'Bạn không có quyền truy cập']);
         }
 
         return redirect('admin.login')->withErrors(['message' => 'Bạn chưa đăng nhập']);

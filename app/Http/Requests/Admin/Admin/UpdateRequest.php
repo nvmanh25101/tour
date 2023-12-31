@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Admin\Admin;
 
-use App\Enums\AdminStatusEnum;
 use App\Enums\AdminType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -41,11 +40,6 @@ class UpdateRequest extends FormRequest
                 'integer',
                 Rule::in(AdminType::asArray()),
             ],
-            'status' => [
-                'required',
-                'integer',
-                Rule::in(AdminStatusEnum::asArray()),
-            ],
         ];
     }
 
@@ -62,9 +56,6 @@ class UpdateRequest extends FormRequest
             'role.required' => ':attribute không được để trống.',
             'role.integer' => ':attribute không chính xác.',
             'role.in' => ':attribute không hợp lệ.',
-            'status.required' => ':attribute không được để trống.',
-            'status.integer' => ':attribute phải chính xác.',
-            'status.in' => ':attribute không hợp lệ.',
         ];
     }
 }

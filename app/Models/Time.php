@@ -12,7 +12,11 @@ class Time extends Model
 
     public $timestamps = false;
 
-    public function appointments() : HasMany
+    protected $fillable = [
+        'time',
+    ];
+
+    public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
     }
