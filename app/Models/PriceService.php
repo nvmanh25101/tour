@@ -13,12 +13,12 @@ class PriceService extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'duration',
         'price',
         'service_id',
-        'customer_id',
     ];
 
-    public function service() : BelongsTo
+    public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }

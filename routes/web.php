@@ -63,6 +63,7 @@ Route::group([
             Route::get('/{id}/edit', [ServiceController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ServiceController::class, 'update'])->name('update');
             Route::delete('/{id}', [ServiceController::class, 'destroy'])->name('destroy');
+            Route::delete('/{id}/prices/{price_id}', [ServiceController::class, 'destroyPrice'])->name('destroyPrice');
         });
 
         Route::group([

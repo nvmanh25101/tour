@@ -26,6 +26,12 @@ class StoreRequest extends FormRequest
                 'required',
                 'string',
             ],
+            "duration" => [
+                'required',
+            ],
+            "price" => [
+                'required',
+            ],
             'category_id' => [
                 'required',
                 'integer',
@@ -44,6 +50,8 @@ class StoreRequest extends FormRequest
             'category_id.required' => ':attribute không được để trống.',
             'category_id.integer' => ':attribute không hợp lệ.',
             'category_id.exists' => ':attribute không tồn tại.',
+            'duration.required' => ':attribute không được để trống.',
+            'price.required' => ':attribute không được để trống.',
         ];
     }
 
@@ -53,6 +61,8 @@ class StoreRequest extends FormRequest
             'name' => 'Tên dịch vụ',
             'category_id' => 'Danh mục dịch vụ',
             'description' => 'Mô tả dịch vụ',
+            'duration' => 'Thời gian dịch vụ',
+            'price' => 'Giá dịch vụ',
         ];
     }
 }

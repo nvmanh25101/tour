@@ -28,6 +28,15 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
             ],
+            "duration" => [
+                'required',
+            ],
+            "price" => [
+                'required',
+            ],
+            "price_id" => [
+                'required',
+            ],
             'category_id' => [
                 'required',
                 'integer',
@@ -55,6 +64,8 @@ class UpdateRequest extends FormRequest
             'status.required' => ':attribute không được để trống.',
             'status.integer' => ':attribute không hợp lệ.',
             'status.in' => ':attribute không hợp lệ.',
+            'duration.required' => ':attribute không được để trống.',
+            'price.required' => ':attribute không được để trống.',
         ];
     }
 
@@ -65,6 +76,8 @@ class UpdateRequest extends FormRequest
             'description' => 'Mô tả dịch vụ',
             'category_id' => 'Danh mục dịch vụ',
             'status' => 'Trạng thái',
+            'duration' => 'Thời gian dịch vụ',
+            'price' => 'Giá dịch vụ',
         ];
     }
 }

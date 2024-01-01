@@ -126,7 +126,7 @@
                 });
             });
 
-            $('#select-level').change(function () {
+            $('#select-status').change(function () {
                 let value = this.value;
                 table.column(3).search(value).draw();
             });

@@ -1,0 +1,41 @@
+#add_price {
+    width: 100px;
+    margin: auto;
+}
+
+#add_price i {
+    font-size: 2.8rem;
+}
+
+#add_price:hover {
+    cursor: pointer;
+    color: #1e1e1e;
+}
+
+
+.delete-price {
+    height: 100%;
+    background: none;
+    border: none;
+}
+
+.delete-price i {
+    display: block;
+    font-size: 1.6rem;
+    translate: 0 8px;
+}
+
+.delete-price:hover {
+    color: #1e1e1e;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
