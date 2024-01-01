@@ -1,5 +1,6 @@
 @extends('admin.layouts.master')
 @push('css')
+    <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/service.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
@@ -22,7 +23,7 @@
                 <div class="col-6 d-flex flex-row">
                     <div class="form-group">
                         <label for="duration">Thời lượng(phút)</label>
-                        <input type="number" name="duration[]" id="duration" class=" form-control"/>
+                        <input type="number" name="duration[]" id="duration" class=" form-control" min="1"/>
                     </div>
 
                     <div class="ms-1 form-group">

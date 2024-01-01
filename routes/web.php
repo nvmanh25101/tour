@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TimeController;
+use App\Http\Controllers\Admin\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -36,6 +37,19 @@ Route::group([
                 Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('edit');
                 Route::put('/{id}', [AdminController::class, 'update'])->name('update');
                 Route::delete('/{id}', [AdminController::class, 'destroy'])->name('destroy');
+            });
+
+            Route::group([
+                'as' => 'vouchers.',
+                'prefix' => 'vouchers',
+            ], function () {
+                Route::get('/', [VoucherController::class, 'index'])->name('index');
+                Route::get('/api', [VoucherController::class, 'api'])->name('api');
+                Route::get('/create', [VoucherController::class, 'create'])->name('create');
+                Route::post('/', [VoucherController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [VoucherController::class, 'edit'])->name('edit');
+                Route::put('/{id}', [VoucherController::class, 'update'])->name('update');
+                Route::delete('/{id}', [VoucherController::class, 'destroy'])->name('destroy');
             });
         });
 

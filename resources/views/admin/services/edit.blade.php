@@ -1,6 +1,7 @@
 @php use App\Enums\ServiceStatusEnum; @endphp
 @extends('admin.layouts.master')
 @push('css')
+    <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/service.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
@@ -27,7 +28,7 @@
                         <input type="hidden" name="price_id[]" value="{{ $price->id }}">
                         <div class="form-group">
                             <label for="duration">Thời lượng(phút)</label>
-                            <input type="number" name="duration[]" id="duration" value="{{ $price->duration }}"
+                            <input type="number" name="duration[]" id="duration" value="{{ $price->duration }}" min="1"
                                    class="form-control"/>
                         </div>
 
