@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\VoucherStatusEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,11 @@ class Voucher extends Model
         'end_date',
         'status',
     ];
+
+    public static function destroy($ids)
+    {
+        self::where('id', $ids)->update(['status' => VoucherStatusEnum::NGUNG_HOAT_DONG]);
+    }
 
     public function appointments(): HasMany
     {

@@ -8,7 +8,7 @@
         <label class="me-1 d-flex align-items-center">Loại</label>
         <select class="form-control" id="select-type">
             <option value="-1">Tất cả</option>
-            @foreach($arrVoucherType as $key => $value)
+            @foreach($arrVoucherApplyType as $key => $value)
                 <option value="{{ $value }}">
                     {{ $key }}
                 </option>
@@ -37,7 +37,7 @@
                 <th>#</th>
                 <th>Mã</th>
                 <th>Tên</th>
-                <th>Loại</th>
+                <th>Áp dụng</th>
                 <th>Giá trị</th>
                 <th>Số lượng còn lại</th>
                 <th>Ngày bắt đầu</th>
@@ -100,7 +100,6 @@
             });
 
             $(document).on('click', '.btn-delete', function () {
-                let row = $(this).parents('tr');
                 let form = $(this).parents('form');
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -152,12 +151,12 @@
 
             $('#select-type').change(function () {
                 let value = this.value;
-                table.column(2).search(value).draw();
+                table.column(3).search(value).draw();
             });
 
             $('#select-status').change(function () {
                 let value = this.value;
-                table.column(3).search(value).draw();
+                table.column(8).search(value).draw();
             });
             @if(session('success'))
             $.notify('{{ session('success') }}', "success");

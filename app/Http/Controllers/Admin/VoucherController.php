@@ -8,7 +8,6 @@ use App\Enums\VoucherTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Voucher\StoreRequest;
 use App\Http\Requests\Admin\Voucher\UpdateRequest;
-use App\Models\Category;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
@@ -65,7 +64,7 @@ class VoucherController extends Controller
                     $query->where('status', $keyword);
                 }
             })
-            ->filterColumn('type', function ($query, $keyword) {
+            ->filterColumn('applicable_type', function ($query, $keyword) {
                 if ($keyword !== '-1') {
                     $query->where('type', $keyword);
                 }
@@ -109,12 +108,16 @@ class VoucherController extends Controller
         return redirect()->back()->withErrors('message', 'Cập nhật thất bại');
     }
 
-    public function destroy($categoryId)
+    public function destroy($voucherId)
     {
-        Category::destroy($categoryId);
+        if (Voucher::destroy($voucherId)) {
+            return response()->json([
+                'success' => 'Xóa thành công',
+            ]);
+        }
 
         return response()->json([
-            'success' => 'Xóa thành công',
+            'error' => 'Xóa thất bại',
         ]);
     }
 }

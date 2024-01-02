@@ -44,7 +44,6 @@ class UpdateRequest extends FormRequest
                 'min:0'
             ],
             "min_spend" => [
-//                dd(gettype($this->min_spend)),
                 'required',
                 'decimal:0,2',
                 'min:0'
@@ -62,7 +61,6 @@ class UpdateRequest extends FormRequest
             'start_date' => [
                 'required',
                 'date_format:Y-m-d',
-                'after_or_equal:today',
                 'before_or_equal:end_date',
             ],
             'end_date' => [
