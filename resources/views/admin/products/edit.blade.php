@@ -97,6 +97,34 @@
             <button class="btn btn-primary mb-3" type="submit">Cập nhật</button>
         </form>
     </div>
+    <hr>
+    <h4 class="card-title mb-4">Danh sách đánh giá</h4>
+    <table class="table table-bordered table-centered mb-0">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Khách hàng</th>
+            <th>Đánh giá</th>
+            <th>Bình luận</th>
+            <th class="text-center">Phản hồi</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($reviews as $review)
+            <tr>
+                <td>{{ $review->id }}</td>
+                <td class="table-user">
+                    {{ $review->customer->name }}
+                </td>
+                <td>{{ $review->rating }}</td>
+                <td>{{ $review->content }}</td>
+                <td class="table-action text-center">
+                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
 @endsection
 @push('js')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>

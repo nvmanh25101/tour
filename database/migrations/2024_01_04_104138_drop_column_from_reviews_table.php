@@ -10,8 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('times', function (Blueprint $table) {
-            $table->unique('time');
+        Schema::table('reviews', function (Blueprint $table) {
+            $table->dropColumn('reviewable_id');
+            $table->dropColumn('reviewable_type');
         });
     }
 
@@ -20,12 +21,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('times', function (Blueprint $table) {
-            if (Schema::hasColumn('times', 'time')) {
-                Schema::table('times', function (Blueprint $table) {
-                    $table->dropColumn('time');
-                });
-            }
+        Schema::table('reviews', function (Blueprint $table) {
+            //
         });
     }
 };

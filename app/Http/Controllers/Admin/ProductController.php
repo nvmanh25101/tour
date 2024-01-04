@@ -96,12 +96,14 @@ class ProductController extends Controller
             ->where('type', '=', TypeEnum::SAN_PHAM)
             ->get(['id', 'name']);
         $product = Product::query()->findOrFail($productId);
+        $reviews = $product->reviews()->with('customer')->get();
 
         return view(
             'admin.products.edit',
             [
                 'product' => $product,
                 'categories' => $categories,
+                'reviews' => $reviews,
             ]
         );
     }
