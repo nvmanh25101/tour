@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TimeController;
 use App\Http\Controllers\Admin\VoucherController;
@@ -89,6 +90,19 @@ Route::group([
             Route::post('/', [TimeController::class, 'store'])->name('store');
             Route::put('/{id}', [TimeController::class, 'update'])->name('update');
             Route::delete('/{id}', [TimeController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::group([
+            'as' => 'products.',
+            'prefix' => 'products',
+        ], function () {
+            Route::get('/', [ProductController::class, 'index'])->name('index');
+            Route::get('/api', [ProductController::class, 'api'])->name('api');
+            Route::get('/create', [ProductController::class, 'create'])->name('create');
+            Route::post('/', [ProductController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [ProductController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
         });
     });
 });

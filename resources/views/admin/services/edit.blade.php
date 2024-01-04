@@ -29,6 +29,7 @@
                         <div class="form-group">
                             <label for="duration">Thời lượng(phút)</label>
                             <input type="number" name="duration[]" id="duration" value="{{ $price->duration }}" min="1"
+                                   required
                                    class="form-control"/>
                         </div>
 
@@ -38,6 +39,7 @@
                                 <span class="input-group-text">VNĐ</span>
                                 <span class="input-group-text">0.00</span>
                                 <input type="number" name="price[]" id="price" value="{{ $price->price }}" min="1"
+                                       required
                                        class="form__input form-control"/>
                             </div>
                         </div>

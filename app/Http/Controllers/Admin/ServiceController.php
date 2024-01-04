@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Category\StatusEnum;
 use App\Enums\Category\TypeEnum;
 use App\Enums\ServiceStatusEnum;
 use App\Http\Controllers\Controller;
@@ -75,7 +76,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        $categories = Category::query()->where('status', '=', ServiceStatusEnum::HOAT_DONG)
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
             ->where('type', '=', TypeEnum::DICH_VU)
             ->get(['id', 'name']);
         return view(
@@ -88,7 +89,7 @@ class ServiceController extends Controller
 
     public function edit($serviceId)
     {
-        $categories = Category::query()->where('status', '=', ServiceStatusEnum::HOAT_DONG)
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
             ->where('type', '=', TypeEnum::DICH_VU)
             ->get(['id', 'name']);
         $service = Service::query()->findOrFail($serviceId);
@@ -143,6 +144,9 @@ class ServiceController extends Controller
             ]);
         }
 
+        return response()->json([
+            'error' => 'Xóa thất bại',
+        ]);
     }
 
     public function destroy($serviceId)
@@ -152,5 +156,9 @@ class ServiceController extends Controller
                 'success' => 'Xóa thành công',
             ]);
         }
+
+        return response()->json([
+            'error' => 'Xóa thất bại',
+        ]);
     }
 }
