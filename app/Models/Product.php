@@ -50,7 +50,7 @@ class Product extends Model
         return $this->morphMany(Review::class, 'reviewable');
     }
 
-    public function getpriceformatAttribute(): string
+    public function getPriceFormatAttribute(): string
     {
         return number_format($this->price);
     }

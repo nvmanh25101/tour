@@ -1,0 +1,44 @@
+.row > * {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.border-yellow {
+    border-color: rgb(148, 114, 36) !important;
+}
+
+.title {
+    background-color: var(--background-primary);
+}
+
+.service-item {
+    display: block;
+    width: 100%;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    text-align: start;
+    padding: 0.4rem 0.4rem 0.4rem 2.2rem;
+}
+
+.service-item:hover,
+.nav-link:hover,
+.booking a:hover {
+    color: var(--text-primary);
+}
+
+.service-item.active {
+    color: var(--text-primary);
+}
+
+.booking {
+    color: #FFFFFF;
+    display: inline-flex;
+    justify-content: end;
+    width: 100%;
+}
+
+.booking a {
+    font-size: 1rem;
+    color: #FFFFFF;
+    padding: 0.4rem 0.4rem 0.4rem 2.2rem;
+}

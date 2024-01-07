@@ -1,0 +1,24 @@
+.submit {
+    border: var(--background-primary) 1px solid;
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    float: right;
+    padding: 0.5rem 2.2rem;
+    background-color: var(--background-primary);
+}
+
+.submit:hover {
+    color: #FFFFFF;
+    background-color: #8b691a;
+}
+
+.total_price {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+#total_price {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}

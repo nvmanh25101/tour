@@ -1,20 +1,14 @@
-@include('admin.layouts.header')
+@include('customer.layouts.header')
 
-<body
-    data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
-<!-- Begin page -->
+<body class="loading" data-layout="topnav"
+      data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'>
 <div class="wrapper">
-    @include('admin.layouts.sidebar')
-
     <div class="content-page">
         <div class="content">
-            <!-- Topbar Start -->
-            @include('admin.layouts.navbar')
-            <!-- end Topbar -->
-            <!-- Start Content-->
+            @include('customer.layouts.navbar')
+            @yield('carousel')
             <div class="container-fluid">
                 <!-- start page title -->
-                @include('admin.layouts.breadcrumb')
                 <div class="row">
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -33,4 +27,4 @@
             <!-- container -->
         </div>
         <!-- content -->
-@include('admin.layouts.footer')
+@include('customer.layouts.footer')

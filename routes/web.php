@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TimeController;
 use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Customer\AppointmentController;
+use App\Http\Controllers\Customer\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -26,84 +28,108 @@ Route::group([
             'middleware' => 'isSuperAdmin'
         ], function () {
             Route::group([
+                'controller' => AdminController::class,
                 'as' => 'employees.',
                 'prefix' => 'employees',
             ], function () {
-                Route::get('/', [AdminController::class, 'index'])->name('index');
-                Route::get('/api', [AdminController::class, 'api'])->name('api');
-                Route::get('/resignation', [AdminController::class, 'resign'])->name('resign');
-                Route::get('/resignList', [AdminController::class, 'resignList'])->name('resignList');
-                Route::get('/create', [AdminController::class, 'create'])->name('create');
-                Route::post('/', [AdminController::class, 'store'])->name('store');
-                Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('edit');
-                Route::put('/{id}', [AdminController::class, 'update'])->name('update');
-                Route::delete('/{id}', [AdminController::class, 'destroy'])->name('destroy');
+                Route::get('/', 'index')->name('index');
+                Route::get('/api', 'api')->name('api');
+                Route::get('/resignation', 'resign')->name('resign');
+                Route::get('/resignList', 'resignList')->name('resignList');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
             });
 
             Route::group([
+                'controller' => VoucherController::class,
                 'as' => 'vouchers.',
                 'prefix' => 'vouchers',
             ], function () {
-                Route::get('/', [VoucherController::class, 'index'])->name('index');
-                Route::get('/api', [VoucherController::class, 'api'])->name('api');
-                Route::get('/create', [VoucherController::class, 'create'])->name('create');
-                Route::post('/', [VoucherController::class, 'store'])->name('store');
-                Route::get('/{id}/edit', [VoucherController::class, 'edit'])->name('edit');
-                Route::put('/{id}', [VoucherController::class, 'update'])->name('update');
-                Route::delete('/{id}', [VoucherController::class, 'destroy'])->name('destroy');
+                Route::get('/', 'index')->name('index');
+                Route::get('/api', 'api')->name('api');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
             });
         });
 
         Route::group([
+            'controller' => CategoryController::class,
             'as' => 'categories.',
             'prefix' => 'categories',
         ], function () {
-            Route::get('/', [CategoryController::class, 'index'])->name('index');
-            Route::get('/api', [CategoryController::class, 'api'])->name('api');
-            Route::get('/create', [CategoryController::class, 'create'])->name('create');
-            Route::post('/', [CategoryController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
-            Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+            Route::get('/', 'index')->name('index');
+            Route::get('/api', 'api')->name('api');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
         });
 
         Route::group([
+            'controller' => ServiceController::class,
             'as' => 'services.',
             'prefix' => 'services',
         ], function () {
-            Route::get('/', [ServiceController::class, 'index'])->name('index');
-            Route::get('/api', [ServiceController::class, 'api'])->name('api');
-            Route::get('/create', [ServiceController::class, 'create'])->name('create');
-            Route::post('/', [ServiceController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [ServiceController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [ServiceController::class, 'update'])->name('update');
-            Route::delete('/{id}', [ServiceController::class, 'destroy'])->name('destroy');
-            Route::delete('/{id}/prices/{price_id}', [ServiceController::class, 'destroyPrice'])->name('destroyPrice');
+            Route::get('/', 'index')->name('index');
+            Route::get('/api', 'api')->name('api');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::delete('/{id}/prices/{price_id}', 'destroyPrice')->name('destroyPrice');
         });
 
         Route::group([
+            'controller' => TimeController::class,
             'as' => 'times.',
             'prefix' => 'times',
         ], function () {
-            Route::get('/', [TimeController::class, 'index'])->name('index');
-            Route::get('/create', [TimeController::class, 'create'])->name('create');
-            Route::post('/', [TimeController::class, 'store'])->name('store');
-            Route::put('/{id}', [TimeController::class, 'update'])->name('update');
-            Route::delete('/{id}', [TimeController::class, 'destroy'])->name('destroy');
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
         });
 
         Route::group([
+            'controller' => ProductController::class,
             'as' => 'products.',
             'prefix' => 'products',
         ], function () {
-            Route::get('/', [ProductController::class, 'index'])->name('index');
-            Route::get('/api', [ProductController::class, 'api'])->name('api');
-            Route::get('/create', [ProductController::class, 'create'])->name('create');
-            Route::post('/', [ProductController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [ProductController::class, 'update'])->name('update');
-            Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
+            Route::get('/', 'index')->name('index');
+            Route::get('/api', 'api')->name('api');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
         });
     });
 });
 
+Route::group([
+    'prefix' => '/',
+    'as' => 'customers.',
+], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/services', [HomeController::class, 'services'])->name('services');
+});
+
+Route::group([
+    'prefix' => 'reservation',
+    'as' => 'reservation.',
+], function () {
+    Route::get('/', [AppointmentController::class, 'create'])->name('booking');
+    Route::get('/get-services', [AppointmentController::class, 'getServices'])->name('getServices');
+    Route::get('/get-prices', [AppointmentController::class, 'getPrices'])->name('getPrices');
+    Route::get('/get-times', [AppointmentController::class, 'getTimes'])->name('getTimes');
+    Route::post('/', [AppointmentController::class, 'store'])->name('store');
+});

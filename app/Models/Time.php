@@ -20,4 +20,9 @@ class Time extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+
+    public function getTimeDisplayAttribute(): string
+    {
+        return date('H:i', strtotime($this->time));
+    }
 }

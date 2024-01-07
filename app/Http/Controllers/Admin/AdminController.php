@@ -93,10 +93,6 @@ class AdminController extends Controller
         return view('admin.employees.create');
     }
 
-    public function show(admin $admin)
-    {
-        //
-    }
 
     public function edit($adminId)
     {

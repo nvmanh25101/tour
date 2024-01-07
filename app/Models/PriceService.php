@@ -22,4 +22,9 @@ class PriceService extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function getPriceDisplayAttribute(): string
+    {
+        return number_format($this->price);
+    }
 }
