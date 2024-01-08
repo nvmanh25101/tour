@@ -59,6 +59,11 @@
                 </li>
             @endif
             <li class="side-nav-item">
+                <a href="{{ route('admin.appointments.index') }}" class="side-nav-link">
+                    <span>Lịch đặt</span>
+                </a>
+            </li>
+            <li class="side-nav-item">
                 <a href="{{ route('admin.products.index') }}" class="side-nav-link">
                     <span>Sản phẩm</span>
                 </a>

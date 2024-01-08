@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AdminType;
 use App\Enums\AppointmentStatusEnum;
+use App\Enums\VoucherApplyTypeEnum;
+use App\Enums\VoucherStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Appoinment\StoreRequest;
+use App\Models\Admin;
 use App\Models\Appointment;
+use App\Models\Service;
+use App\Models\Time;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
 
@@ -19,8 +27,8 @@ class AppointmentController extends Controller
         view()->share('ControllerName', $this->ControllerName);
         view()->share('pageTitle', $pageTitle);
 
-//        $arrServiceStatus = ServiceStatusEnum::getArrayView();
-//        view()->share('arrServiceStatus', $arrServiceStatus);
+        $arrAppointmentStatus = AppointmentStatusEnum::getArrayView();
+        view()->share('arrAppointmentStatus', $arrAppointmentStatus);
     }
 
     public function index()
@@ -31,8 +39,11 @@ class AppointmentController extends Controller
     public function api()
     {
         return DataTables::of(Appointment::query())
-            ->addColumn('category_name', function ($object) {
-                return $object->category->name;
+            ->addColumn('service_name', function ($object) {
+                return $object->service->name;
+            })
+            ->addColumn('datetime', function ($object) {
+                return $object->time->time_display.' - '.$object->date_display;
             })
             ->editColumn('status', function ($object) {
                 return AppointmentStatusEnum::getKeyByValue($object->status);
@@ -51,9 +62,34 @@ class AppointmentController extends Controller
             ->make(true);
     }
 
+    public function edit($appointmentId)
+    {
+        $employees = Admin::query()->where('role', '=', AdminType::DICH_VU)
+            ->get(['id', 'name']);
+        $appointment = Appointment::query()->with('service', 'service.category')->findOrFail($appointmentId);
+        $times = Time::query()->get();
+
+        $vouchers = Voucher::query()->where('status', '=', VoucherStatusEnum::HOAT_DONG)
+            ->where('applicable_type', VoucherApplyTypeEnum::DICH_VU)
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->where('uses_per_voucher', '>', 0)
+            ->get();
+
+        return view(
+            'admin.appointments.edit',
+            [
+                'appointment' => $appointment,
+                'employees' => $employees,
+                'times' => $times,
+                'vouchers' => $vouchers,
+            ]
+        );
+    }
+
     public function store(StoreRequest $request)
     {
-        $duration_price = getDurationPrice($request);
+       
 
         $service = Service::query()->create($request->validated());
         if ($service) {
@@ -76,22 +112,6 @@ class AppointmentController extends Controller
         );
     }
 
-    public function edit($serviceId)
-    {
-        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
-            ->where('type', '=', TypeEnum::DICH_VU)
-            ->get(['id', 'name']);
-        $service = Service::query()->findOrFail($serviceId);
-        $service->load('priceServices');
-
-        return view(
-            'admin.appointments.edit',
-            [
-                'service' => $service,
-                'categories' => $categories,
-            ]
-        );
-    }
 
     public function update(UpdateRequest $request, $serviceId)
     {

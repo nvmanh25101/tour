@@ -112,6 +112,20 @@ Route::group([
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
+
+        Route::group([
+            'controller' => \App\Http\Controllers\Admin\AppointmentController::class,
+            'as' => 'appointments.',
+            'prefix' => 'appointments',
+        ], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/api', 'api')->name('api');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
     });
 });
 

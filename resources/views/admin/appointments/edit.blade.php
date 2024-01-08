@@ -1,178 +1,154 @@
-@php use App\Enums\ServiceStatusEnum; @endphp
 @extends('admin.layouts.master')
 @push('css')
-    <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('css/services.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('flatpicker/flatpickr.min.css') }}">
 @endpush
 @section('content')
     <div class="col-12">
-        <form method="post" action="{{ route('admin.services.update', $service) }}" class="needs-validation"
+        <form method="post" action="{{ route('admin.appointments.update', $appointment) }}" class="needs-validation"
               id="form-edit"
               novalidate>
             @csrf
             @method('PUT')
-            @include('admin.layouts.errors')
-            <div class="form-group">
-                <label>Họ tên</label>
-                <input type="text" class="form-control" name="name" value="{{ $service->name }}" required>
-            </div>
-
-            <div class="form-group mb-3">
-                <label>Mô tả</label>
-                <textarea class="form-control" name="description" placeholder="Mô tả"
-                          required>{{ $service->description }}</textarea>
-            </div>
-            <div class="row mb-1" id="duration_price">
-                @foreach ($service->priceServices as $price)
-                    <div class="col-6 d-flex flex-row mt-2 align-content-center">
-                        <input type="hidden" name="price_id[]" value="{{ $price->id }}">
-                        <div class="form-group">
-                            <label for="duration">Thời lượng(phút)</label>
-                            <input type="number" name="duration[]" id="duration" value="{{ $price->duration }}" min="1"
-                                   required
-                                   class="form-control"/>
-                        </div>
-
-                        <div class="ms-1 form-group">
-                            <label for="price">Giá tiền</label>
-                            <div class="input-group">
-                                <span class="input-group-text">VNĐ</span>
-                                <span class="input-group-text">0.00</span>
-                                <input type="number" name="price[]" id="price" value="{{ $price->price }}" min="1"
-                                       required
-                                       class="form__input form-control"/>
-                            </div>
-                        </div>
-                        <button type="button" class="delete-price" data-price='{{ $price->id }}'
-                                data-service='{{ $service->id }}'>
-                            <i class="mdi mdi-delete-outline"></i>
-                        </button>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="mb-5 fs-4" id="add_price">
-                <i class="mdi mdi-plus-circle-outline"></i>
-            </div>
             <div class="row">
-                <div class="form-group mb-3 col-8">
-                    <label>Danh mục</label>
-                    <select class="form-control" name="category_id">
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}"
-                                    @if($service->category_id === $category->id)
-                                        selected
-                                @endif
-                            >
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Khách hàng</label>
+                        <input type="text" class="form-control" name="name_booker" readonly
+                               value="{{ $appointment->name_booker }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" class="form-control" name="phone_booker" readonly
+                               value="{{ $appointment->phone_booker }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" readonly
+                               value="{{ $appointment->email_booker }}">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Ngày đặt</label>
+                        <input class="form-control" name="date" required id="date">
+                    </div>
+                    <div class="form-group">
+                        <label>Khung giờ</label>
+                        <select class="form-control" name="time_id">
+                            @foreach($times as $time)
+                                <option value="{{ $time->id }}"
+                                        @if($appointment->time_id === $time->id)
+                                            selected
+                                    @endif
+                                >
+                                    {{ $time->time_display }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select class="form-control" name="status">
+                            @foreach($arrAppointmentStatus as $option => $value)
+                                <option value="{{ $value }}"
+                                        @if($appointment->status === $value)
+                                            selected
+                                    @endif
+                                >
+                                    {{ $option }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhân viên phục vụ</label>
+                        <select class="form-control" name="admin_id">
+                            <option value="-1">-- Chọn nhân viên --</option>
+                            @foreach($employees as $employee)
+                                <option value="{{ $employee->id }}"
+                                        @if($appointment->admin_id === $employee->id)
+                                            selected
+                                    @endif
+                                >
+                                    {{ $employee->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group mb-3
-                @if($service->status === ServiceStatusEnum::HOAT_DONG)
-                        d-none
-                @endif
-            ">
-                <label>Trạng thái</label>
-                @foreach($arrServiceStatus as $option => $value)
-                    <br>
-                    <div class="d-flex align-content-center font-16">
-                        <label for="status{{ $value }}">
-                            <input id="status{{ $value }}" type="radio" name="status" value="{{ $value }}" class="mr-1"
-                                   @if ($service->status === $value)
-                                       checked
-                                @endif
-                            >
-                            {{ $option }}
-                        </label>
-                    </div>
-                @endforeach
+            <div class="row">
+                <div class="form-group mb-3 col-12">
+                    <table class="table table-hover table-centered mb-0">
+                        <caption style="caption-side:top" class="fs-4">Dịch vụ</caption>
+                        <thead>
+                        <tr>
+                            <th>Danh mục</th>
+                            <th>Dịch vụ</th>
+                            <th>Thời gian(phút)</th>
+                            <th>Giá(VNĐ)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ $appointment->service->category->name }}</td>
+                            <td>{{ $appointment->service->name }}</td>
+                            <td>{{ $appointment->duration }}</td>
+                            <td>{{ $appointment->price_display }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group mb-3 col-12">
+                    <label>Ghi chú</label>
+                    <textarea class="form-control" name="note" rows="5" readonly>{{ $appointment->note }}</textarea>
+                </div>
             </div>
-            <button class="btn btn-primary mb-3" type="submit">Cập nhật</button>
+
+            <div class="col-4 form-horizontal float-end">
+                <div class="form-group row">
+                    <label class="col-3 col-form-label">Voucher</label>
+                    <select class="col-9 form-control" name="admin_id">
+                        @if($appointment->customer)
+                            <option value="-1">-- Chọn voucher --</option>
+                            @foreach($vouchers as $voucher)
+                                <option value="{{ $voucher->id }}"
+                                        @if($appointment->voucher_id === $voucher->id)
+                                            selected
+                                    @endif
+                                >
+                                    {{ $voucher->name }}
+                                </option>
+                            @endforeach
+                        @else
+                            <option value="-1">-- Khách hàng chưa đăng ký tài khoản --</option>
+                        @endif
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <span class="col-3 col-form-label">Tiền giảm voucher</span>
+                    <span></span>
+                </div>
+                <div class="form-group row">
+                    <span class="col-3 col-form-label">Tổng tiền</span>
+                    <span></span>
+                </div>
+                <button class="btn btn-primary mb-3" id="btn-submit" type="submit">Cập nhật</button>
+            </div>
         </form>
-        @method('DELETE')
     </div>
 @endsection
 @push('js')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('js/notify.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    {{--    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/b-2.4.2/b-colvis-2.4.2/r-2.5.0/rg-1.4.1/sc-2.3.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/datatables.min.js"></script>--}}
+    <script src="{{ asset('flatpicker/flatpickr.js') }}"></script>
+
     <script>
         $(document).ready(function () {
-            CSRF_TOKEN = document.querySelector('[name="_token"]').getAttribute("value");
-            const DELETE_METHOD_ELE = $('input[name="_method"]')[1];
-            const DELETE_METHOD = $(DELETE_METHOD_ELE).val();
-
-            $('#add_price').click(function () {
-                $('#duration_price').append(`
-                <div class="col-6 d-flex flex-row  mt-2 align-content-center">
-                    <div class="form-group">
-                        <input type="hidden" name="price_id[]" value="-1">
-                        <label for="duration">Thời lượng(phút)</label>
-                        <input type="number" name="duration[]" id="duration" class=" form-control"/>
-                    </div>
-
-                    <div class="ms-1 form-group">
-                        <label for="quantity">Giá tiền</label>
-                        <div class="input-group">
-                            <span class="input-group-text">VNĐ</span>
-                            <span class="input-group-text">0.00</span>
-                            <input type="number" name="price[]" id="quantity" min="1"
-                                   class="form__input form-control"/>
-                        </div>
-                    </div>
-                    <button type="button" class="delete-price"  data-price='-1' data-service='-1'>
-                        <i class="mdi mdi-delete-outline"></i>
-                    </button>
-                </div>
-                `);
-                $('.delete-price').click(function () {
-                    let btn = $(this);
-                    let price = $(this).data('price');
-                    let service = $(this).data('service');
-
-                    if (price === -1 && service === -1) {
-                        btn.parent().remove();
-                    }
-                });
-            })
-            $('.delete-price').on('click', function () {
-                let btn = $(this);
-                let price = $(this).data('price');
-                let service = $(this).data('service');
-
-                if (price === -1 && service === -1) {
-                    btn.parent().remove();
-                    return;
-                }
-
-                let url = '{{ route('admin.services.destroyPrice', ['id' => '__service', 'price_id' => '__price']) }}';
-                url = url.replace('__service', service);
-                url = url.replace('__price', price);
-                let formData = new FormData();
-                formData.append('_token', CSRF_TOKEN);
-                formData.append('_method', DELETE_METHOD);
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                })
-                    .done(function (res) {
-                        if (res['success']) {
-                            btn.parent().remove();
-                        } else {
-                            console.log(res);
-                        }
-                    })
+            $("#date").flatpickr({
+                dateFormat: "d-m-Y",
+                defaultDate: "{{ $appointment->date_display }}"
             });
-        })
+        });
     </script>
 @endpush

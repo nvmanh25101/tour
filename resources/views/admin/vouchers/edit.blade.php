@@ -77,43 +77,43 @@
                                value="{{ $voucher->min_spend }}" required>
                     </div>
                 </div>
-
-                <hr>
-                <div class="row">
-                    <div class="form-group col-6 row mb-3">
-                        <label class="col-3 col-form-label">Ngày bắt đầu</label>
-                        <input type="date" class="form-control col-5" name="start_date" placeholder="Ngày bắt đầu"
-                               value="{{ $voucher->start_date }}" required>
-                    </div>
-                    <div class="form-group col-6 row mb-3">
-                        <label class="col-3 col-form-label">Ngày kết thúc</label>
-                        <input type="date" class="form-control col-5" name="end_date" placeholder="Ngày kết thúc"
-                               value="{{ $voucher->end_date }}" required>
-                    </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="form-group col-6 row mb-3">
+                    <label class="col-3 col-form-label">Ngày bắt đầu</label>
+                    <input type="date" class="form-control col-5" name="start_date" placeholder="Ngày bắt đầu"
+                           value="{{ $voucher->start_date }}" required>
                 </div>
+                <div class="form-group col-6 row mb-3">
+                    <label class="col-3 col-form-label">Ngày kết thúc</label>
+                    <input type="date" class="form-control col-5" name="end_date" placeholder="Ngày kết thúc"
+                           value="{{ $voucher->end_date }}" required>
+                </div>
+            </div>
 
-                <div class="form-group mb-3
+            <div class="form-group mb-3
                 @if($voucher->status === VoucherStatusEnum::HOAT_DONG)
                     d-none
                 @endif
-            ">
-                    <label>Trạng thái</label>
-                    @foreach($arrVoucherStatus as $option => $value)
-                        <br>
-                        <div class="d-flex align-content-center font-16">
-                            <label for="status{{ $value }}">
-                                <input id="status{{ $value }}" type="radio" name="status" value="{{ $value }}"
-                                       class="mr-1"
-                                       @if ($voucher->status === $value)
-                                           checked
-                                    @endif
-                                >
-                                {{ $option }}
-                            </label>
-                        </div>
-                    @endforeach
-                </div>
-                <button class="btn btn-primary mb-3" type="submit">Cập nhật</button>
+                ">
+                <label>Trạng thái</label>
+                @foreach($arrVoucherStatus as $option => $value)
+                    <br>
+                    <div class="d-flex align-content-center font-16">
+                        <label for="status{{ $value }}">
+                            <input id="status{{ $value }}" type="radio" name="status" value="{{ $value }}"
+                                   class="mr-1"
+                                   @if ($voucher->status === $value)
+                                       checked
+                                @endif
+                            >
+                            {{ $option }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+            <button class="btn btn-primary mb-3" type="submit">Cập nhật</button>
         </form>
     </div>
 @endsection

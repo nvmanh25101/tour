@@ -9,3 +9,9 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
+#btn-submit {
+    font-size: 1.1rem;
+    float: right;
+    padding: 0.6rem 2rem;
+    margin-top: 1rem;
+}

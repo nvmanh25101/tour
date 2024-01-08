@@ -168,7 +168,6 @@
                 let year = parseInt(dateParts[2], 10);
 
                 let dateObject = new Date(year, month, day);
-                {{--let timestamp = dateObject.getTime();--}}
 
                 if (
                     dateObject.getDate() === now.getDate() &&

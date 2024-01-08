@@ -7,7 +7,7 @@
         <label>Trạng thái</label>
         <select class="form-control" id="select-status">
             <option value="-1">Tất cả</option>
-            @foreach($arrServiceStatus as $key => $value)
+            @foreach($arrAppointmentStatus as $key => $value)
                 <option value="{{ $value }}">
                     {{ $key }}
                 </option>
@@ -16,16 +16,16 @@
     </div>
 
     <div class="col-12">
-        <a href="{{ route('admin.appointment.create') }}" class="btn btn-outline-primary">Thêm mới</a>
-        <a href="{{ route('admin.times.index') }}" class="btn btn-outline-primary">Thiết lập khung giờ đặt lịch</a>
-
+        <a href="{{ route('admin.appointments.create') }}" class="btn btn-outline-primary">Thêm mới</a>
 
         <table id="data-table" class="table table-striped dt-responsive nowrap w-100">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Tên</th>
-                <th>Danh mục</th>
+                <th>Tên khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Dịch vụ</th>
+                <th>Thời gian</th>
                 <th>Trạng thái</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
@@ -47,11 +47,13 @@
                 dom: 'BRSlrtip',
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('admin.appointment.api') }}',
+                ajax: '{{ route('admin.appointments.api') }}',
                 columns: [
                     {data: 'id', name: 'id'},
-                    {data: 'name', name: 'name'},
-                    {data: 'category_name', name: 'category_name'},
+                    {data: 'name_booker', name: 'name_booker'},
+                    {data: 'phone_booker', name: 'phone_booker'},
+                    {data: 'service_name', name: 'service_name'},
+                    {data: 'datetime', name: 'datetime'},
                     {data: 'status', name: 'status'},
                     {
                         data: 'edit',
@@ -128,7 +130,7 @@
 
             $('#select-status').change(function () {
                 let value = this.value;
-                table.column(3).search(value).draw();
+                table.column(5).search(value).draw();
             });
 
             @if(session('success'))

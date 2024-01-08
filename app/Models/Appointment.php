@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -51,5 +52,22 @@ class Appointment extends Model
     public function admin(): BelongsTo
     {
         return $this->belongsTo(Admin::class);
+    }
+
+    public function getDateDisplayAttribute(): string
+    {
+        return date('d/m/Y', strtotime($this->date));
+    }
+
+    public function getPriceDisplayAttribute(): string
+    {
+        return number_format($this->price);
+    }
+
+    protected function date(): Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => date('Y-m-d', strtotime($value)),
+        );
     }
 }
