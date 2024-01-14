@@ -18,9 +18,14 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.navbar-custom {
+.header {
     position: fixed;
-    height: 80px;
+    height: 96px;
+    padding: 0.8rem 0;
+}
+
+.nav-list li {
+    margin: 0 0.5rem;
 }
 
 .nav-link {
@@ -29,16 +34,39 @@ input[type=number] {
     background-color: transparent;
     text-transform: uppercase;
     display: block;
-    padding: 2rem 1rem;
+    padding: 1rem 0.6rem;
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
 }
 
 .nav-logo {
-    width: 100px;
-    height: 100px;
-    object-fit: fill;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.nav-user {
+    border: none;
+    padding: 1rem 0.6rem !important;
+}
+
+.btn-booking {
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: var(--text-primary) !important;
+    border: var(--background-primary) 1px solid !important;
+    padding: 8px 19px !important;
+}
+
+.btn-booking:hover {
+    color: #FFFFFF;
+    background-color: var(--background-primary);
+    border: var(--background-primary);
 }
 
 .page-header {
-    height: 13rem;
-    margin-top: 80px;
+    height: 240px;
+    margin-top: 96px;
 }

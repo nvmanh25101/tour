@@ -1,0 +1,20 @@
+.nav-link {
+    font-size: 1.6rem;
+}
+
+.btn-booking {
+    font-size: 1.6rem;
+}
+
+.single-product-detail {
+    margin-top: 96px;
+    padding-top: 40px;
+}
+
+.zoa-qtt .quantity-left-minus:before {
+    content: "";
+}
+
+.zoa-qtt .quantity-right-plus:before {
+    content: "";
+}

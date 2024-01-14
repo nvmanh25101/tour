@@ -17,7 +17,7 @@
     <div class="col-12 mt-4">
         <h4 class="text-uppercase">Điền Thông tin</h4>
         <div class="mt-4">
-            <form id="booking-form" method="post" action="{{ route('reservation.store') }}">
+            <form id="booking-form" method="post" action="{{ route('reservations.store') }}">
                 @csrf
                 <div class="row">
                     <div class="form-group col-4">
@@ -69,9 +69,12 @@
                             <option value="-1">- Chọn loại dịch vụ -</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}"
-                                        @if($category->id === $service->category->id)
-                                            selected
+                                        @if($service)
+                                            @if($category->id === $service->category->id)
+                                                selected
                                     @endif
+                                    @endif
+
                                 >{{ $category->name }}</option>
                             @endforeach
                         </select>
@@ -84,8 +87,10 @@
                             @if($services)
                                 @foreach($services as $item)
                                     <option value="{{ $item->id }}"
-                                            @if($item->id === $service->id)
-                                                selected
+                                            @if($service)
+                                                @if($item->id === $service->id)
+                                                    selected
+                                        @endif
                                         @endif
                                     >{{ $item->name }}</option>
                                 @endforeach
@@ -120,11 +125,7 @@
                         <option value="-1">- Chọn voucher -</option>
                         @if($vouchers)
                             @foreach($vouchers as $item)
-                                <option value="{{ $item->id }}"
-                                        @if($item->id === $service->id)
-                                            selected
-                                    @endif
-                                >{{ $item->name }}</option>
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -209,7 +210,7 @@
                 let category_id = $(this).val();
 
                 if (category_id !== '-1') {
-                    let url = '{{ route('reservation.getServices', ['category' => '__id']) }}';
+                    let url = '{{ route('reservations.getServices', ['category' => '__id']) }}';
                     url = url.replace('__id', category_id);
                     $.ajax({
                         url: url,
@@ -233,7 +234,7 @@
                 let service_id = $(this).val();
 
                 if (service_id !== '-1') {
-                    let url = '{{ route('reservation.getPrices', ['service' => '__id']) }}';
+                    let url = '{{ route('reservations.getPrices', ['service' => '__id']) }}';
                     url = url.replace('__id', service_id);
                     $.ajax({
                         url: url,

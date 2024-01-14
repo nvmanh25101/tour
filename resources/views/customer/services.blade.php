@@ -67,7 +67,7 @@
                                     </div>
                                     <p>{{ $service->description }}</p>
                                     <div class="booking">
-                                        <a href="{{ route('reservation.booking', ['service' => $service]) }}">
+                                        <a href="{{ route('reservations.booking', ['service' => $service]) }}">
                                             Đặt lịch
                                         </a>
                                     </div>

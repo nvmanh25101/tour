@@ -24,6 +24,10 @@ class Product extends Model
         'brand',
         'category_id',
     ];
+    
+    protected $casts = [
+        'price' => 'decimal:2',
+    ];
 
     public static function destroy($ids)
     {

@@ -41,7 +41,6 @@
                 <label for="price">Giá tiền</label>
                 <div class="input-group">
                     <span class="input-group-text">VNĐ</span>
-                    <span class="input-group-text">0.00</span>
                     <input type="number" name="price" id="price" min="1"
                            class="form__input form-control"/>
                 </div>

@@ -9,7 +9,7 @@
             @yield('carousel')
             <div class="container-fluid">
                 <!-- start page title -->
-                <div class="row">
+                <div class="row master-row">
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>

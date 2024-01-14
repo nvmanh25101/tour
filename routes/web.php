@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TimeController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Customer\AppointmentController;
-use App\Http\Controllers\Customer\HomeController;
+use App\Http\Controllers\Customer\ShopController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -130,20 +130,48 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => '/',
-    'as' => 'customers.',
+    'controller' => \App\Http\Controllers\Customer\AuthController::class,
 ], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/services', [HomeController::class, 'services'])->name('services');
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register', 'processRegister')->name('processRegister');
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'processLogin')->name('processLogin');
+    Route::get('/email/verify', function () {
+        return view('customer.verify-email');
+    })->middleware('auth')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', 'verifyEmail')
+        ->middleware([
+            'auth',
+            'signed',
+        ])->name('verification.verify');
+    Route::post('/email/verification-notification',
+        'resend')->middleware([
+        'auth',
+        'throttle:6,1'
+    ])->name('verification.send');
+    Route::get('/logout', 'logout')->name('logout');
 });
 
 Route::group([
-    'prefix' => 'reservation',
-    'as' => 'reservation.',
+    'prefix' => '/',
+    'as' => 'customers.',
+    'controller' => ShopController::class,
 ], function () {
-    Route::get('/', [AppointmentController::class, 'create'])->name('booking');
-    Route::get('/get-services', [AppointmentController::class, 'getServices'])->name('getServices');
-    Route::get('/get-prices', [AppointmentController::class, 'getPrices'])->name('getPrices');
-    Route::get('/get-times', [AppointmentController::class, 'getTimes'])->name('getTimes');
-    Route::post('/', [AppointmentController::class, 'store'])->name('store');
+    Route::get('/', 'index')->name('home');
+    Route::get('/services', 'services')->name('services');
+    Route::get('/products', 'products')->name('products');
+    Route::get('/product/{id}', 'product')->name('product');
+});
+//'middleware' => ['auth', 'verified']
+
+Route::group([
+    'prefix' => 'reservations',
+    'as' => 'reservations.',
+    'controller' => AppointmentController::class,
+], function () {
+    Route::get('/', 'create')->name('booking');
+    Route::get('/get-services', 'getServices')->name('getServices');
+    Route::get('/get-prices', 'getPrices')->name('getPrices');
+    Route::get('/get-times', 'getTimes')->name('getTimes');
+    Route::post('/', 'store')->name('store');
 });
