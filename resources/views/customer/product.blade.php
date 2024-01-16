@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('customer.layouts.master')
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/customer/product_base.css') }}" type="text/css">
@@ -37,14 +38,7 @@
                         <span>{{ $product->price_format }}VNĐ</span>
                     </div>
                     <div class="flex product-rating">
-                        <div class="group-star">
-                            <span class=""><i class="mdi mdi-star"></i></span>
-                            <span class=""><i class="mdi mdi-star-outline"></i></span>
-                            <span class=""><i class="mdi mdi-star-outline"></i></span>
-                            <span class=""><i class="mdi mdi-star-outline"></i></span>
-                            <span class=""><i class="mdi mdi-star-outline"></i></span>
-                        </div>
-                        <div class="number-rating">( 02 reviews )</div>
+                        <div class="number-rating">( {{ $reviews->count() }} đánh giá )</div>
                     </div>
                     @if($product->quantity < 20)
                         <div class="product-countdown text-center">
@@ -66,91 +60,115 @@
                                 </button>
                             </div>
                             <a href="" class="zoa-btn zoa-addcart">
-                                <i class="zoa-icon-cart"></i>Thêm vào giỏ
+                                Thêm vào giỏ
                             </a>
                         </div>
                     </div>
-                    <div class="single-product-tab bd-top">
-                        <div class="zoa-tab-collapse-block panel-group">
-                            <div class="panel zoa-tab-item">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title zoa-tab-title"><a href="#panelBodyOne"
-                                                                             class="accordion-toggle"
-                                                                             data-toggle="collapse"
-                                                                             data-parent="#accordion">Mô tả</a>
-                                    </h3>
-                                </div>
-                                <div id="panelBodyOne" class="zoa-collapse-content panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        <p>
-                                            {{ $product->description }}
-                                        </p>
-                                    </div>
+                    <div class="accordion custom-accordion" id="custom-accordion-one">
+                        <div class="card mb-4">
+                            <div class="card-header panel-heading" id="headingFour">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title d-block py-1"
+                                       data-toggle="collapse" href="#collapseFour"
+                                       aria-expanded="true" aria-controls="collapseFour">
+                                        MÔ TẢ
+                                        <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                    </a>
+                                </h5>
+                            </div>
+
+                            <div id="collapseFour" class="collapse show"
+                                 aria-labelledby="headingFour"
+                                 data-parent="#custom-accordion-one">
+                                <div class="card-body panel-body">
+                                    <p>
+                                        {!! nl2br($product->description) !!}
+                                    </p>
                                 </div>
                             </div>
-                            <div class="panel zoa-tab-item">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title zoa-tab-title">
-                                        <a href="#panelBodyTwo" class="accordion-toggle" data-toggle="collapse"
-                                           data-parent="#accordion">
-                                            Chi tiết vận chuyển
-                                        </a>
-                                    </h3>
-                                </div>
-                                <div id="panelBodyTwo" class="zoa-collapse-content panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <p>
-                                            Miễn phí
-                                        </p>
-                                    </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header panel-heading" id="headingFive">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title collapsed d-block py-1"
+                                       data-toggle="collapse" href="#collapseFive"
+                                       aria-expanded="false" aria-controls="collapseFive">
+                                        Chi tiết vận chuyển
+                                        <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseFive" class="collapse"
+                                 aria-labelledby="headingFive"
+                                 data-parent="#custom-accordion-one">
+                                <div class="card-body  panel-body">
+                                    <p>Miễn phí vận chuyển</p>
                                 </div>
                             </div>
-                            <div class="panel zoa-tab-item">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title zoa-tab-title"><a href="#panelBodyThree"
-                                                                             class="accordion-toggle"
-                                                                             data-toggle="collapse"
-                                                                             data-parent="#accordion">Đánh giá (2)</a>
-                                    </h3>
-                                </div>
-                                <div id="panelBodyThree" class="zoa-collapse-content panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="review-content">
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header panel-heading" id="headingSix">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title collapsed d-block py-1"
+                                       data-toggle="collapse" href="#collapseSix"
+                                       aria-expanded="false" aria-controls="collapseSix">
+                                        Đánh giá @if($reviews->count() > 0)
+                                            ({{ $reviews->count() }})
+                                        @endif
+                                        <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
+                                 data-parent="#custom-accordion-one">
+                                <div class="card-body  panel-body">
+                                    <ul class="review-content">
+                                        @foreach($reviews as $review)
                                             <li class="element-review">
                                                 <div class="flex align-items-center justify-content-between">
                                                     <div class="review-left">
-                                                        <p class="r-name">Felix Nguyen</p>
-                                                        <p class="r-date">25, March 2018</p>
+                                                        <p class="r-name">{{ $review->customer->name }}</p>
+                                                        <p class="r-date">{{ Carbon::parse($review->reivew_at)->format('d/m/Y')}}</p>
                                                     </div>
                                                     <div class="group-star">
-                                                        <span class="star star-5"></span>
-                                                        <span class="star star-4"></span>
-                                                        <span class="star star-3"></span>
-                                                        <span class="star star-2"></span>
-                                                        <span class="star star-1"></span>
+                                                        @for($i=1; $i <= 5; $i++)
+                                                            @if($i < $review->rating)
+                                                                <span class="star-full"><i
+                                                                        class="mdi mdi-star"></i></span>
+                                                            @else
+                                                                <span class="star-out"><i
+                                                                        class="mdi mdi-star-outline"></i></span>
+                                                            @endif
+                                                        @endfor
                                                     </div>
                                                 </div>
                                                 <p class="r-desc">
-                                                    Free shipping on orders over 150€ within Europe and North
-                                                    America.
+                                                    {{ $review->content }}
                                                 </p>
                                             </li>
-                                        </ul>
+                                        @endforeach
+                                    </ul>
+                                    @auth
                                         <div class="review-form">
                                             <h3 class="review-heading">Đánh giá của bạn</h3>
-                                            <div class="rating-star">
-                                                <span class="fa fa-star-o" aria-hidden="true"></span>
-                                                <span class="fa fa-star-o" aria-hidden="true"></span>
-                                                <span class="fa fa-star-o" aria-hidden="true"></span>
-                                                <span class="fa fa-star-o" aria-hidden="true"></span>
-                                                <span class="fa fa-star-o" aria-hidden="true"></span>
+                                            <div class="rate">
+                                                <input type="radio" id="star5" name="rate" value="5"/>
+                                                <label for="star5" title="text">5 stars</label>
+                                                <input type="radio" id="star4" name="rate" value="4"/>
+                                                <label for="star4" title="text">4 stars</label>
+                                                <input type="radio" id="star3" name="rate" value="3"/>
+                                                <label for="star3" title="text">3 stars</label>
+                                                <input type="radio" id="star2" name="rate" value="2"/>
+                                                <label for="star2" title="text">2 stars</label>
+                                                <input type="radio" id="star1" name="rate" value="1"/>
+                                                <label for="star1" title="text">1 star</label>
                                             </div>
                                             <div class="cmt-form">
                                                 <div class="row">
                                                     <div class="col-xs-12 mg-bottom-30">
                                                             <textarea id="message" class="form-control"
                                                                       name="comment[body]" rows="9"
-                                                                      placeholder="Your reviews"></textarea>
+                                                                      placeholder="Đánh giá của bạn"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="form-group text-center">
@@ -160,7 +178,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -174,3 +192,4 @@
     <script type="text/javascript" src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/main_product.js') }}"></script>
 @endpush
+

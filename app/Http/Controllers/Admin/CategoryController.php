@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Category\StoreRequest;
 use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
 
@@ -104,6 +105,13 @@ class CategoryController extends Controller
 
     public function destroy($categoryId)
     {
+        if (Product::query()->where('category_id', $categoryId)->exists() || Category::query()->where('parent_id',
+                $categoryId)->exists()) {
+            return response()->json([
+                'error' => 'Không thể xóa danh mục này vì có sản phẩm thuộc danh mục này',
+            ]);
+        }
+
         Category::destroy($categoryId);
 
         return response()->json([

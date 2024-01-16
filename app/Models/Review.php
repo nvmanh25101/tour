@@ -11,6 +11,17 @@ class Review extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'customer_id',
+        'admin_id',
+        'reviewable_id',
+        'reviewable_type',
+        'content',
+        'rating',
+        'status',
+        'reply',
+    ];
+
     public function reviewable(): MorphTo
     {
         return $this->morphTo();

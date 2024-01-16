@@ -5,6 +5,8 @@ html, body {
 :root {
     --background-primary: rgb(143, 116, 21);
     --text-primary: rgb(212, 172, 80);
+    --background-navbar: #000000;
+    --background: #000000;
 }
 
 input::-webkit-outer-spin-button,
@@ -24,6 +26,10 @@ input[type=number] {
     padding: 0.8rem 0;
 }
 
+.navbar-custom {
+    background-color: var(--background);
+}
+
 .nav-list li {
     margin: 0 0.5rem;
 }
@@ -36,6 +42,7 @@ input[type=number] {
     display: block;
     padding: 1rem 0.6rem;
 }
+
 
 .nav-link:hover {
     color: var(--text-primary);
@@ -61,7 +68,7 @@ input[type=number] {
 }
 
 .btn-booking:hover {
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     background-color: var(--background-primary);
     border: var(--background-primary);
 }

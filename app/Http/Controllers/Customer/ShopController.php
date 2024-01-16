@@ -72,9 +72,11 @@ class ShopController extends Controller
     public function product(Request $request, $id)
     {
         $product = Product::query()->findOrFail($id);
+        $reviews = $product->reviews()->with('customer')->simplePaginate(5);
 
         return view('customer.product', [
             'product' => $product,
+            'reviews' => $reviews
         ]);
     }
 }
