@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Voucher;
+namespace App\Http\Requests\Customer\Appointment;
 
 use App\Enums\VoucherApplyTypeEnum;
 use App\Enums\VoucherStatusEnum;

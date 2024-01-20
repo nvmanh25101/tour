@@ -1,3 +1,9 @@
+.btn-login {
+    border: var(--background-primary) 1px solid;
+    color: #FFFFFF;
+    background-color: var(--background-primary);
+}
+
 .submit {
     border: var(--background-primary) 1px solid;
     color: #FFFFFF;
@@ -7,18 +13,30 @@
     background-color: var(--background-primary);
 }
 
-.submit:hover {
+.submit:hover,
+.btn-login:hover {
     color: #FFFFFF;
     background-color: #8b691a;
 }
 
-.total_price {
+.total_price,
+.discount_price {
     font-size: 1.4rem;
     font-weight: 600;
 }
 
-#total_price {
+#total_price,
+#discount_price {
     font-size: 1.4rem;
     font-weight: 600;
     color: var(--text-primary);
+}
+
+.voucher {
+    width: 400px;
+}
+
+.voucher label {
+    margin-bottom: 0;
+    margin-right: 8px;
 }

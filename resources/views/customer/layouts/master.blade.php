@@ -1,13 +1,13 @@
 @include('customer.layouts.header')
 
 <body class="loading" data-layout="topnav"
-      data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'>
+      data-layout-config='{"layoutBoxed":false,"darkMode":true,"showRightSidebarOnStart": true}'>
 <div class="wrapper">
     <div class="content-page">
         <div class="content">
             @include('customer.layouts.navbar')
             @yield('carousel')
-            <div class="container-fluid">
+            <div class="container-fluid mt-4">
                 <!-- start page title -->
                 <div class="row master-row">
                     @if ($errors->any())

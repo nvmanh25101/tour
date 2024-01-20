@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TimeController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Customer\AppointmentController;
+use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -123,7 +124,7 @@ Route::group([
             Route::get('/create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}', 'update')->name('update');
+            Route::patch('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
     });
@@ -174,4 +175,12 @@ Route::group([
     Route::get('/get-prices', 'getPrices')->name('getPrices');
     Route::get('/get-times', 'getTimes')->name('getTimes');
     Route::post('/', 'store')->name('store');
+});
+
+Route::group([
+    'prefix' => 'cart',
+    'as' => 'cart.',
+    'controller' => CartController::class,
+], function () {
+    Route::get('/', 'index')->name('index');
 });

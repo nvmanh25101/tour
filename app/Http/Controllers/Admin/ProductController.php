@@ -110,7 +110,6 @@ class ProductController extends Controller
 
     public function update(UpdateRequest $request, $productId)
     {
-//        dd($request->validated());
         $product = Product::query()->findOrFail($productId);
         $arr = $request->validated();
         if ($request->hasFile('image')) {

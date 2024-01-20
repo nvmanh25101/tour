@@ -1,3 +1,4 @@
+@php use App\Enums\VoucherTypeEnum; @endphp
 @extends('customer.layouts.master')
 @push('css')
     <link rel="stylesheet" href="{{ asset('flatpicker/flatpickr.min.css') }}">
@@ -22,7 +23,11 @@
                 <div class="row">
                     <div class="form-group col-4">
                         <label for="name">Họ tên</label>
-                        <input type="text" name="name_booker" class="form-control" placeholder="Họ tên*">
+                        <input type="text" name="name_booker" class="form-control" placeholder="Họ tên*"
+                               @auth
+                                   value="{{ auth()->user()->name }}"
+                            @endauth
+                        >
                     </div>
                     <div class="form-group col-4">
                         <label>Số người</label>
@@ -38,13 +43,21 @@
                     <div class="form-group col-4">
                         <label>Số điện thoại</label>
                         <input class="form-control validate-control" id="bookingPhone" name="phone_booker"
-                               required placeholder="Số điện thoại*">
+                               required placeholder="Số điện thoại*"
+                               @auth
+                                   value="{{ auth()->user()->phone }}"
+                            @endauth
+                        >
                     </div>
                     <div class="form-group col-4">
                         <label>Email</label>
                         <input type="email" id="bookingEmail" name="email_booker"
                                class="form-control validate-control" placeholder="Email*"
-                               required>
+                               required
+                               @auth
+                                   value="{{ auth()->user()->email }}"
+                            @endauth
+                        >
                     </div>
                 </div>
                 <div class="row">
@@ -118,21 +131,38 @@
                     <textarea id="message" name="note" class="form-control" rows="3"
                               spellcheck="false"></textarea>
                 </div>
-                <div class="form-group col-4">
+
+                <div class="form-group voucher d-flex align-items-center">
                     <label>Voucher</label>
-                    <select class="form-control validate-control" id="Voucher"
-                            name="voucher_id" required>
-                        <option value="-1">- Chọn voucher -</option>
-                        @if($vouchers)
-                            @foreach($vouchers as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
+                    @auth
+                        <select class="form-control validate-control" id="voucher"
+                                name="voucher_id">
+                            <option value="-1">- Chọn voucher -</option>
+                            @if($vouchers)
+                                @foreach($vouchers as $item)
+                                    <option value="{{ $item->id }}"
+                                            data-value="{{ $item->value }}"
+                                            data-type="{{ $item->type }}"
+                                            data-min-spend="{{ $item->min_spend }}"
+                                            data-max-spend="{{ $item->max_spend }}"
+                                    >{{ $item->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    @endauth
+                    @guest
+                        <a href="{{ route('login') }}" class="btn btn-login">Đăng nhập để sử dụng voucher</a>
+                    @endguest
                 </div>
+                <div class="voucher-error text-danger"></div>
                 <hr>
+                <div class="discount_price mb-2">
+                    <span>Giảm giá</span>
+                    <span id="discount_price"></span>
+                    <span id="max_discount"></span>
+                </div>
                 <div class="total_price">
-                    <span>Total</span>
+                    <span>Tổng</span>
                     <span id="total_price"></span>
                 </div>
                 <button class="btn submit mb-3" type="submit">Đặt lịch</button>
@@ -143,6 +173,7 @@
 @push('js')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('flatpicker/flatpickr.js') }}"></script>
+    <script src="{{ asset('js/notify.min.js') }}"></script>
 
     <script>
         $("#date").flatpickr({
@@ -158,6 +189,10 @@
             let date_element = $('#date');
             let times = $('select[name="time_id"] option');
             let total_price_element = $('#total_price');
+            let voucher_element = $('#voucher');
+            let voucher_error = $('.voucher-error');
+            let discount_price_element = $('#discount_price');
+            voucher_element.hide();
 
             date_element.on('change', function () {
                 let date_value = $(this).val();
@@ -257,6 +292,8 @@
             });
 
             price_element.on('change', function () {
+                voucher_element.show();
+
                 let duration_price = $(this).children("option:selected").text();
                 let dataArray = duration_price.split('-');
                 let price = dataArray[1].trim();
@@ -264,25 +301,55 @@
                 isNaN(price_value) ? price_value = 0 : price_value;
                 let price_format = price_value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND';
                 total_price_element.text(price_format);
-            });
 
-            {{--let url = '{{ route('customers.getTimes', ['date' => '__date']) }}';--}}
-            {{--url = url.replace('__date', date_value);--}}
-            {{--$.ajax({--}}
-            {{--    url: url,--}}
-            {{--    type: 'GET',--}}
-            {{--    dataType: 'json',--}}
-            {{--    success: function (data) {--}}
-            {{--        console.log(data);--}}
-            {{--        // price_element.empty();--}}
-            {{--        // price_element.append('<option value="-1">- Chọn -</option>');--}}
-            {{--        // $.each(data.prices, function (key, value) {--}}
-            {{--        //     let price = parseFloat(value.price.replace(/[^\d.-]/g, ''))--}}
-            {{--        //     let price_format = price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND'--}}
-            {{--        //     price_element.append(`<option value="${value.id}">${value.duration}' - ${price_format}</option>`);--}}
-            {{--        // });--}}
-            {{--    }--}}
-            {{--});--}}
+                voucher_element.on('change', function () {
+                    if ($(this).val() === '-1') {
+                        total_price_element.text(price_format);
+                        return;
+                    }
+                    let voucher_type = $(this).children("option:selected").data('type');
+                    let voucher_value = $(this).children("option:selected").data('value');
+                    let min_spend = $(this).children("option:selected").data('min-spend');
+                    let max_spend = $(this).children("option:selected").data('max-spend');
+                    let min_spend_value = parseFloat(min_spend.replace(/[^\d.-]/g, ''));
+                    let min_spend_format = min_spend_value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND';
+
+                    if (min_spend > price_value) {
+                        total_price_element.text(price_format);
+                        voucher_error.text('Voucher này chỉ áp dụng cho đơn hàng từ ' + min_spend_format + ' trở lên');
+                        return;
+                    } else {
+                        voucher_error.text('');
+                    }
+
+                    let total_price = total_price_element.text();
+                    let total_price_value = parseFloat(total_price.replace(/[^\d.-]/g, ''));
+                    isNaN(total_price_value) ? total_price_value = 0 : total_price_value;
+                    let total_price_after_discount = 0;
+                    let discount = 0;
+                    if (voucher_type === {{ VoucherTypeEnum::PHAN_TRAM }}) {
+                        discount = total_price_value * voucher_value / 100;
+                        if (discount > max_spend) {
+                            discount = max_spend;
+                            $('#max_discount').text('Tối đa' + max_spend + ' VND');
+
+                        }
+                        total_price_after_discount = total_price_value - discount;
+                        discount_price_element.text(discount + ' VND');
+                    } else {
+                        total_price_after_discount = total_price_value - voucher_value;
+                        discount_price_element.text(voucher_value + ' VND');
+                    }
+                    let total_price_after_discount_format = total_price_after_discount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND';
+                    total_price_element.text(total_price_after_discount_format);
+                });
+            });
+            @if(session('success'))
+            $.notify('{{ session('success') }}', "success");
+            @endif
+            @if(session('error'))
+            $.notify('{{ session('error') }}', "error");
+            @endif
         })
     </script>
 @endpush

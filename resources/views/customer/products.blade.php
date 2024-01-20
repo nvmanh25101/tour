@@ -60,7 +60,7 @@
                     </div>
                     <div class="product-info text-center">
                         <h3 class="product-title">
-                            <a href="">{{ $product->name }}</a>
+                            <a href="{{ route('customers.product', $product) }}">{{ $product->name }}</a>
                         </h3>
                         <div class="product-price">
                             <span>{{ $product->price_format }}VNĐ</span>

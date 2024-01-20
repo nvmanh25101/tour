@@ -22,7 +22,7 @@
         <nav class=" col-5">
             <ul class="list-unstyled mb-0 d-flex align-items-center justify-content-start nav-list">
                 <li>
-                    <a class="nav-link" href="{{ route('customers.services') }}" role="button">
+                    <a class="nav-link" href="{{ route('cart.index') }}" role="button">
                         <span>Giỏ hàng</span>
                     </a>
                 </li>

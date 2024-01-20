@@ -1,3 +1,13 @@
+body {
+    background-color: #343a40;
+    color: #aab8c5;
+}
+
+.page-header {
+    margin-top: 96px;
+    margin-bottom: 0;
+}
+
 .nav-link {
     font-size: 1.6rem;
 }
@@ -120,4 +130,12 @@
 
 .star-out i {
     font-size: 2rem;
+}
+
+.product-title a {
+    color: #aab8c5;
+}
+
+.product-title a:hover {
+    color: var(--text-primary);
 }

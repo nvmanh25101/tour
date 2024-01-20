@@ -6,7 +6,7 @@ html, body {
     --background-primary: rgb(143, 116, 21);
     --text-primary: rgb(212, 172, 80);
     --background-navbar: #000000;
-    --background: #000000;
+    --background: #343a40;
 }
 
 input::-webkit-outer-spin-button,
@@ -55,8 +55,15 @@ input[type=number] {
 }
 
 .nav-user {
+    display: flex;
+    align-items: center;
     border: none;
     padding: 1rem 0.6rem !important;
+}
+
+.dropdown-menu {
+    position: absolute;
+    transform: translate3d(44px, -18px, 0px) !important;
 }
 
 .btn-booking {

@@ -53,7 +53,7 @@ class AuthController extends Controller
     {
         if (Auth::guard('customer')->attempt($request->validated())) {
             $request->session()->regenerate();
-            return redirect()->intended('customers.home');
+            return redirect()->route('customers.home');
         }
         return redirect()->back()->withErrors(['message' => 'Email hoặc Password không chính xác']);
     }

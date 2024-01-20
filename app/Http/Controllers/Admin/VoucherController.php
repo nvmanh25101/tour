@@ -44,6 +44,9 @@ class VoucherController extends Controller
             ->editColumn('applicable_type', function ($object) {
                 return VoucherApplyTypeEnum::getKeyByValue($object->type);
             })
+            ->editColumn('value', function ($object) {
+                return number_format($object->value).($object->type === VoucherTypeEnum::PHAN_TRAM ? '%' : ' VNĐ');
+            })
             ->editColumn('start_date', function ($object) {
                 return $object->start_date_display;
             })
@@ -74,7 +77,6 @@ class VoucherController extends Controller
 
     public function store(StoreRequest $request)
     {
-//        dd($request->validated());
         if (Voucher::query()->create($request->validated())) {
             return redirect()->route('admin.vouchers.index')->with(['success' => 'Thêm mới thành công']);
         }

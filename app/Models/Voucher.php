@@ -20,6 +20,7 @@ class Voucher extends Model
         'uses_per_customer',
         'uses_per_voucher',
         'min_spend',
+        'max_spend',
         'applicable_type',
         'type',
         'value',

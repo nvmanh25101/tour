@@ -39,7 +39,7 @@
                 <th>Tên</th>
                 <th>Áp dụng</th>
                 <th>Giá trị</th>
-                <th>Số lượng còn lại</th>
+                <th>Số lượng</th>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
                 <th>Trạng thái</th>
@@ -66,6 +66,15 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.vouchers.api') }}',
+                "columnDefs": [{
+                    "targets": 2,
+                    "data": "name",
+                    "render": function (data, type, row, meta) {
+                        return type === 'display' && data.length > 20 ?
+                            '<span title="' + data + '">' + data.substr(0, 18) + '...</span>' :
+                            data;
+                    }
+                }],
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'code', name: 'code'},

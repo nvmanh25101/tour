@@ -1,4 +1,4 @@
-@php use App\Enums\VoucherStatusEnum; @endphp
+@php use App\Enums\VoucherStatusEnum;use App\Enums\VoucherTypeEnum; @endphp
 @extends('admin.layouts.master')
 @push('css')
     <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css">
@@ -76,6 +76,12 @@
                                step="any"
                                value="{{ $voucher->min_spend }}" required>
                     </div>
+                    <div class="form-group max_spend">
+                        <label>Giá trị giảm tối đa</label>
+                        <input type="number" class="form-control" name="max_spend" placeholder="Giá tiền" min="0"
+                               step="any"
+                               value="{{ $voucher->max_spend }}">
+                    </div>
                 </div>
             </div>
             <hr>
@@ -117,3 +123,26 @@
         </form>
     </div>
 @endsection
+@push('js')
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            let select_type = $('select[name="type"]');
+            if (select_type.val() === '{{ VoucherTypeEnum::PHAN_TRAM }}') {
+                $('.max_spend').show();
+            } else {
+                $('.max_spend').hide();
+            }
+
+            select_type.change(function () {
+                console.log($(this).val() === '{{ VoucherTypeEnum::PHAN_TRAM }}');
+                if ($(this).val() === '{{ VoucherTypeEnum::PHAN_TRAM }}') {
+                    $('.max_spend').show();
+                } else {
+                    $('.max_spend').hide();
+                    $('input[name="max_spend"]').val('');
+                }
+            });
+        });
+    </script>
+@endpush

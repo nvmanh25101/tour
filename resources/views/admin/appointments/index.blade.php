@@ -28,7 +28,6 @@
                 <th>Thời gian</th>
                 <th>Trạng thái</th>
                 <th>Sửa</th>
-                <th>Xóa</th>
             </tr>
             </thead>
         </table>
@@ -48,6 +47,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('admin.appointments.api') }}',
+                "order": [[0, "desc"]],
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name_booker', name: 'name_booker'},
@@ -61,18 +61,6 @@
                         searchable: false,
                         render: function (data, type, row, meta) {
                             return `<a class="btn btn-primary" href="${data}"><i class='mdi mdi-pencil'></i></a>`;
-                        }
-                    },
-                    {
-                        data: 'destroy',
-                        orderable: false,
-                        searchable: false,
-                        render: function (data, type, row, meta) {
-                            return `<form action="${data}" method="post">
-                                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn-delete btn btn-danger"><i class='mdi mdi-delete'></i></button>
-                        </form>`;
                         }
                     },
                 ]
