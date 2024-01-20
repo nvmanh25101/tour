@@ -137,7 +137,7 @@
                     @auth
                         <select class="form-control validate-control" id="voucher"
                                 name="voucher_id">
-                            <option value="-1">- Chọn voucher -</option>
+                            <option value="{{ null }}">- Chọn voucher -</option>
                             @if($vouchers)
                                 @foreach($vouchers as $item)
                                     <option value="{{ $item->id }}"

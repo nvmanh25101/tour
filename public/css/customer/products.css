@@ -78,10 +78,6 @@ body {
     border: none;
 }
 
-.panel-body {
-    background-color: #FFFFFF;
-}
-
 .rate {
     height: 46px;
     padding: 0 195px 0 0;
@@ -132,10 +128,27 @@ body {
     font-size: 2rem;
 }
 
-.product-title a {
-    color: #aab8c5;
+.product-title a,
+.product-price span,
+.product-countdown h3 {
+    color: #aab8c5 !important;
+}
+
+.product-countdown span {
+    color: var(--text-primary) !important;
 }
 
 .product-title a:hover {
     color: var(--text-primary);
+}
+
+.fade {
+    -webkit-transition: opacity .15s linear;
+    transition: opacity .15s linear;
+    opacity: 1;
+}
+
+.alert-dismissible .close {
+    position: relative;
+    top: -7px;
 }

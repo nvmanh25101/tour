@@ -12,6 +12,12 @@ class Cart extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    protected $fillable = [
+        'customer_id',
+        'quantity',
+    ];
+
     public function customer(): HasOne
     {
         return $this->hasOne(Customer::class);
@@ -19,7 +25,7 @@ class Cart extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'cart_items', 'cart_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'cart_items', 'cart_id', 'product_id')->withPivot('quantity');
     }
 
     public function orders(): HasMany

@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Enums\Category\StatusEnum;
-use App\Enums\Category\TypeEnum;
-use App\Enums\ProductStatusEnum;
-use App\Enums\ServiceStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Cart;
 use App\Models\Product;
-use App\Models\Service;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public string $ControllerName = 'Trang chủ';
+    public string $ControllerName = 'Giỏ hàng';
 
     public function __construct()
     {
@@ -23,60 +18,62 @@ class CartController extends Controller
 
     public function index()
     {
-        return view('customer.cart');
+        $cart = Cart::query()->where('customer_id', auth()->id())->first();
+
+        return view('customer.cart', [
+            'cart' => $cart,
+        ]);
     }
 
-    public function services(Request $request)
+    public function store(Request $request)
     {
-        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
-            ->where('type', '=', TypeEnum::DICH_VU)
-            ->get(['id', 'name']);
-
-        if ($request->query('category')) {
-            $category = Category::query()->where('id', $request->query('category'))->get();
-        } else {
-            $category = $categories->first();
+        $cart = Cart::query()->where('customer_id', auth()->id())->first();
+        if (!$cart) {
+            $cart = Cart::query()->create([
+                'customer_id' => auth()->id()
+            ]);
+        }
+        $quantity = $request->get('quantity');
+        $product_id = $request->get('product_id');
+        $inventory = Product::query()->findOrFail($product_id)->quantity;
+        if ($quantity > $inventory) {
+            return redirect()->back()->with([
+                'error' => 'Số lượng sản phẩm trong kho không đủ'
+            ]);
         }
 
-        $services = Service::query()->with('priceServices')->whereBelongsTo($category)->where('status', '=',
-            ServiceStatusEnum::HOAT_DONG)->get();
-
-        return view('customer.services', [
-            'categories' => $categories,
-            'services' => $services
+        $cart->products()->attach($request->get('product_id'), [
+            'quantity' => $request->get('quantity')
         ]);
+
+        return redirect()->route('cart.index');
     }
 
-    public function products(Request $request)
+    public function update(Request $request, $id)
     {
-        $category_filter = $request->query('category');
-        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
-            ->where('type', '=', TypeEnum::SAN_PHAM)
-            ->get(['id', 'name']);
-
-        if ($category_filter) {
-            $category = Category::query()->where('id', $request->query('category'))->get();
-            $products = Product::query()->whereBelongsTo($category)->where('status', '=',
-                ProductStatusEnum::HOAT_DONG)->simplePaginate(12);
-        } else {
-            $products = Product::query()->where('status', '=',
-                ProductStatusEnum::HOAT_DONG)->simplePaginate(12);
+        $cart = Cart::query()->findOrFail($id);
+        $quantity = $request->get('quantity');
+        $product_id = $request->get('product_id');
+        $inventory = Product::query()->findOrFail($product_id)->quantity;
+        if ($quantity > $inventory) {
+            return response()->json([
+                'error' => 'Số lượng sản phẩm trong kho không đủ'
+            ]);
         }
 
-        return view('customer.products', [
-            'categories' => $categories,
-            'products' => $products
+        $cart->products()->updateExistingPivot($request->get('product_id'), [
+            'quantity' => $request->get('quantity')
         ]);
+
+        return redirect()->route('cart.index');
     }
 
-    public function product(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
-        $product = Product::query()->findOrFail($id);
-        $reviews = $product->reviews()->with('customer')->simplePaginate(5);
+        $cart = Cart::query()->findOrFail($id);
 
-        return view('customer.product', [
-            'product' => $product,
-            'reviews' => $reviews
-        ]);
+        $cart->products()->detach($request->get('product_id'));
+
+        return redirect()->route('cart.index');
     }
 }

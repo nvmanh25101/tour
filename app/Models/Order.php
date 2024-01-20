@@ -11,9 +11,26 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'code',
+        'customer_id',
+        'admin_id',
+        'voucher_id',
+        'cart_id',
+        'name_receiver',
+        'phone_receiver',
+        'address_receiver',
+        'note',
+        'price',
+        'total',
+        'status',
+        'payment_method',
+    ];
+
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'order_items', 'order_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'order_items', 'order_id', 'product_id')->withPivot('name', 'price',
+            'quantity');
     }
 
     public function customer(): BelongsTo

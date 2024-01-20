@@ -9,7 +9,9 @@ use App\Http\Controllers\Admin\TimeController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Customer\AppointmentController;
 use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\ShopController;
+use App\Http\Controllers\Customer\VnpayController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -127,6 +129,20 @@ Route::group([
             Route::patch('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
+
+        Route::group([
+            'controller' => \App\Http\Controllers\Admin\OrderController::class,
+            'as' => 'orders.',
+            'prefix' => 'orders',
+        ], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/api', 'api')->name('api');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::patch('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
     });
 });
 
@@ -181,6 +197,34 @@ Route::group([
     'prefix' => 'cart',
     'as' => 'cart.',
     'controller' => CartController::class,
+    'middleware' => ['auth', 'verified']
 ], function () {
     Route::get('/', 'index')->name('index');
+    Route::post('/', 'store')->name('store');
+    Route::put('/{id}', 'update')->name('update');
+    Route::delete('/{id}', 'destroy')->name('destroy');
+});
+
+
+Route::group([
+    'prefix' => 'orders',
+    'as' => 'orders.',
+    'controller' => OrderController::class,
+    'middleware' => ['auth', 'verified']
+], function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{id}', 'edit')->name('edit');
+    Route::patch('/{id}', 'update')->name('update');
+    Route::post('/', 'store')->name('store');
+    Route::delete('/{id}', 'destroy')->name('destroy');
+});
+
+Route::group([
+    'prefix' => 'vnpay',
+    'as' => 'vnpay.',
+    'controller' => VnpayController::class,
+    'middleware' => ['auth', 'verified']
+], function () {
+    Route::get('/create', 'create')->name('create');
+    Route::get('/return', 'return')->name('return');
 });

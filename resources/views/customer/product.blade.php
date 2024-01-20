@@ -46,24 +46,37 @@
                         </div>
                     @endif
                     <div class="single-product-button-group">
-                        <div class="flex align-items-center element-button">
+                        <form action="{{ route('cart.store') }}" method="post"
+                              class="flex align-items-center element-button">
+                            @csrf
                             <div class="zoa-qtt">
                                 <button type="button" class="quantity-left-minus btn btn-number js-minus"
                                         data-type="minus" data-field="">
                                     <i class="mdi mdi-minus"></i>
                                 </button>
-                                <input type="text" name="number" value="1"
-                                       class="product_quantity_number js-number">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="text" name="quantity" value="1"
+                                       class="product_quantity_number js-number form-control">
                                 <button type="button" class="quantity-right-plus btn btn-number js-plus"
                                         data-type="plus" data-field="">
                                     <i class="mdi mdi-plus"></i>
                                 </button>
                             </div>
-                            <a href="" class="zoa-btn zoa-addcart">
+                            <button class="zoa-btn zoa-addcart">
                                 Thêm vào giỏ
-                            </a>
-                        </div>
+                            </button>
+                        </form>
                     </div>
+                    @if(session('error'))
+                        <div
+                            class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show"
+                            role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong>Lỗi - </strong> {{ session('error') }}!
+                        </div>
+                    @endif
                     <div class="accordion custom-accordion" id="custom-accordion-one">
                         <div class="card mb-4">
                             <div class="card-header panel-heading" id="headingFour">

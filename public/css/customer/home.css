@@ -34,3 +34,14 @@
     width: 100%;
     object-fit: fill;
 }
+
+.bg-cover {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.btn-services {
+    width: 200px;
+    translate: 500px 0;
+}

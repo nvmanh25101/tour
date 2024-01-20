@@ -7,7 +7,6 @@ use App\Enums\Category\TypeEnum;
 use App\Enums\ServiceStatusEnum;
 use App\Enums\VoucherApplyTypeEnum;
 use App\Enums\VoucherStatusEnum;
-use App\Enums\VoucherTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\Appointment\StoreRequest;
 use App\Models\Appointment;
@@ -61,7 +60,7 @@ class AppointmentController extends Controller
         $arr['date'] = $date;
         $arr['duration'] = $duration;
         $arr['price'] = $price;
-        $arr['total_price'] = $price;
+
         $arr['customer_id'] = Auth::guard('customer')->user()->id;
 
         $appointment = Appointment::query()->where('customer_id', Auth::guard('customer')->user()->id)
@@ -72,35 +71,8 @@ class AppointmentController extends Controller
             return redirect()->back()->with('error', 'Bạn đã đặt lịch vào thời gian này');
         }
 
-        if ($request->validated()['voucher_id']) {
-            $voucher = Voucher::query()->find($request->validated()['voucher_id']);
-            if (!Auth::guard('customer')->check()) {
-                return redirect()->back()->with('error', 'Bạn cần đăng nhập để sử dụng voucher');
-            }
-
-            $count = Appointment::query()->where('customer_id', Auth::guard('customer')->user()->id)
-                ->where('voucher_id', $voucher->id)
-                ->count();
-            if ($count > $voucher->uses_per_customer) {
-                return redirect()->back()->with('error', 'Bạn đã sử dụng hết lượt sử dụng voucher');
-            }
-
-            if ($voucher->applicable_type !== VoucherApplyTypeEnum::DICH_VU) {
-                return redirect()->back()->with('error', 'Voucher không hợp lệ');
-            }
-
-            if ($voucher->uses_per_voucher < 1) {
-                return redirect()->back()->with('error', 'Voucher đã hết lượt sử dụng');
-            }
-
-            if ($voucher->type === VoucherTypeEnum::PHAN_TRAM) {
-                $arr['total_price'] = $price - $price * $voucher->value / 100;
-            } else {
-                $arr['total_price'] = $price - $voucher->value;
-            }
-            --$voucher->uses_per_voucher;
-            $voucher->save();
-        }
+        $arr['total_price'] = checkVoucher($request, Appointment::class, VoucherApplyTypeEnum::DICH_VU,
+            $price) ?? $price;
 
         if (Appointment::query()->create($arr)) {
             return redirect()->back()->with('success', 'Đặt lịch thành công');
