@@ -6,8 +6,8 @@ use BenSampo\Enum\Enum;
 
 final class OrderPaymentStatusEnum extends Enum
 {
-    public const CHUA_THANH_TOAN = 6;
-    public const DA_THANH_TOAN = 7;
+    public const CHUA_THANH_TOAN = 0;
+    public const DA_THANH_TOAN = 1;
 
 
     public static function getKeyByValue($value): string

@@ -1,7 +1,7 @@
 @extends('customer.layouts.master')
 @section('content')
     <!-- customer login start -->
-    <div class="customer_login">
+    <div class="thankyou">
         <div class="container">
             <div style="text-align: center;">
                 <h2>Cảm ơn bạn đã đặt đơn hàng! Đơn hàng sẽ sớm được giao tới cho bạn! </h2>

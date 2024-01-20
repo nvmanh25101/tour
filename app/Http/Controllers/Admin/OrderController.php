@@ -6,14 +6,10 @@ use App\Enums\AdminType;
 use App\Enums\OrderPaymentEnum;
 use App\Enums\OrderPaymentStatusEnum;
 use App\Enums\OrderStatusEnum;
-use App\Enums\VoucherApplyTypeEnum;
-use App\Enums\VoucherStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Appointment\UpdateRequest;
+use App\Http\Requests\Admin\Order\UpdateRequest;
 use App\Models\Admin;
-use App\Models\Appointment;
-use App\Models\Time;
-use App\Models\Voucher;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
 
@@ -45,8 +41,14 @@ class OrderController extends Controller
 
     public function api()
     {
-        return DataTables::of(Appointment::query())
+        return DataTables::of(Order::query())
+            ->addColumn('order_date', function ($object) {
+                return $object->order_date;
+            })
             ->editColumn('payment_method', function ($object) {
+                if ($object->payment_method === null) {
+                    return "Chưa thanh toán";
+                }
                 return OrderPaymentEnum::getKeyByValue($object->payment_method);
             })
             ->editColumn('status', function ($object) {
@@ -63,38 +65,27 @@ class OrderController extends Controller
             ->make(true);
     }
 
-    public function edit($appointmentId)
+    public function edit($orderId)
     {
-        $employees = Admin::query()->where('role', '=', AdminType::DICH_VU)
+        $employees = Admin::query()->where('role', '=', AdminType::VAN_CHUYEN)
             ->get(['id', 'name']);
-        $appointment = Appointment::query()->with('service', 'service.category')->findOrFail($appointmentId);
-        $times = Time::query()->get();
-
-        $vouchers = Voucher::query()->where('status', '=', VoucherStatusEnum::HOAT_DONG)
-            ->where('applicable_type', VoucherApplyTypeEnum::DICH_VU)
-            ->where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
-            ->where('uses_per_voucher', '>', 0)
-            ->get();
+        $order = Order::query()->with('voucher')->findOrFail($orderId);
 
         return view(
-            'admin.appointments.edit',
+            'admin.orders.edit',
             [
-                'appointment' => $appointment,
+                'order' => $order,
                 'employees' => $employees,
-                'times' => $times,
-                'vouchers' => $vouchers,
             ]
         );
     }
 
-    public function update(UpdateRequest $request, $appointmentId)
+    public function update(UpdateRequest $request, $orderId)
     {
-        $appointment = Appointment::query()->findOrFail($appointmentId);
-        $appointment->fill($request->validated());
-
-        if ($appointment->save()) {
-            return redirect()->route('admin.appointments.index')->with(['success' => 'Cập nhật thành công']);
+        $order = Order::query()->findOrFail($orderId);
+        $order->fill($request->validated());
+        if ($order->save()) {
+            return redirect()->back()->with(['success' => 'Cập nhật thành công']);
         }
         return redirect()->back()->withErrors('message', 'Cập nhật thất bại');
     }

@@ -51,12 +51,12 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'code', name: 'code'},
-                    {data: 'name_booker', name: 'name_booker'},
-                    {data: 'phone_booker', name: 'phone_booker'},
+                    {data: 'name_receiver', name: 'name_receiver'},
+                    {data: 'phone_receiver', name: 'phone_receiver'},
                     {data: 'payment_method', name: 'payment_method'},
                     {data: 'total', name: 'total'},
                     {data: 'status', name: 'status'},
-                    {data: 'created_at', name: 'created_at'},
+                    {data: 'order_date', name: 'order_date'},
                     {
                         data: 'edit',
                         orderable: false,

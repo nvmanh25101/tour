@@ -30,6 +30,10 @@ html, body {
     padding: 0.8rem 0;
 }
 
+.thankyou {
+    margin-top: 120px;
+}
+
 .navbar-custom {
     background-color: var(--background);
 }

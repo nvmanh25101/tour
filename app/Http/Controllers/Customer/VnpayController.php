@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Enums\OrderPaymentEnum;
+use App\Enums\OrderPaymentStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -80,6 +81,7 @@ class VnpayController extends Controller
             if ($order->payment_type == 0) {
                 $order->update([
                     'payment_method' => OrderPaymentEnum::CHUYEN_KHOAN,
+                    'payment_status' => OrderPaymentStatusEnum::DA_THANH_TOAN,
                 ]);
                 return view('customer.thankyou');
             }

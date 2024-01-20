@@ -25,6 +25,7 @@ class Order extends Model
         'total',
         'status',
         'payment_method',
+        'payment_status',
     ];
 
     public function products(): BelongsToMany
@@ -52,4 +53,10 @@ class Order extends Model
     {
         return $this->belongsTo(Cart::class);
     }
+
+    public function getOrderDateAttribute(): string
+    {
+        return $this->created_at->format('d/m/Y');
+    }
+
 }
