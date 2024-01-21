@@ -69,6 +69,7 @@
                                                 </label>
                                                 <input class="form-control" type="text" name="address" required
                                                        placeholder="Nhập địa chỉ cụ thể"
+                                                       value="{{ auth()->user()->address }}"
                                                        id="billing-address">
                                             </div>
                                         </div>
@@ -80,6 +81,7 @@
                                                         class="text-danger">*</span>
                                                 </label>
                                                 <input class="form-control" type="text" name="district" required
+                                                       value="{{ auth()->user()->district }}"
                                                        placeholder="Nhập quận / huyện" id="billing-town-city">
                                             </div>
                                         </div>
@@ -89,6 +91,7 @@
                                                         class="text-danger">*</span>
                                                 </label>
                                                 <input class="form-control" type="text" name="city" required
+                                                       value="{{ auth()->user()->city }}"
                                                        placeholder="Nhập tỉnh / thành phố"
                                                        id="billing-state">
                                             </div>

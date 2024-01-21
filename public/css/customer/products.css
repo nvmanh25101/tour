@@ -130,7 +130,10 @@ body {
 
 .product-title a,
 .product-price span,
-.product-countdown h3 {
+.product-countdown h3,
+.blog-date,
+.blog-title a,
+.read-more {
     color: #aab8c5 !important;
 }
 
@@ -138,8 +141,10 @@ body {
     color: var(--text-primary) !important;
 }
 
-.product-title a:hover {
-    color: var(--text-primary);
+.product-title a:hover,
+.blog-title a:hover,
+.read-more:hover {
+    color: var(--text-primary) !important;
 }
 
 .fade {

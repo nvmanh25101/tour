@@ -7,6 +7,8 @@ use App\Enums\Category\TypeEnum;
 use App\Enums\ProductStatusEnum;
 use App\Enums\ServiceStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\ReviewRequest;
+use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Tour;
 use App\Models\Service;
@@ -73,10 +75,44 @@ class ShopController extends Controller
     {
         $product = Tour::query()->findOrFail($id);
         $reviews = $product->reviews()->with('customer')->simplePaginate(5);
+        $order_count = Order::whereHas('products', function ($query) use ($id) {
+            $query->where('products.id', $id);
+        })->where('customer_id', auth()->user()->id)->count();
 
         return view('customer.product', [
             'product' => $product,
-            'reviews' => $reviews
+            'reviews' => $reviews,
+            'order_count' => $order_count
         ]);
+    }
+
+    public function blogs()
+    {
+        $blogs = Blog::query()->simplePaginate(10);
+
+        return view('customer.blogs', [
+            'blogs' => $blogs
+        ]);
+    }
+
+    public function blog(Request $request, $id)
+    {
+        $blog = Blog::query()->findOrFail($id);
+
+        return view('customer.blog', [
+            'blog' => $blog,
+        ]);
+    }
+
+    public function review(ReviewRequest $request, $id)
+    {
+        $product = Product::query()->findOrFail($id);
+        $product->reviews()->create([
+            'rating' => $request->validated('rating'),
+            'content' => $request->validated('content'),
+            'customer_id' => auth()->user()->id
+        ]);
+
+        return redirect()->route('customers.product', $product)->with('success', 'Đánh giá sản phẩm thành công');
     }
 }

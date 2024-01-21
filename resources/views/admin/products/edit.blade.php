@@ -115,18 +115,54 @@
                 <td class="table-user">
                     {{ $review->customer->name }}
                 </td>
-                <td>{{ $review->rating }}</td>
+                <td>
+                    @for($i=1; $i <= 5; $i++)
+                        @if($i < $review->rating)
+                            <span class="star-full"><i
+                                    class="mdi mdi-star"></i></span>
+                        @else
+                            <span class="star-out"><i
+                                    class="mdi mdi-star-outline"></i></span>
+                        @endif
+                    @endfor
+                </td>
                 <td>{{ $review->content }}</td>
                 <td class="table-action text-center">
-                    <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                    <button type='button' class='btn action-icon' data-toggle='modal'
+                            data-target='#update-reiview-{{ $review->id }}'><i
+                            class="mdi mdi-pencil"></i></button>
                 </td>
             </tr>
+
+            <div id="update-reiview-{{ $review->id }}" class="modal fade form-modal" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form
+                                action="{{ route('admin.products.review', ['id' => $product, 'reviewId' => $review->id]) }}"
+                                class="pl-3 pr-3" method="post"
+                                novalidate>
+                                @csrf
+                                @method('PATCH')
+                                <div class="form-group">
+                                    <label for="year_start">Nội dung</label>
+                                    <textarea class="form-control" rows="5" name="reply">{{ $review->reply }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Phản hồi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endforeach
         </tbody>
     </table>
 @endsection
 @push('js')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('js/notify.min.js') }}"></script>
+
     <script>
         $(document).ready(function () {
             let image = $("#image");
@@ -141,6 +177,13 @@
                 imgURL = URL.createObjectURL(e.target.files[0]);
                 imgPreview.attr("src", imgURL);
             });
+
+            @if(session('success'))
+            $.notify('{{ session('success') }}', "success");
+            @endif
+            @if(session('error'))
+            $.notify('{{ session('error') }}', "error");
+            @endif
         })
     </script>
 @endpush

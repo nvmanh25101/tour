@@ -41,6 +41,15 @@ class OrderController extends Controller
         ]);
     }
 
+
+    public function show($id)
+    {
+        $order = Order::query()->with(['products', 'voucher', 'admin'])->find($id);
+        return view('customer.order_detail', [
+            'order' => $order
+        ]);
+    }
+
     public function store(OrderRequest $request)
     {
         $arr = $request->validated();
@@ -76,6 +85,8 @@ class OrderController extends Controller
                     'quantity' => $product->pivot->quantity,
                     'price' => $product->price,
                 ]);
+                Product::query()->where('id', $product->id)->decrement('quantity', $product->pivot->quantity);
+                Product::query()->where('id', $product->id)->increment('sold', $product->pivot->quantity);
             }
             $cart->products()->detach();
             DB::commit();
@@ -85,7 +96,9 @@ class OrderController extends Controller
             return response()->json(['error' => 'Transaction failed.']);
         }
 
-        return redirect()->route('orders.edit', $order->id);
+        return redirect()->route('orders.edit', $order->id)->with([
+            'success' => 'Đặt hàng thành công'
+        ]);
     }
 
     public function edit($id)
@@ -112,5 +125,14 @@ class OrderController extends Controller
         }
 
 //        return redirect()->route('customers.home');
+    }
+
+    public function destroy($id)
+    {
+        Order::destroy($id);
+
+        return response()->json([
+            'success' => 'Hủy thành công',
+        ]);
     }
 }

@@ -80,13 +80,6 @@
                             </div>
                         </div> <!-- end table-responsive-->
 
-                        <!-- Add note input-->
-                        <div class="mt-3">
-                            <label for="example-textarea">Ghi chú:</label>
-                            <textarea class="form-control" id="example-textarea" rows="3"
-                                      placeholder="Write some note.."></textarea>
-                        </div>
-
                         <!-- action buttons-->
                         <div class="row mt-4">
                             <div class="col-sm-6">
@@ -133,6 +126,7 @@
 @endsection
 @push('js')
     <script type="text/javascript" src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('js/notify.min.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -186,6 +180,13 @@
                 let formattedPrice = total.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
                 $("#totalPrice").text(formattedPrice);
             }
+
+            @if(session('success'))
+            $.notify('{{ session('success') }}', "success");
+            @endif
+            @if(session('error'))
+            $.notify('{{ session('error') }}', "error");
+            @endif
         });
     </script>
 @endpush

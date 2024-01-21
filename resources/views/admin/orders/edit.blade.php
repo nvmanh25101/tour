@@ -75,7 +75,7 @@
             <div class="row">
                 <div class="form-group mb-3 col-12">
                     <table class="table table-hover table-centered mb-0">
-                        <caption style="caption-side:top" class="fs-4">Dịch vụ</caption>
+                        <caption style="caption-side:top" class="fs-4">Sản phẩm</caption>
                         <thead>
                         <tr>
                             <th>Tên sản phẩm</th>
@@ -101,7 +101,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
 
             <div class="col-4 form-horizontal float-end">
@@ -123,6 +122,7 @@
                     </div>
                     <button class="btn btn-primary mb-3" id="btn-submit" type="submit">Cập nhật</button>
                 </div>
+            </div>
         </form>
     </div>
 @endsection

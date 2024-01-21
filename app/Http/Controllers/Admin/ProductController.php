@@ -108,6 +108,27 @@ class ProductController extends Controller
         );
     }
 
+    public function destroy($productId)
+    {
+        Product::destroy($productId);
+
+        return response()->json([
+            'success' => 'Xóa thành công',
+        ]);
+    }
+
+    public function review(Request $request, $id, $reviewId)
+    {
+        $product = Product::query()->findOrFail($id);
+        $review = $product->reviews()->findOrFail($reviewId);
+        $review->update([
+            'reply' => $request->get('reply'),
+            'admin_id' => Auth::guard('admin')->user()->id,
+        ]);
+
+        return redirect()->back()->with(['success' => 'Phản hồi thành công']);
+    }
+
     public function update(UpdateRequest $request, $productId)
     {
         $product = Tour::query()->findOrFail($productId);
@@ -125,18 +146,5 @@ class ProductController extends Controller
             return redirect()->route('admin.products.index')->with(['success' => 'Cập nhật thành công']);
         }
         return redirect()->back()->withErrors('message', 'Cập nhật thất bại');
-    }
-
-    public function destroy($productId)
-    {
-        if (Tour::destroy($productId)) {
-            return response()->json([
-                'success' => 'Xóa thành công',
-            ]);
-        }
-
-        return response()->json([
-            'error' => 'Xóa thất bại',
-        ]);
     }
 }

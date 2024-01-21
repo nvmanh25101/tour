@@ -46,7 +46,9 @@ class CartController extends Controller
             'quantity' => $request->get('quantity')
         ]);
 
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.index')->with([
+            'success' => 'Thêm sản phẩm vào giỏ hàng thành công'
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -74,6 +76,8 @@ class CartController extends Controller
 
         $cart->products()->detach($request->get('product_id'));
 
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.index')->with([
+            'success' => 'Xóa sản phẩm khỏi giỏ hàng thành công'
+        ]);
     }
 }
