@@ -16,7 +16,7 @@
         </nav>
         <div class="ms-4 me-4">
             <a class="d-block" href="{{ route('customers.home') }}">
-                <img class="nav-logo" src="{{ asset('storage/logo.png') }}">
+                <img class="nav-logo" src="https://dulichviet.com.vn/images/logo.png">
             </a>
         </div>
         <nav class=" col-5">

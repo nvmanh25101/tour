@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin\Product;
 
-use App\Models\Product;
+use App\Models\Tour;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +22,7 @@ class DestroyRequest extends FormRequest
             [
                 'course' => [
                     'required',
-                    Rule::exists(Product::class, 'id'),
+                    Rule::exists(Tour::class, 'id'),
                 ],
             ]
         ];

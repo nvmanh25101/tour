@@ -43,7 +43,7 @@ class Admin extends Authenticatable
 
     public function orders(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Reservation::class);
     }
 
     public function reviews(): HasMany

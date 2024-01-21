@@ -10,22 +10,23 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->string('code', 50)->unique();
-            $table->string('name_receiver', 50);
-            $table->string('phone_receiver', 15);
-            $table->string('address_receiver', 255);
+            $table->string('name_contact', 50);
+            $table->string('phone_contact', 15);
+            $table->string('email_contact', 255);
             $table->tinyInteger('status')->default(0);
-            $table->decimal('total', 10, 2);
-            $table->decimal('shipping_fee', 10, 2)->default(0);
-            $table->tinyInteger('payment_method');
+            $table->decimal('price', 10, 2);
+            $table->decimal('total_price', 10, 2);
+            $table->tinyInteger('number_people');
+            $table->tinyInteger('payment_method')->nullable();
             $table->tinyInteger('payment_status')->default(0);
-            $table->timestamp('delivered_at')->nullable();
+            $table->timestamp('departure_date');
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('admin_id')->nullable()->constrained('admins');
             $table->foreignId('voucher_id')->nullable()->constrained('vouchers');
-            $table->foreignId('cart_id')->constrained('carts');
+            $table->foreignId('tour_id')->constrained('tours');
             $table->timestamps();
         });
     }
@@ -35,6 +36,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('reservations');
     }
 };

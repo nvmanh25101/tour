@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         Admin::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
+        // \App\Models\Schedule::factory()->create([
+        //     'name' => 'Test Schedule',
         //     'email' => 'test@example.com',
         // ]);
         $this->call([
             AdminSeeder::class,
-            CustomerSeeder::class,
+//            CustomerSeeder::class,
         ]);
     }
 }

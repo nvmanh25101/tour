@@ -14,7 +14,7 @@ class checkAdminLogin
     {
         if (Auth::guard('admin')->check()) {
             $user = Auth::guard('admin')->user();
-            if ($user->role === AdminType::QUAN_LY || $user->role === AdminType::NHAN_VIEN || $user->role === AdminType::VAN_CHUYEN) {
+            if ($user->role === AdminType::QUAN_LY || $user->role === AdminType::NHAN_VIEN || $user->role === AdminType::CHAM_SOC_KHACH_HANG) {
                 return $next($request);
             }
             return redirect()->route('admin.login')->withErrors(['message' => 'Bạn không có quyền truy cập']);

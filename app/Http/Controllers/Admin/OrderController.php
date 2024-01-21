@@ -9,7 +9,7 @@ use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Order\UpdateRequest;
 use App\Models\Admin;
-use App\Models\Order;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
 
@@ -41,7 +41,7 @@ class OrderController extends Controller
 
     public function api()
     {
-        return DataTables::of(Order::query())
+        return DataTables::of(Reservation::query())
             ->addColumn('order_date', function ($object) {
                 return $object->order_date;
             })
@@ -69,7 +69,7 @@ class OrderController extends Controller
     {
         $employees = Admin::query()->where('role', '=', AdminType::VAN_CHUYEN)
             ->get(['id', 'name']);
-        $order = Order::query()->with('voucher')->findOrFail($orderId);
+        $order = Reservation::query()->with('voucher')->findOrFail($orderId);
 
         return view(
             'admin.orders.edit',
@@ -82,7 +82,7 @@ class OrderController extends Controller
 
     public function update(UpdateRequest $request, $orderId)
     {
-        $order = Order::query()->findOrFail($orderId);
+        $order = Reservation::query()->findOrFail($orderId);
         $order->fill($request->validated());
         if ($order->save()) {
             return redirect()->back()->with(['success' => 'Cập nhật thành công']);

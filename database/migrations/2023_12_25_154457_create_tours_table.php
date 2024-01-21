@@ -11,17 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('tours', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 50);
             $table->string('name', 255);
             $table->text('description');
+            $table->text('price_include');
+            $table->text('price_exclude');
+            $table->text('price_children')->nullable();
+            $table->text('note');
             $table->string('image', 255);
-            $table->decimal('price', 10, 2);
-            $table->integer('quantity');
-            $table->integer('sold')->default(0);
+            $table->string('departure_time', 255);
+            $table->string('duration', 255);
+            $table->tinyInteger('vehicle');
             $table->tinyInteger('status')->default(1);
-            $table->string('brand', 255);
             $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('admin_id')->constrained('admins');
             $table->timestamps();
         });
     }
@@ -31,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('tours');
     }
 };

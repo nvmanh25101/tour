@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone', 15);
             $table->string('address', 255);
             $table->tinyInteger('role')->default(0);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

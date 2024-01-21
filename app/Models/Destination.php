@@ -4,25 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Time extends Model
+class Destination extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'time',
+        'name',
     ];
 
-    public function appointments(): HasMany
+    public function tours(): BelongsToMany
     {
-        return $this->hasMany(Appointment::class);
-    }
-
-    public function getTimeDisplayAttribute(): string
-    {
-        return date('H:i', strtotime($this->time));
+        return $this->belongsToMany(Tour::class, 'destination_tours', 'destination_id', 'tour_id');
     }
 }

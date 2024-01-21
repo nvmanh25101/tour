@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Time\StoreRequest;
-use App\Models\Time;
+use App\Models\Destination;
 use Illuminate\Support\Facades\Route;
 
 class TimeController extends Controller
@@ -21,7 +21,7 @@ class TimeController extends Controller
 
     public function index()
     {
-        $times = Time::query()->get();
+        $times = Destination::query()->get();
         return view('admin.times.index', [
             'times' => $times,
         ]);
@@ -33,7 +33,7 @@ class TimeController extends Controller
         $id = $data['id'];
         unset($data['id']);
         if ($id) {
-            $time_obj = Time::query()->findOrFail($id);
+            $time_obj = Destination::query()->findOrFail($id);
             $time_obj->fill($data);
             if ($time_obj->save()) {
                 return response()->json([
@@ -44,7 +44,7 @@ class TimeController extends Controller
                 'error' => 'Cập nhật thất bại',
             ]);
         }
-        if (Time::query()->create($data)) {
+        if (Destination::query()->create($data)) {
             return response()->json([
                 'success' => 'Thêm mới thành công',
             ]);
@@ -57,14 +57,14 @@ class TimeController extends Controller
 
     public function destroy($timeId)
     {
-        $appointments = Time::query()->findOrFail($timeId)->appointments;
+        $appointments = Destination::query()->findOrFail($timeId)->appointments;
         if (!$appointments->isEmpty()) {
             return response()->json([
                 'message' => 'Không thể xóa khung giờ này',
             ]);
         }
 
-        Time::destroy($timeId);
+        Destination::destroy($timeId);
 
         return response()->json([
             'message' => 'Xóa thành công',

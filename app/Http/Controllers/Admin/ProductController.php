@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\StoreRequest;
 use App\Http\Requests\Admin\Product\UpdateRequest;
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -36,7 +36,7 @@ class ProductController extends Controller
 
     public function api()
     {
-        return DataTables::of(Product::query())
+        return DataTables::of(Tour::query())
             ->addColumn('category_name', function ($object) {
                 return $object->category->name;
             })
@@ -70,7 +70,7 @@ class ProductController extends Controller
         $path = Storage::disk('public')->putFile('images', $request->file('image'));
         $arr = $request->validated();
         $arr['image'] = $path;
-        $product = Product::query()->create($arr);
+        $product = Tour::query()->create($arr);
         if ($product) {
             return redirect()->route('admin.products.index')->with(['success' => 'Thêm mới thành công']);
         }
@@ -95,7 +95,7 @@ class ProductController extends Controller
         $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
             ->where('type', '=', TypeEnum::SAN_PHAM)
             ->get(['id', 'name']);
-        $product = Product::query()->findOrFail($productId);
+        $product = Tour::query()->findOrFail($productId);
         $reviews = $product->reviews()->with('customer')->get();
 
         return view(
@@ -110,7 +110,7 @@ class ProductController extends Controller
 
     public function update(UpdateRequest $request, $productId)
     {
-        $product = Product::query()->findOrFail($productId);
+        $product = Tour::query()->findOrFail($productId);
         $arr = $request->validated();
         if ($request->hasFile('image')) {
             if (Storage::disk('public')->exists($product->image)) {
@@ -129,7 +129,7 @@ class ProductController extends Controller
 
     public function destroy($productId)
     {
-        if (Product::destroy($productId)) {
+        if (Tour::destroy($productId)) {
             return response()->json([
                 'success' => 'Xóa thành công',
             ]);

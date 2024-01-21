@@ -29,10 +29,10 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 'string',
             ],
-            'type' => [
+            'image' => [
                 'required',
-                'integer',
-                Rule::in(TypeEnum::asArray()),
+                'file',
+                'image',
             ],
             'status' => [
                 'required',
@@ -47,9 +47,9 @@ class UpdateRequest extends FormRequest
         return [
             'name.required' => ':attribute không được để trống.',
             'name.max' => ':attribute không được vượt quá :max ký tự.',
-            'type.required' => ':attribute không được để trống.',
-            'type.integer' => ':attribute không hợp lệ.',
-            'type.in' => ':attribute không hợp lệ.',
+            'description.max' => ':attribute không được vượt quá :max ký tự.',
+            'image.required' => ':attribute không được để trống.',
+            'image.image' => ':attribute phải là ảnh.',
             'status.required' => ':attribute không được để trống.',
             'status.integer' => ':attribute không hợp lệ.',
             'status.in' => ':attribute không hợp lệ.',
@@ -60,7 +60,8 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'Tên danh mục',
-            'type' => 'Loại danh mục',
+            'description' => 'Mô tả',
+            'image' => 'Ảnh',
             'status' => 'Trạng thái',
         ];
     }

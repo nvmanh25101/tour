@@ -21,7 +21,6 @@ class Voucher extends Model
         'uses_per_voucher',
         'min_spend',
         'max_spend',
-        'applicable_type',
         'type',
         'value',
         'start_date',
@@ -34,14 +33,9 @@ class Voucher extends Model
         self::where('id', $ids)->update(['status' => VoucherStatusEnum::NGUNG_HOAT_DONG]);
     }
 
-    public function appointments(): HasMany
+    public function reservations(): HasMany
     {
-        return $this->hasMany(Appointment::class);
-    }
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Reservation::class);
     }
 
     protected function startDate(): Attribute

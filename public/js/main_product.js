@@ -18,7 +18,7 @@ jQuery(document).ready(function($) {
         $('.quickview-wrapper').removeClass('open');
         $('.quick-modal').removeClass('show');
     });
-    // open Vertical menu 
+    // open Vertical menu
     $(".js-vertical-menu").on("click", function() {
         $('.vertical-wrapper').slideToggle(200);
         $(this).toggleClass('active');
@@ -66,7 +66,7 @@ jQuery(document).ready(function($) {
             $(this).next().stop(true).toggleClass('open', $(this).is(":visible"));
         });
     });
-    // Product detail
+    // Tour detail
     $(".js-close-tab").on("click", function() {
         $(this).removeClass('open')
         $('.detail-content').removeClass('active');
@@ -85,7 +85,7 @@ jQuery(document).ready(function($) {
         $('.detail-content').addClass('active');
     }
 
-    // Product Grid
+    // Tour Grid
     $(".js-filter-menu li .js-plus-icon").on("click", function() {
         $(".js-filter-menu > li > a").toggleClass('active');
         $(this).toggleClass('minus');
@@ -156,7 +156,7 @@ jQuery(document).ready(function($) {
         $('.js-number').val(quantity + 1);
 
 
-        // Increment    
+        // Increment
     });
 
     $('.js-minus').on("click", function(e) {
@@ -363,7 +363,7 @@ jQuery(document).ready(function($) {
                 items: 4
             },
             1200: {
-                items: 6            
+                items: 6
             }
         }
     });
@@ -766,22 +766,22 @@ jQuery(document).ready(function($) {
     $slickElement.on('init reInit afterChange', function(event, slick, currentSlide, nextSlide) {
         //currentSlide is undefined on init -- set it to 0 in this case (currentSlide is 0 based)
         var i = (currentSlide ? currentSlide : 0) + 1;
-        
+
         $status.html(i  + '<span>' +slick.slideCount + '</span>');
-      
-        
+
+
     });
     $('.js-slider-v3').on('afterChange', function(event, slick, currentSlide) {
         $('.slick-active').append('<div class="pagingInfo"');
     });
-  
+
     $('.js-slider-v3').slick({
       dots: true,
       arrows: false,
       slidesToShow: 1,
       slidesToScroll: 1,
       dotsClass: 'slick-dots engoc-slideshow-v10-dots',
-      
+
     });
 
     var $status = $('.pagingInfo');
@@ -789,20 +789,20 @@ jQuery(document).ready(function($) {
     $slickElement.on('init reInit afterChange', function(event, slick, currentSlide, nextSlide) {
         //currentSlide is undefined on init -- set it to 0 in this case (currentSlide is 0 based)
         var i = (currentSlide ? currentSlide : 0) + 1;
-        
+
         $status.html(i  + '<span>' +slick.slideCount + '</span>');
-      
-        
+
+
     });
     $('.js-slider-v4').on('afterChange', function(event, slick, currentSlide) {
         $('.slick-active').append('<div class="pagingInfo"');
     });
-  
+
     $('.js-slider-v4').slick({
       dots: true,
       arrows: false,
       slidesToShow: 1,
-      slidesToScroll: 1      
+      slidesToScroll: 1
     });
     // js blogpost
     $('.js-single-post').slick({
@@ -835,7 +835,7 @@ jQuery(document).ready(function($) {
         nextArrow: '<span class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></span>',
     });
 
-    // JS owl team Carousel 
+    // JS owl team Carousel
     $('.js-owl-test').owlCarousel({
         items: 1,
         singleItem: true,
@@ -932,7 +932,7 @@ jQuery(document).ready(function($) {
     });
     // Open Account popup
     $(".js-user").on("click", function() {
-        
+
         $('.account-form-wrapper').addClass('account--open');
         $('body').addClass('search-opened');
     });

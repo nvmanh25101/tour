@@ -155,7 +155,7 @@ return [
     'collectors' => [
         'phpinfo'         => true,  // Php version
         'messages'        => true,  // Messages
-        'time'            => true,  // Time Datalogger
+        'time'            => true,  // Destination Datalogger
         'memory'          => true,  // Memory usage
         'exceptions'      => true,  // Exception displayer
         'log'             => true,  // Logs from Monolog (merged in messages if enabled)

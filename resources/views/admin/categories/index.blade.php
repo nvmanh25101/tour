@@ -4,17 +4,6 @@
     <link href="{{ asset('datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
-    <div class="col-4 d-flex mb-1">
-        <label class="me-1 d-flex align-items-center">Loại</label>
-        <select class="form-control" id="select-type">
-            <option value="-1">Tất cả</option>
-            @foreach($arrCategoryType as $key => $value)
-                <option value="{{ $value }}">
-                    {{ $key }}
-                </option>
-            @endforeach
-        </select>
-    </div>
 
     <div class="col-4 d-flex mb-1">
         <label>Trạng thái</label>
@@ -36,7 +25,6 @@
             <tr>
                 <th>#</th>
                 <th>Tên</th>
-                <th>Loại</th>
                 <th>Trạng thái</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
@@ -64,7 +52,6 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
-                    {data: 'type', name: 'type'},
                     {data: 'status', name: 'status'},
                     {
                         data: 'edit',
@@ -138,11 +125,6 @@
                         });
                     }
                 });
-            });
-
-            $('#select-type').change(function () {
-                let value = this.value;
-                table.column(2).search(value).draw();
             });
 
             $('#select-status').change(function () {

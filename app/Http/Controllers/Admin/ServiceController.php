@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Service\StoreRequest;
 use App\Http\Requests\Admin\Service\UpdateRequest;
 use App\Models\Category;
-use App\Models\PriceService;
+use App\Models\Price;
 use App\Models\Service;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
@@ -138,7 +138,7 @@ class ServiceController extends Controller
 
     public function destroyPrice($serviceId, $priceId)
     {
-        if (PriceService::destroy($priceId)) {
+        if (Price::destroy($priceId)) {
             return response()->json([
                 'success' => 'Xóa thành công',
             ]);

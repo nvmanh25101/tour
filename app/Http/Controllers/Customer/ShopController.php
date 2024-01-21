@@ -8,7 +8,7 @@ use App\Enums\ProductStatusEnum;
 use App\Enums\ServiceStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Product;
+use App\Models\Tour;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
@@ -56,10 +56,10 @@ class ShopController extends Controller
 
         if ($category_filter) {
             $category = Category::query()->where('id', $request->query('category'))->get();
-            $products = Product::query()->whereBelongsTo($category)->where('status', '=',
+            $products = Tour::query()->whereBelongsTo($category)->where('status', '=',
                 ProductStatusEnum::HOAT_DONG)->simplePaginate(12);
         } else {
-            $products = Product::query()->where('status', '=',
+            $products = Tour::query()->where('status', '=',
                 ProductStatusEnum::HOAT_DONG)->simplePaginate(12);
         }
 
@@ -71,7 +71,7 @@ class ShopController extends Controller
 
     public function product(Request $request, $id)
     {
-        $product = Product::query()->findOrFail($id);
+        $product = Tour::query()->findOrFail($id);
         $reviews = $product->reviews()->with('customer')->simplePaginate(5);
 
         return view('customer.product', [

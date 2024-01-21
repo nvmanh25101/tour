@@ -25,7 +25,7 @@ class Category extends Model
 
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Tour::class);
     }
 
     public function services(): HasMany

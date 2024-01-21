@@ -1,11 +1,11 @@
 @php use App\Enums\Category\StatusEnum; @endphp
 @extends('admin.layouts.master')
 @push('css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 @endpush
 @section('content')
     <div class="col-12">
         <form method="post" action="{{ route('admin.categories.update', $category) }}" class="needs-validation"
+              enctype="multipart/form-data"
               id="form-edit"
               novalidate>
             @csrf
@@ -22,22 +22,17 @@
                 <label>Mô tả</label>
                 <textarea class="form-control" name="description" rows="5">{{ $category->description }}</textarea>
             </div>
-
-            <div class="form-group mb-3">
-                <label>Loại</label>
-                <select class="form-control" name="type">
-                    @foreach($arrCategoryType as $option => $value)
-                        <option value="{{ $value }}"
-                                @if($category->type === $value)
-                                    selected
-                            @endif
-                        >
-                            {{ $option }}
-                        </option>
-                    @endforeach
-                </select>
+            <div class="form-group">
+                <label>Ảnh</label>
+                <input type="file" class="form-control-file" name="image"
+                       id="image"
+                       accept="image/*">
+                <div class="holder">
+                    <img
+                        id="imgPreview"
+                        src="{{ asset('storage/' . $product->image) }}" alt="pic"/>
+                </div>
             </div>
-
             <div class="form-group mb-3
                 @if($category->status === StatusEnum::HOAT_DONG)
                     d-none
@@ -62,3 +57,22 @@
         </form>
     </div>
 @endsection
+@push('js')
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            let image = $("#image");
+            let imgPreview = $("#imgPreview");
+
+            if (imgPreview.attr("src") !== "") {
+                $(".holder").show();
+            }
+            let imgURL;
+            image.change(function (e) {
+                $(".holder").show();
+                imgURL = URL.createObjectURL(e.target.files[0]);
+                imgPreview.attr("src", imgURL);
+            });
+        })
+    </script>
+@endpush

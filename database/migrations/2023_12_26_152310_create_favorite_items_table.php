@@ -12,14 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('favorite_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->string('email', 100)->unique();
-            $table->string('password', 255);
-            $table->string('phone', 15);
-            $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBiginteger('favorite_id')->unsigned();
+            $table->unsignedBiginteger('tour_id')->unsigned();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->foreign('favorite_id')->references('id')
+                ->on('favorites')->onDelete('cascade');
+            $table->foreign('tour_id')->references('id')
+                ->on('tours')->onDelete('cascade');
+
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('favorite_items');
     }
 };

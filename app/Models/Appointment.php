@@ -31,7 +31,7 @@ class Appointment extends Model
 
     public function time(): BelongsTo
     {
-        return $this->belongsTo(Time::class);
+        return $this->belongsTo(Destination::class);
     }
 
     public function service(): BelongsTo

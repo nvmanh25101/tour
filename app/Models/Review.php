@@ -14,17 +14,16 @@ class Review extends Model
     protected $fillable = [
         'customer_id',
         'admin_id',
-        'reviewable_id',
-        'reviewable_type',
+        'tour_id',
         'content',
         'rating',
         'status',
         'reply',
     ];
 
-    public function reviewable(): MorphTo
+    public function tour(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Tour::Class, 'tour_id');
     }
 
     public function customer(): BelongsTo

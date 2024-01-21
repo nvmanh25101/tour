@@ -20,10 +20,10 @@ return new class extends Migration
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->decimal('min_spend', 10, 2);
+            $table->decimal('max_spend', 10, 2)->nullable();
             $table->integer('uses_per_customer');
             $table->integer('uses_per_voucher');
             $table->tinyInteger('status')->default(0);
-            $table->tinyInteger('applicable_type');
         });
     }
 

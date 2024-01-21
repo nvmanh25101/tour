@@ -1,7 +1,7 @@
 @include('admin.layouts.header')
 
 <body
-    data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+    data-layout-config='{"layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 <!-- Begin page -->
 <div class="wrapper">
     @include('admin.layouts.sidebar')
@@ -14,7 +14,6 @@
             <!-- Start Content-->
             <div class="container-fluid">
                 <!-- start page title -->
-                @include('admin.layouts.breadcrumb')
                 <div class="row">
                     @if ($errors->any())
                         <div class="alert alert-danger">

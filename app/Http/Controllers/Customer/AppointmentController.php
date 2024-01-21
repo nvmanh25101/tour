@@ -11,9 +11,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\Appointment\StoreRequest;
 use App\Models\Appointment;
 use App\Models\Category;
-use App\Models\PriceService;
+use App\Models\Price;
 use App\Models\Service;
-use App\Models\Time;
+use App\Models\Destination;
 use App\Models\Voucher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ class AppointmentController extends Controller
 
     public function getPrices(Request $request)
     {
-        $prices = PriceService::query()->where('service_id', $request->query('service'))->get();
+        $prices = Price::query()->where('service_id', $request->query('service'))->get();
 
         return response()->json([
             'prices' => $prices
@@ -51,7 +51,7 @@ class AppointmentController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $duration_price = PriceService::query()->find($request->validated()['price_id']);
+        $duration_price = Price::query()->find($request->validated()['price_id']);
         unset($request->validated()['price_id']);
         $duration = $duration_price->duration;
         $price = $duration_price->price;
@@ -93,7 +93,7 @@ class AppointmentController extends Controller
                 ServiceStatusEnum::HOAT_DONG)->get(['id', 'name']);
         }
 
-        $times = Time::all();
+        $times = Destination::all();
 
         $vouchers = Voucher::query()->where('status', '=', VoucherStatusEnum::HOAT_DONG)
             ->where('applicable_type', VoucherApplyTypeEnum::DICH_VU)

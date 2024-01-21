@@ -15,10 +15,9 @@ return new class extends Migration {
             $table->integer('rating');
             $table->text('content')->nullable();
             $table->text('reply')->nullable();
-            $table->integer('reviewable_id');
-            $table->string("reviewable_type");
             $table->foreignId('customer_id')->constrained('customers');
-            $table->foreignId('admin_id')->constrained('admins');
+            $table->foreignId('tour_id')->constrained('tours');
+            $table->foreignId('admin_id')->nullable()->constrained('admins');
             $table->timestamps();
         });
     }

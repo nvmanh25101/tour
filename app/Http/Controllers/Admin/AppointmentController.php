@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Appointment\UpdateRequest;
 use App\Models\Admin;
 use App\Models\Appointment;
-use App\Models\Time;
+use App\Models\Destination;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
@@ -63,7 +63,7 @@ class AppointmentController extends Controller
         $employees = Admin::query()->where('role', '=', AdminType::DICH_VU)
             ->get(['id', 'name']);
         $appointment = Appointment::query()->with('service', 'service.category')->findOrFail($appointmentId);
-        $times = Time::query()->get();
+        $times = Destination::query()->get();
 
         $vouchers = Voucher::query()->where('status', '=', VoucherStatusEnum::HOAT_DONG)
             ->where('applicable_type', VoucherApplyTypeEnum::DICH_VU)

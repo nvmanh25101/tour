@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Order extends Model
+class Reservation extends Model
 {
     use HasFactory;
 
@@ -16,22 +16,22 @@ class Order extends Model
         'customer_id',
         'admin_id',
         'voucher_id',
-        'cart_id',
-        'name_receiver',
-        'phone_receiver',
-        'address_receiver',
-        'note',
+        'tour_id',
+        'number_people',
+        'name_contact',
+        'phone_contact',
+        'email_contact',
         'price',
-        'total',
+        'total_price',
+        'departure_date',
         'status',
         'payment_method',
         'payment_status',
     ];
 
-    public function products(): BelongsToMany
+    public function tour(): BelongsTo
     {
-        return $this->belongsToMany(Product::class, 'order_items', 'order_id', 'product_id')->withPivot('name', 'price',
-            'quantity');
+        return $this->belongsTo(Tour::class);
     }
 
     public function customer(): BelongsTo
@@ -47,11 +47,6 @@ class Order extends Model
     public function voucher(): BelongsTo
     {
         return $this->belongsTo(Voucher::class);
-    }
-
-    public function cart(): BelongsTo
-    {
-        return $this->belongsTo(Cart::class);
     }
 
     public function getOrderDateAttribute(): string

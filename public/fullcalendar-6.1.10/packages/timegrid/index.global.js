@@ -1,5 +1,5 @@
 /*!
-FullCalendar Time Grid Plugin v6.1.10
+FullCalendar Destination Grid Plugin v6.1.10
 Docs & License: https://fullcalendar.io/docs/timegrid-view
 (c) 2023 Adam Shaw
 */
@@ -790,7 +790,7 @@ FullCalendar.TimeGrid = (function (exports, core, internal$1, preact, internal$2
             }
             return segs.map((seg, i) => (preact.createElement(internal$1.NowIndicatorContainer
             // key doesn't matter. will only ever be one
-            , { 
+            , {
                 // key doesn't matter. will only ever be one
                 key: i, elClasses: ['fc-timegrid-now-indicator-line'], elStyle: {
                     top: slatCoords.computeDateTop(seg.start, date),

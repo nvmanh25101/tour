@@ -44,12 +44,12 @@ class Customer extends Authenticatable implements MustVerifyEmail
 
     public function cart(): HasOne
     {
-        return $this->hasOne(Cart::class);
+        return $this->hasOne(Favorite::class);
     }
 
     public function orders(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Reservation::class);
     }
 
     public function reviews(): HasMany

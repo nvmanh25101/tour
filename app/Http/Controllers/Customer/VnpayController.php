@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Enums\OrderPaymentEnum;
 use App\Enums\OrderPaymentStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Models\Order;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 class VnpayController extends Controller
@@ -77,7 +77,7 @@ class VnpayController extends Controller
     {
         if (request('vnp_TransactionStatus') == 00) {
             $order_code = request('vnp_TxnRef');
-            $order = Order::where('code', $order_code)->first();
+            $order = Reservation::where('code', $order_code)->first();
             if ($order->payment_type == 0) {
                 $order->update([
                     'payment_method' => OrderPaymentEnum::CHUYEN_KHOAN,

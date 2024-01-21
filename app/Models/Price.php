@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PriceService extends Model
+class Price extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'duration',
+        'age_group',
         'price',
-        'service_id',
+        'tour_id',
     ];
 
-    public function service(): BelongsTo
+    public function tour(): BelongsTo
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Tour::class);
     }
 
     public function getPriceDisplayAttribute(): string

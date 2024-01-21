@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('price_services', function (Blueprint $table) {
+        Schema::create('destinations', function (Blueprint $table) {
             $table->id();
-            $table->integer('duration');
-            $table->decimal('price', 10, 2);
-            $table->foreignId('service_id')->constrained('services');
+            $table->string('name', 255);
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('price_services');
+        Schema::dropIfExists('destinations');
     }
 };

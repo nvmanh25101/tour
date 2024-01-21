@@ -8,8 +8,8 @@ use App\Enums\VoucherStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CheckoutRequest;
 use App\Http\Requests\Customer\OrderRequest;
-use App\Models\Cart;
-use App\Models\Order;
+use App\Models\Favorite;
+use App\Models\Reservation;
 use App\Models\Voucher;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $cart = Cart::query()->where('customer_id', auth()->id())->first();
+        $cart = Favorite::query()->where('customer_id', auth()->id())->first();
 
         $vouchers = Voucher::query()->where('status', '=', VoucherStatusEnum::HOAT_DONG)
             ->where('applicable_type', VoucherApplyTypeEnum::SAN_PHAM)
@@ -54,7 +54,7 @@ class OrderController extends Controller
         $arr['address_receiver'] = $arr['address'].', '.$arr['district'].', '.$arr['city'];
 
         $arr['customer_id'] = Auth::guard('customer')->user()->id;
-        $cart = Cart::query()->where('customer_id', auth()->id())->first();
+        $cart = Favorite::query()->where('customer_id', auth()->id())->first();
         $arr['cart_id'] = $cart->id;
 
         $price = 0;
@@ -62,13 +62,13 @@ class OrderController extends Controller
             $price += $product->price * $product->pivot->quantity;
         }
         $arr['price'] = $price;
-        $arr['total'] = checkVoucher($request, Order::class, VoucherApplyTypeEnum::SAN_PHAM,
+        $arr['total'] = checkVoucher($request, Reservation::class, VoucherApplyTypeEnum::SAN_PHAM,
             $price) ?? $price;
         $arr['shipping_fee'] = 0;
 
         DB::beginTransaction();
         try {
-            $order = Order::query()->create($arr);
+            $order = Reservation::query()->create($arr);
 
             foreach ($cart->products as $product) {
                 $order->products()->attach($product->id, [
@@ -90,7 +90,7 @@ class OrderController extends Controller
 
     public function edit($id)
     {
-        $order = Order::query()->findOrFail($id);
+        $order = Reservation::query()->findOrFail($id);
 
         return view('customer.checkout', [
             'order' => $order
@@ -100,7 +100,7 @@ class OrderController extends Controller
 
     public function update(CheckoutRequest $request, $id)
     {
-        $order = Order::query()->findOrFail($id);
+        $order = Reservation::query()->findOrFail($id);
 
         if ($request->payment_method == OrderPaymentEnum::CHUYEN_KHOAN) {
             $vnpay = new VnpayController();

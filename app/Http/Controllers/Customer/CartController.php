@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
-use App\Models\Product;
+use App\Models\Favorite;
+use App\Models\Tour;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -18,7 +18,7 @@ class CartController extends Controller
 
     public function index()
     {
-        $cart = Cart::query()->where('customer_id', auth()->id())->first();
+        $cart = Favorite::query()->where('customer_id', auth()->id())->first();
 
         return view('customer.cart', [
             'cart' => $cart,
@@ -27,15 +27,15 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
-        $cart = Cart::query()->where('customer_id', auth()->id())->first();
+        $cart = Favorite::query()->where('customer_id', auth()->id())->first();
         if (!$cart) {
-            $cart = Cart::query()->create([
+            $cart = Favorite::query()->create([
                 'customer_id' => auth()->id()
             ]);
         }
         $quantity = $request->get('quantity');
         $product_id = $request->get('product_id');
-        $inventory = Product::query()->findOrFail($product_id)->quantity;
+        $inventory = Tour::query()->findOrFail($product_id)->quantity;
         if ($quantity > $inventory) {
             return redirect()->back()->with([
                 'error' => 'Số lượng sản phẩm trong kho không đủ'
@@ -51,10 +51,10 @@ class CartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $cart = Cart::query()->findOrFail($id);
+        $cart = Favorite::query()->findOrFail($id);
         $quantity = $request->get('quantity');
         $product_id = $request->get('product_id');
-        $inventory = Product::query()->findOrFail($product_id)->quantity;
+        $inventory = Tour::query()->findOrFail($product_id)->quantity;
         if ($quantity > $inventory) {
             return response()->json([
                 'error' => 'Số lượng sản phẩm trong kho không đủ'
@@ -70,7 +70,7 @@ class CartController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $cart = Cart::query()->findOrFail($id);
+        $cart = Favorite::query()->findOrFail($id);
 
         $cart->products()->detach($request->get('product_id'));
 
