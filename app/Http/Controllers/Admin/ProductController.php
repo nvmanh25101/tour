@@ -10,6 +10,8 @@ use App\Http\Requests\Admin\Product\StoreRequest;
 use App\Http\Requests\Admin\Product\UpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -108,6 +110,27 @@ class ProductController extends Controller
         );
     }
 
+    public function destroy($productId)
+    {
+        Product::destroy($productId);
+
+        return response()->json([
+            'success' => 'Xóa thành công',
+        ]);
+    }
+
+    public function review(Request $request, $id, $reviewId)
+    {
+        $product = Product::query()->findOrFail($id);
+        $review = $product->reviews()->findOrFail($reviewId);
+        $review->update([
+            'reply' => $request->get('reply'),
+            'admin_id' => Auth::guard('admin')->user()->id,
+        ]);
+
+        return redirect()->back()->with(['success' => 'Phản hồi thành công']);
+    }
+
     public function update(UpdateRequest $request, $productId)
     {
         $product = Product::query()->findOrFail($productId);
@@ -125,18 +148,5 @@ class ProductController extends Controller
             return redirect()->route('admin.products.index')->with(['success' => 'Cập nhật thành công']);
         }
         return redirect()->back()->withErrors('message', 'Cập nhật thất bại');
-    }
-
-    public function destroy($productId)
-    {
-        if (Product::destroy($productId)) {
-            return response()->json([
-                'success' => 'Xóa thành công',
-            ]);
-        }
-
-        return response()->json([
-            'error' => 'Xóa thất bại',
-        ]);
     }
 }

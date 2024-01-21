@@ -15,3 +15,12 @@ input[type=number] {
     padding: 0.6rem 2rem;
     margin-top: 1rem;
 }
+
+.star-full i {
+    color: #ffc700;
+    font-size: 1.4rem;
+}
+
+.star-out i {
+    font-size: 1.4rem;
+}

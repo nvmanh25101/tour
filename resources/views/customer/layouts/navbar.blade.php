@@ -3,6 +3,11 @@
         <nav class="d-block col-5">
             <ul class="list-unstyled mb-0 d-flex align-items-center justify-content-end nav-list">
                 <li>
+                    <a class="nav-link" href="{{ route('customers.blogs') }}" role="button">
+                        <span>Blog</span>
+                    </a>
+                </li>
+                <li>
                     <a class="nav-link" href="{{ route('customers.services') }}" role="button">
                         <span>Dịch vụ</span>
                     </a>
@@ -45,13 +50,13 @@
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">Welcome !</h6>
                             </div>
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="{{ route('account.edit', auth()->user()) }}" class="dropdown-item notify-item">
                                 <i class="mdi mdi-account-circle mr-1"></i>
-                                <span>My Account</span>
+                                <span>Tài khoản cá nhân</span>
                             </a>
                             <a href="{{ route('logout') }}" class="dropdown-item notify-item">
                                 <i class="mdi mdi-logout mr-1"></i>
-                                <span>Logout</span>
+                                <span>Đăng xuất</span>
                             </a>
 
                         </div>

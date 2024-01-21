@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AppointmentStatusEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,11 @@ class Appointment extends Model
         'voucher_id',
         'admin_id',
     ];
+
+    public static function destroy($ids)
+    {
+        self::where('id', $ids)->update(['status' => AppointmentStatusEnum::TU_CHOI]);
+    }
 
     public function time(): BelongsTo
     {

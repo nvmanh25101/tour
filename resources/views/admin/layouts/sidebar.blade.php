@@ -69,18 +69,23 @@
                 </a>
             </li>
             <li class="side-nav-item">
+                <a href="{{ route('admin.blogs.index') }}" class="side-nav-link">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li class="side-nav-item">
                 <a href="{{ route('admin.products.index') }}" class="side-nav-link">
                     <span>Sản phẩm</span>
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="{{ route('admin.categories.index') }}" class="side-nav-link">
-                    <span>Danh mục</span>
+                <a href="{{ route('admin.services.index') }}" class="side-nav-link">
+                    <span>Dịch vụ</span>
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="{{ route('admin.services.index') }}" class="side-nav-link">
-                    <span>Dịch vụ</span>
+                <a href="{{ route('admin.categories.index') }}" class="side-nav-link">
+                    <span>Danh mục</span>
                 </a>
             </li>
         </ul>

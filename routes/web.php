@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TimeController;
 use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Customer\AccountController;
 use App\Http\Controllers\Customer\AppointmentController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\OrderController;
@@ -24,9 +27,7 @@ Route::group([
     Route::group([
         'middleware' => 'checkAdminLogin'
     ], function () {
-        Route::get('/', function () {
-            return view('admin.layouts.master');
-        })->name('dashboard');
+        Route::get('/', [HomeController::class, 'index'])->name('dashboard');
         Route::group([
             'middleware' => 'isSuperAdmin'
         ], function () {
@@ -114,6 +115,7 @@ Route::group([
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::patch('/{id}/reviews/{reviewId}', 'review')->name('review');
         });
 
         Route::group([
@@ -140,6 +142,20 @@ Route::group([
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::patch('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
+
+        Route::group([
+            'controller' => BlogController::class,
+            'as' => 'blogs.',
+            'prefix' => 'blogs',
+        ], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/api', 'api')->name('api');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
     });
@@ -177,6 +193,8 @@ Route::group([
     Route::get('/services', 'services')->name('services');
     Route::get('/products', 'products')->name('products');
     Route::get('/product/{id}', 'product')->name('product');
+    Route::get('/blogs', 'blogs')->name('blogs');
+    Route::get('/blog/{id}', 'blog')->name('blog');
 });
 //'middleware' => ['auth', 'verified']
 
@@ -186,10 +204,12 @@ Route::group([
     'controller' => AppointmentController::class,
 ], function () {
     Route::get('/', 'create')->name('booking');
+    Route::get('/{id}', 'show')->name('show');
     Route::get('/get-services', 'getServices')->name('getServices');
     Route::get('/get-prices', 'getPrices')->name('getPrices');
     Route::get('/get-times', 'getTimes')->name('getTimes');
     Route::post('/', 'store')->name('store');
+    Route::delete('/{id}', 'destroy')->name('destroy');
 });
 
 Route::group([
@@ -204,7 +224,6 @@ Route::group([
     Route::delete('/{id}', 'destroy')->name('destroy');
 });
 
-
 Route::group([
     'prefix' => 'orders',
     'as' => 'orders.',
@@ -212,7 +231,8 @@ Route::group([
     'middleware' => ['auth', 'verified']
 ], function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{id}', 'edit')->name('edit');
+    Route::get('/{id}/edit', 'edit')->name('edit');
+    Route::get('/{id}', 'show')->name('show');
     Route::patch('/{id}', 'update')->name('update');
     Route::post('/', 'store')->name('store');
     Route::delete('/{id}', 'destroy')->name('destroy');
@@ -227,3 +247,18 @@ Route::group([
     Route::get('/create', 'create')->name('create');
     Route::get('/return', 'return')->name('return');
 });
+
+Route::group([
+    'prefix' => 'account',
+    'as' => 'account.',
+    'controller' => AccountController::class,
+    'middleware' => ['auth', 'verified']
+], function () {
+    Route::get('/{id}', 'edit')->name('edit');
+    Route::patch('/{id}', 'update')->name('update');
+});
+
+Route::post('/{id}/reviews', [ShopController::class, 'review'])->middleware([
+    'auth',
+    'verified',
+])->name('products.review');

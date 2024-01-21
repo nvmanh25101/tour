@@ -40,6 +40,7 @@
                     <div class="flex product-rating">
                         <div class="number-rating">( {{ $reviews->count() }} đánh giá )</div>
                     </div>
+                    @include('customer.layouts.errors')
                     @if($product->quantity < 20)
                         <div class="product-countdown text-center">
                             <h3>GẤP! CHỈ CÒN <span>{{ $product->quantity }}</span> SẢN PHẨM TRONG KHO.</h3>
@@ -158,39 +159,61 @@
                                                 <p class="r-desc">
                                                     {{ $review->content }}
                                                 </p>
+                                                @if($review->reply)
+                                                    <hr>
+                                                    <p class="r-desc">
+                                                        Phản hồi: {{ $review->reply }}
+                                                    </p>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>
                                     @auth
-                                        <div class="review-form">
-                                            <h3 class="review-heading">Đánh giá của bạn</h3>
-                                            <div class="rate">
-                                                <input type="radio" id="star5" name="rate" value="5"/>
-                                                <label for="star5" title="text">5 stars</label>
-                                                <input type="radio" id="star4" name="rate" value="4"/>
-                                                <label for="star4" title="text">4 stars</label>
-                                                <input type="radio" id="star3" name="rate" value="3"/>
-                                                <label for="star3" title="text">3 stars</label>
-                                                <input type="radio" id="star2" name="rate" value="2"/>
-                                                <label for="star2" title="text">2 stars</label>
-                                                <input type="radio" id="star1" name="rate" value="1"/>
-                                                <label for="star1" title="text">1 star</label>
+                                        @if($reviews->where('customer_id', auth()->user()->id)->count() > 0)
+                                            <div
+                                                class="alert alert-info alert-dismissible bg-danger text-white border-0 fade show"
+                                                role="alert">
+                                                <strong>Thông báo - </strong> Bạn đã đánh giá sản phẩm này!
                                             </div>
-                                            <div class="cmt-form">
-                                                <div class="row">
-                                                    <div class="col-xs-12 mg-bottom-30">
+                                        @elseif($order_count > 0)
+                                            <form class="review-form" action="{{ route('products.review', $product) }}"
+                                                  method="post">
+                                                @csrf
+                                                <h3 class="review-heading">Đánh giá của bạn</h3>
+                                                <div class="rate">
+                                                    <input type="radio" id="star5" name="rating" value="5"/>
+                                                    <label for="star5" title="text">5 stars</label>
+                                                    <input type="radio" id="star4" name="rating" value="4"/>
+                                                    <label for="star4" title="text">4 stars</label>
+                                                    <input type="radio" id="star3" name="rating" value="3"/>
+                                                    <label for="star3" title="text">3 stars</label>
+                                                    <input type="radio" id="star2" name="rating" value="2"/>
+                                                    <label for="star2" title="text">2 stars</label>
+                                                    <input type="radio" id="star1" name="rating" value="1"/>
+                                                    <label for="star1" title="text">1 star</label>
+                                                </div>
+                                                <div class="cmt-form">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 mg-bottom-30">
                                                             <textarea id="message" class="form-control"
-                                                                      name="comment[body]" rows="9"
+                                                                      name="content" rows="9"
                                                                       placeholder="Đánh giá của bạn"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group text-center">
+                                                        <button type="submit" class="zoa-btn">
+                                                            Xác nhận
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <div class="form-group text-center">
-                                                    <button type="submit" class="zoa-btn">
-                                                        Xác nhận
-                                                    </button>
-                                                </div>
+                                            </form>
+                                        @else
+                                            <div
+                                                class="alert alert-info alert-dismissible bg-danger text-white border-0 fade show"
+                                                role="alert">
+                                                <strong>Thông báo - </strong> Bạn cần mua sản phẩm này để đánh giá!
                                             </div>
-                                        </div>
+                                        @endif
                                     @endauth
                                 </div>
                             </div>

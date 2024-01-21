@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,11 @@ class Order extends Model
         'payment_method',
         'payment_status',
     ];
+
+    public static function destroy($ids)
+    {
+        self::where('id', $ids)->update(['status' => OrderStatusEnum::DA_HUY]);
+    }
 
     public function products(): BelongsToMany
     {
@@ -58,5 +64,4 @@ class Order extends Model
     {
         return $this->created_at->format('d/m/Y');
     }
-
 }

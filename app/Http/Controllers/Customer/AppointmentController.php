@@ -49,6 +49,15 @@ class AppointmentController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $appointment = Appointment::query()->with(['service', 'time', 'voucher', 'admin'])->find($id);
+
+        return view('customer.appointment', [
+            'appointment' => $appointment
+        ]);
+    }
+
     public function store(StoreRequest $request)
     {
         $duration_price = PriceService::query()->find($request->validated()['price_id']);
@@ -108,6 +117,15 @@ class AppointmentController extends Controller
             'service' => $service ?? null,
             'services' => $services ?? null,
             'vouchers' => $vouchers ?? null
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        Appointment::destroy($id);
+
+        return response()->json([
+            'success' => 'Hủy thành công',
         ]);
     }
 
