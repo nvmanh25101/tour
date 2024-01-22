@@ -13,7 +13,6 @@
           id="bootstrap-stylesheet">
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/app-creative.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css">
     @stack('css')
 

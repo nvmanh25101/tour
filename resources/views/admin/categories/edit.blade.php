@@ -30,7 +30,7 @@
                 <div class="holder">
                     <img
                         id="imgPreview"
-                        src="{{ asset('storage/' . $product->image) }}" alt="pic"/>
+                        src="{{ asset('storage/' . $category->image) }}" alt="pic"/>
                 </div>
             </div>
             <div class="form-group mb-3

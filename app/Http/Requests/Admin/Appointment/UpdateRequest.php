@@ -23,7 +23,7 @@ class UpdateRequest extends FormRequest
             'time_id' => [
                 'required',
                 'integer',
-                'exists:times,id',
+                'exists:destinations,id',
             ],
             'admin_id' => [
                 'nullable',

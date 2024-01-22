@@ -21,7 +21,7 @@ FullCalendar.Bootstrap = (function (exports, core, internal$1) {
     };
     BootstrapTheme.prototype.baseIconClass = 'fa';
     BootstrapTheme.prototype.iconClasses = {
-        close: 'fa-times',
+        close: 'fa-destinations',
         prev: 'fa-chevron-left',
         next: 'fa-chevron-right',
         prevYear: 'fa-angle-double-left',

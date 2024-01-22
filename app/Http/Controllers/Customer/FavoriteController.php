@@ -7,7 +7,7 @@ use App\Models\Favorite;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 
-class CartController extends Controller
+class FavoriteController extends Controller
 {
     public string $ControllerName = 'Giỏ hàng';
 

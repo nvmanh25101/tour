@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Admin\Time;
+namespace App\Http\Requests\Admin\Destination;
 
+use App\Enums\ServiceStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,13 +19,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => [
-                'nullable'
-            ],
-            "time" => [
+            "name" => [
                 'required',
-                'date_format:H:i',
-                'unique:times,time'
+                'string',
+                'max:255'
             ],
         ];
     }
@@ -31,16 +30,14 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'time.required' => ':attribute không được để trống.',
-            'time.date_format' => ':attribute không hợp lệ.',
-            'time.unique' => ':attribute đã tồn tại.',
+            'name.required' => ':attribute không được để trống.',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'time' => 'Thời gian',
+            'name' => 'Tên dịch vụ',
         ];
     }
 }

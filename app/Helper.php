@@ -4,29 +4,11 @@ use App\Enums\VoucherTypeEnum;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 
-if (!function_exists('getDurationPrice')) {
-    function getDurationPrice($request)
-    {
-        $durations = $request->validated()['duration'];
-        $prices = $request->validated()['price'];
-        unset($request->validated()['duration'], $request->validated()['price']);
-        if (count($durations) !== count($prices)) {
-            return redirect()->back()->withErrors('message', 'Kiểm tra thời gian và giá');
-        }
-
-        return array_map(function ($duration, $price) {
-            return [
-                "duration" => $duration,
-                "price" => $price,
-            ];
-        }, $durations, $prices);
-    }
-}
 if (!function_exists('checkVoucher')) {
     function checkVoucher($request, $model, $applicable_type, $price)
     {
-        if ($request->validated()['voucher_id']) {
-            $voucher = Voucher::query()->find($request->validated()['voucher_id']);
+        if ($request->get('voucher_id')) {
+            $voucher = Voucher::query()->find($request->get('voucher_id'));
             if (!Auth::guard('customer')->check()) {
                 return redirect()->back()->with('error', 'Bạn cần đăng nhập để sử dụng voucher');
             }

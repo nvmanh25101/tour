@@ -2,7 +2,7 @@
 @extends('customer.layouts.master')
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/customer/product_base.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('css/customer/products.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/customer/tours.css') }}" type="text/css">
 @endpush
 @section('carousel')
     <div class="text-center text-white d-flex align-items-center position-relative page-header"

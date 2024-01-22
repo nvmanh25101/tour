@@ -1,5 +1,10 @@
 <header class="header navbar-custom topnav-navbar">
-    <div class="d-flex align-items-center justify-content-center container">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="ms-4 me-4">
+            <a class="d-block" href="{{ route('customers.home') }}">
+                <img class="nav-logo" src="https://dulichviet.com.vn/images/logo.png">
+            </a>
+        </div>
         <nav class="d-block col-5">
             <ul class="list-unstyled mb-0 d-flex align-items-center justify-content-end nav-list">
                 <li>
@@ -8,33 +13,19 @@
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ route('customers.services') }}" role="button">
-                        <span>Dịch vụ</span>
+                    <a class="nav-link" href="{{ route('customers.tours') }}" role="button">
+                        <span>Tour</span>
                     </a>
                 </li>
-                <li>
-                    <a class="nav-link" href="{{ route('customers.products') }}" role="button">
-                        <span>Sản phẩm</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="ms-4 me-4">
-            <a class="d-block" href="{{ route('customers.home') }}">
-                <img class="nav-logo" src="https://dulichviet.com.vn/images/logo.png">
-            </a>
-        </div>
-        <nav class=" col-5">
-            <ul class="list-unstyled mb-0 d-flex align-items-center justify-content-start nav-list">
                 <li>
                     <a class="nav-link" href="{{ route('cart.index') }}" role="button">
-                        <span>Giỏ hàng</span>
+                        <span><i class="mdi mdi-heart"></i></span>
                     </a>
                 </li>
                 @guest('customer')
                     <li>
                         <a class="nav-link" href="{{ route('login') }}" role="button">
-                            <span>Đăng nhập</span>
+                            <span><i class="mdi mdi-account"></i></span>
                         </a>
                     </li>
                 @else
@@ -62,10 +53,6 @@
                         </div>
                     </li>
                 @endguest
-                <li class="">
-                    <a class="btn btn-outline-primary ml-auto btn-booking" href="{{ route('reservations.booking') }}">Đặt
-                        lịch</a>
-                </li>
             </ul>
         </nav>
     </div>

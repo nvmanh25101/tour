@@ -717,7 +717,7 @@ var DataTable = $.fn.dataTable;
                 };
                 // If a custom function is in place
                 if (typeof comp.value === 'function') {
-                    // Count the number of times the function evaluates to true for the original data in the Table
+                    // Count the number of destinations the function evaluates to true for the original data in the Table
                     for (var i = 0; i < tableValsTotal.length; i++) {
                         if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
                             comparisonObj.total++;
@@ -736,7 +736,7 @@ var DataTable = $.fn.dataTable;
             return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
         };
         /**
-         * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
+         * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of destinations a specific value is shown
          *
          * Here it is blanked so that it takes no action
          *
@@ -1512,7 +1512,7 @@ var DataTable = $.fn.dataTable;
             emptyMessage: null,
             hideCount: false,
             i18n: {
-                clearPane: '&times;',
+                clearPane: '&destinations;',
                 count: '{total}',
                 emptyMessage: '<em>No data</em>'
             },
@@ -1792,10 +1792,10 @@ var DataTable = $.fn.dataTable;
                 .replace(/{shown}/g, row.shown);
         };
         /**
-         * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+         * Overrides the blank method in SearchPane to return the number of destinations a given value is currently being displayed
          *
          * @param filter The filter value
-         * @returns number - The number of times the value is shown
+         * @returns number - The number of destinations the value is shown
          */
         SearchPaneViewTotal.prototype._getShown = function (filter) {
             return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
@@ -1972,7 +1972,7 @@ var DataTable = $.fn.dataTable;
                 };
                 // If a custom function is in place
                 if (typeof comp.value === 'function') {
-                    // Count the number of times the function evaluates to true for the original data in the Table
+                    // Count the number of destinations the function evaluates to true for the original data in the Table
                     for (var i = 0; i < tableValsTotal.length; i++) {
                         if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
                             comparisonObj.total++;
@@ -2006,10 +2006,10 @@ var DataTable = $.fn.dataTable;
                 .replace(/{shown}/g, row.shown);
         };
         /**
-         * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+         * Overrides the blank method in SearchPane to return the number of destinations a given value is currently being displayed
          *
          * @param filter The filter value
-         * @returns number - The number of times the value is shown
+         * @returns number - The number of destinations the value is shown
          */
         SearchPaneCascade.prototype._getShown = function (filter) {
             return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
@@ -2939,7 +2939,7 @@ var DataTable = $.fn.dataTable;
             filterChanged: undefined,
             i18n: {
                 clearMessage: 'Clear All',
-                clearPane: '&times;',
+                clearPane: '&destinations;',
                 collapse: {
                     0: 'SearchPanes',
                     _: 'SearchPanes (%d)'

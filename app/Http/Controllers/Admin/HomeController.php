@@ -7,9 +7,9 @@ use App\Enums\VoucherStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Customer;
-use App\Models\Order;
-use App\Models\Product;
+use App\Models\Reservation;
 use App\Models\Service;
+use App\Models\Tour;
 use App\Models\Voucher;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
@@ -31,17 +31,16 @@ class HomeController extends Controller
     {
         $currentMonth = Carbon::now()->month;
         $customerCount = Customer::query()->count();
-        $orderCount = Order::query()->where('payment_status',
+        $orderCount = Reservation::query()->where('payment_status',
             OrderPaymentStatusEnum::DA_THANH_TOAN)
             ->whereMonth('created_at', $currentMonth)->count();
-        $productCount = Product::query()->count();
+        $productCount = Tour::query()->count();
         $serviceCount = Service::query()->count();
         $voucherCount = Voucher::query()->where('status', VoucherStatusEnum::HOAT_DONG)->count();
-        $appointmentCount = Appointment::query()->whereMonth('created_at', $currentMonth)->count();
 
-        $revenue = Order::query()->where('payment_status',
+        $revenue = Reservation::query()->where('payment_status',
             OrderPaymentStatusEnum::DA_THANH_TOAN)
-            ->whereMonth('created_at', $currentMonth)->sum('total');
+            ->whereMonth('created_at', $currentMonth)->sum('total_price');
 
         return view('admin.layouts.home', [
             'customerCount' => $customerCount,
@@ -49,7 +48,6 @@ class HomeController extends Controller
             'productCount' => $productCount,
             'serviceCount' => $serviceCount,
             'voucherCount' => $voucherCount,
-            'appointmentCount' => $appointmentCount,
             'revenue' => $revenue,
         ]);
     }

@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Service;
+    namespace App\Http\Requests\Admin\Destination;
 
-use App\Enums\ServiceStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,16 +28,14 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => ':attribute không được để trống.',
-            'name.max' => ':attribute không được vượt quá :max ký tự.',
-
+            'name.required' => ':attribute không được để trống'
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'name' => 'Tên dịch vụ',
+            'name' => 'Tên điểm đến',
         ];
     }
 }

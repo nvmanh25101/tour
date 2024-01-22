@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\AdminType;
-use App\Enums\OrderPaymentEnum;
+use App\Enums\PaymentEnum;
 use App\Enums\OrderPaymentStatusEnum;
 use App\Enums\OrderStatusEnum;
 use App\Http\Controllers\Controller;
@@ -13,9 +13,9 @@ use App\Models\Reservation;
 use Illuminate\Support\Facades\Route;
 use Yajra\DataTables\DataTables;
 
-class OrderController extends Controller
+class ReservationController extends Controller
 {
-    public string $ControllerName = 'Đơn hàng';
+    public string $ControllerName = 'Đơn đặt tour';
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class OrderController extends Controller
         $arrOrderPaymentStatus = OrderPaymentStatusEnum::getArrayView();
         view()->share('arrOrderPaymentStatus', $arrOrderPaymentStatus);
 
-        $arrOrderPayment = OrderPaymentEnum::getArrayView();
+        $arrOrderPayment = PaymentEnum::getArrayView();
         view()->share('arrOrderPayment', $arrOrderPayment);
     }
 
@@ -49,13 +49,13 @@ class OrderController extends Controller
                 if ($object->payment_method === null) {
                     return "Chưa thanh toán";
                 }
-                return OrderPaymentEnum::getKeyByValue($object->payment_method);
+                return PaymentEnum::getKeyByValue($object->payment_method);
             })
             ->editColumn('status', function ($object) {
                 return OrderStatusEnum::getKeyByValue($object->status);
             })
             ->addColumn('edit', function ($object) {
-                return route('admin.orders.edit', $object);
+                return route('admin.reservations.edit', $object);
             })
             ->filterColumn('status', function ($query, $keyword) {
                 if ($keyword !== '-1') {
@@ -67,15 +67,13 @@ class OrderController extends Controller
 
     public function edit($orderId)
     {
-        $employees = Admin::query()->where('role', '=', AdminType::VAN_CHUYEN)
-            ->get(['id', 'name']);
-        $order = Reservation::query()->with('voucher')->findOrFail($orderId);
+
+        $reservation = Reservation::query()->with('voucher')->findOrFail($orderId);
 
         return view(
             'admin.orders.edit',
             [
-                'order' => $order,
-                'employees' => $employees,
+                'reservation' => $reservation,
             ]
         );
     }

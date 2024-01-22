@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ProductStatusEnum;
+use App\Enums\TourStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,7 +33,7 @@ class Tour extends Model
 
     public static function destroy($ids)
     {
-        self::where('id', $ids)->update(['status' => ProductStatusEnum::NGUNG_HOAT_DONG]);
+        self::where('id', $ids)->update(['status' => TourStatusEnum::NGUNG_HOAT_DONG]);
     }
 
     public function category(): BelongsTo
@@ -56,7 +56,12 @@ class Tour extends Model
     }
     public function destinations(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class, 'destination_tours', 'tour_id', 'destination_id');
+        return $this->belongsToMany(Destination::class, 'destination_tours', 'tour_id', 'destination_id');
+    }
+
+    public function prices(): HasMany
+    {
+        return $this->hasMany(Price::class);
     }
 
     public function reviews(): HasMany

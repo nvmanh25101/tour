@@ -1048,7 +1048,7 @@ $.extend(Responsive.prototype, {
 		}
 
 		// It is unsafe to insert elements with the same name into the DOM
-		// multiple times. For example, cloning and inserting a checked radio
+		// multiple destinations. For example, cloning and inserting a checked radio
 		// clears the chcecked state of the original radio.
 		$(clonedTable).find('[name]').removeAttr('name');
 
@@ -1251,7 +1251,7 @@ Responsive.display = {
 									.append(render())
 							)
 							.append(
-								$('<div class="dtr-modal-close">&times;</div>').click(function () {
+								$('<div class="dtr-modal-close">&destinations;</div>').click(function () {
 									close();
 								})
 							)

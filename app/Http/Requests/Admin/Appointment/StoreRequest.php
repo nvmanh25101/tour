@@ -46,7 +46,7 @@ class StoreRequest extends FormRequest
             'time_id' => [
                 'required',
                 'integer',
-                'exists:times,id',
+                'exists:destinations,id',
             ],
             'service_id' => [
                 'required',

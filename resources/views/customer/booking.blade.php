@@ -9,165 +9,191 @@
          style="background-image: url(https://laspas.vn/ma-may/wp-content/uploads/sites/5/2018/08/slide-1.jpg);">
         <div class="m-auto">
             <h1 class="font-family-secondary h2 text-uppercase text-center mt-2 mb-3 page-title">
-                Đặt lịch
+                Đặt tour
             </h1>
         </div>
     </div>
 @endsection
 @section('content')
-    <div class="col-12 mt-4">
-        <h4 class="text-uppercase">Điền Thông tin</h4>
-        <div class="mt-4">
-            <form id="booking-form" method="post" action="{{ route('reservations.store') }}">
-                @csrf
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label for="name">Họ tên</label>
-                        <input type="text" name="name_booker" class="form-control" placeholder="Họ tên*"
-                               @auth
-                                   value="{{ auth()->user()->name }}"
-                            @endauth
-                        >
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Số người</label>
-                        <select class="custom-select mb-3" name="number_people">
-                            <option value="-1" selected>Số lượng*</option>
-                            @for($i=1; $i<=2; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label>Số điện thoại</label>
-                        <input class="form-control validate-control" id="bookingPhone" name="phone_booker"
-                               required placeholder="Số điện thoại*"
-                               @auth
-                                   value="{{ auth()->user()->phone }}"
-                            @endauth
-                        >
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Email</label>
-                        <input type="email" id="bookingEmail" name="email_booker"
-                               class="form-control validate-control" placeholder="Email*"
-                               required
-                               @auth
-                                   value="{{ auth()->user()->email }}"
-                            @endauth
-                        >
-                    </div>
-                </div>
-                <div class="row">
-                    <label>Chọn thời gian</label>
-                    <div class="form-group col-4">
-                        <input class="form-control" id="date" name="date" placeholder="Chọn ngày">
-                    </div>
-                    <div class="form-group col-4">
-                        <select class="form-control" name="time_id">
-                            <option value="-1">- Chọn giờ check-in -</option>
-                            @foreach($times as $time)
-                                <option value="{{ $time->id }}">{{ $time->time_display }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- Checkout Steps -->
+                <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                    <li class="nav-item">
+                        <a href="#billing-information" data-toggle="tab" aria-expanded="false"
+                           class="nav-link rounded-0 active">
+                            <i class="mdi mdi-account-circle font-18"></i>
+                            <span class="d-none d-lg-block">Thông tin đơn đặt tour</span>
+                        </a>
+                    </li>
+                </ul>
 
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label>Loại dịch vụ</label>
-                        <select class="form-control validate-control" id="bookingServiceType" required>
-                            <option value="-1">- Chọn loại dịch vụ -</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}"
-                                        @if($service)
-                                            @if($category->id === $service->category->id)
-                                                selected
-                                    @endif
-                                    @endif
+                <!-- Steps Information -->
+                <div class="tab-content">
+                    <!-- Billing Content-->
+                    <form action="{{ route('reservations.store') }}" method="post" class="needs-validation" novalidate>
+                        @csrf
+                        <input type="hidden" name="tour_id" value="{{ $tour->id }}">
+                        <div class="tab-pane show active" id="billing-information">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h4 class="mt-2">Thông tin đơn đặt tour</h4>
 
-                                >{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Dịch vụ</label>
-                        <select class="form-control validate-control" id="bookingService"
-                                name="service_id" required>
-                            <option value="-1">- Chọn dịch vụ -</option>
-                            @if($services)
-                                @foreach($services as $item)
-                                    <option value="{{ $item->id }}"
-                                            @if($service)
-                                                @if($item->id === $service->id)
-                                                    selected
-                                        @endif
-                                        @endif
-                                    >{{ $item->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Chi tiết</label>
-                        <select class="form-control validate-control" id="bookingPrice" name="price_id"
-                                required>
-                            <option value="-1">- Chọn -</option>
-                            @if($services)
-                                @foreach($service->priceServices as $price)
-                                    <option value="{{ $price->id }}">{{ $price->duration }}'
-                                        - {{ $price->price_display }} VND
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                </div>
+                                    <p class="text-muted mb-4">Điền vào mẫu dưới đây.</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="billing-first-name">Tên người nhận<span
+                                                        class="text-danger">*</span>
+                                                </label>
+                                                <input class="form-control" type="text" name="name_contact" required
+                                                       value="{{ auth()->user()->name }}"
+                                                       placeholder="Nhập tên người nhận" id="billing-first-name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="billing-phone">Số điện thoại người nhận<span
+                                                        class="text-danger">*</span></label>
+                                                <input class="form-control" name="phone_contact" type="text" required
+                                                       value="{{ auth()->user()->phone }}"
+                                                       placeholder="(xx) xxx xxxx xxx"
+                                                       id="billing-phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label>Số người</label>
+                                        <select class="custom-select mb-3" name="number_people">
+                                            <option value="-1" selected>Số lượng*</option>
+                                            @for($i=1; $i<=10; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label>Email</label>
+                                        <input type="email" id="bookingEmail" name="email_contact"
+                                               class="form-control validate-control" placeholder="Email*"
+                                               required
+                                               @auth
+                                                   value="{{ auth()->user()->email }}"
+                                            @endauth
+                                        >
+                                    </div>
+                                    <div class="row">
+                                        <label>Chọn thời gian</label>
+                                        <div class="form-group col-4">
+                                            <input class="form-control" id="date" name="departure_date" placeholder="Chọn ngày">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-6">
+                                            <a href="{{ route('customers.home') }}"
+                                               class="btn text-muted d-none d-sm-inline-block btn-link font-weight-semibold">
+                                                <i class="mdi mdi-arrow-left"></i> Quay trở lại trang chủ </a>
+                                        </div> <!-- end col -->
+                                        <div class="col-sm-6">
+                                            <div class="text-sm-right">
+                                                <button class="btn btn-danger" type="submit">
+                                                    <i class="mdi mdi-truck-fast mr-1"></i> Đặt tour
+                                                </button>
+                                            </div>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row -->
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="border p-3 mt-4 mt-lg-0 rounded">
+                                        <h4 class="header-title mb-3">Tóm tắt đơn đặt tour</h4>
 
-                <div class="form-group">
-                    <label>Ghi chú</label>
-                    <textarea id="message" name="note" class="form-control" rows="3"
-                              spellcheck="false"></textarea>
-                </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-centered mb-0">
+                                                <tbody>
+                                                    <tr class="product">
+                                                        <td>
+                                                            <img src="{{ asset('storage/' . $tour->image) }}"
+                                                                 alt="contact-img"
+                                                                 title="contact-img" class="rounded mr-2" height="48">
+                                                            <p class="m-0 d-inline-block align-middle">
+                                                                <a href="{{ route('customers.tour', $tour) }}"
+                                                                   class="text-body font-weight-semibold">{{ $tour->name }}</a>
+                                                                <br>
+                                                            </p>
+                                                        </td>
+                                                        <td class="text-right price">
+                                                            {{ $tour->prices[0]->price }} đ
+                                                        </td>
+                                                    </tr>
 
-                <div class="form-group voucher d-flex align-items-center">
-                    <label>Voucher</label>
-                    @auth
-                        <select class="form-control validate-control" id="voucher"
-                                name="voucher_id">
-                            <option value="{{ null }}">- Chọn voucher -</option>
-                            @if($vouchers)
-                                @foreach($vouchers as $item)
-                                    <option value="{{ $item->id }}"
-                                            data-value="{{ $item->value }}"
-                                            data-type="{{ $item->type }}"
-                                            data-min-spend="{{ $item->min_spend }}"
-                                            data-max-spend="{{ $item->max_spend }}"
-                                    >{{ $item->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    @endauth
-                    @guest
-                        <a href="{{ route('login') }}" class="btn btn-login">Đăng nhập để sử dụng voucher</a>
-                    @endguest
-                </div>
-                <div class="voucher-error text-danger"></div>
-                <hr>
-                <div class="discount_price mb-2">
-                    <span>Giảm giá</span>
-                    <span id="discount_price"></span>
-                    <span id="max_discount"></span>
-                </div>
-                <div class="total_price">
-                    <span>Tổng</span>
-                    <span id="total_price"></span>
-                </div>
-                <button class="btn submit mb-3" type="submit">Đặt lịch</button>
-            </form>
-        </div>
+                                                <tr class="text-right">
+                                                    <td>
+                                                        <h6 class="m-0">Tổng phụ:</h6>
+                                                    </td>
+                                                    <td class="text-right" id="subPrice">
+                                                        0
+                                                    </td>
+                                                </tr>
+                                                <tr class="text-right">
+                                                    <td>
+                                                        <h6 class="m-0">Phí vận chuyển:</h6>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        Miễn phí
+                                                    </td>
+                                                </tr>
+                                                <tr class="text-right">
+                                                    <td>
+                                                        <h6 class="m-0">Giảm giá:</h6>
+                                                    </td>
+                                                    <td class="text-right discount_price">
+                                                        <span id="discount_price"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="text-right">
+                                                    <td>
+                                                        <h5 class="m-0">Tổng tiền:</h5>
+                                                    </td>
+                                                    <td class="text-right font-weight-semibold">
+                                                        <span id="totalPrice"></span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <span id="max_discount"></span>
+
+                                    <div class="alert alert-warning mt-3" role="alert">
+                                        Sử dụng voucher để giảm giá !
+                                    </div>
+
+                                    <div class="input-group mt-3">
+                                        <select class="form-control validate-control" id="voucher"
+                                                name="voucher_id">
+                                            <option value="{{ null }}">- Chọn voucher -</option>
+                                            @if($vouchers)
+                                                @foreach($vouchers as $item)
+                                                    <option value="{{ $item->id }}"
+                                                            data-value="{{ $item->value }}"
+                                                            data-type="{{ $item->type }}"
+                                                            data-min-spend="{{ $item->min_spend }}"
+                                                            data-max-spend="{{ $item->max_spend }}"
+                                                    >{{ $item->name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div> <!-- end col -->
+                            </div> <!-- end row-->
+                        </div>
+                    </form>
+                    <!-- End Billing Information Content-->
+
+                </div> <!-- end tab content-->
+
+            </div> <!-- end card-body-->
+        </div> <!-- end card-->
     </div>
 @endsection
 @push('js')
@@ -181,175 +207,84 @@
             minDate: "today",
             maxDate: new Date().fp_incr(15),
         });
-
-        $('document').ready(function () {
-            let category_element = $('#bookingServiceType');
-            let service_element = $('#bookingService');
-            let price_element = $('#bookingPrice');
-            let date_element = $('#date');
-            let times = $('select[name="time_id"] option');
-            let total_price_element = $('#total_price');
+        $(document).ready(function () {
             let voucher_element = $('#voucher');
-            let voucher_error = $('.voucher-error');
             let discount_price_element = $('#discount_price');
-            voucher_element.hide();
+            let alert_element = $('.alert-warning');
+            let sub_price_element = $('#subPrice');
+            let total_price_element = $('#totalPrice');
 
-            date_element.on('change', function () {
-                let date_value = $(this).val();
-                let now = new Date();
+            updateTotalPrice();
 
-                let dateParts = date_value.split("-");
-                let day = parseInt(dateParts[0], 10);
-                let month = parseInt(dateParts[1], 10) - 1;
-                let year = parseInt(dateParts[2], 10);
+            function updateTotalPrice() {
+                let total = 0;
 
-                let dateObject = new Date(year, month, day);
-
-                if (
-                    dateObject.getDate() === now.getDate() &&
-                    dateObject.getMonth() === now.getMonth() &&
-                    dateObject.getFullYear() === now.getFullYear()
-                ) {
-                    times.each(function (index, element) {
-                        if (index === 0) {
-                            return;
-                        }
-                        let time = $(element).text();
-                        let time_parts = time.split(":");
-                        let hour = parseInt(time_parts[0], 10);
-                        let minute = parseInt(time_parts[1], 10);
-
-                        let timeObject = new Date(year, month, day, hour, minute);
-                        let timestamp = timeObject.getTime();
-
-                        if (timestamp < now.getTime()) {
-                            $(element).attr('disabled', 'disabled');
-                            $(element).removeAttr('selected');
-                            $(element).text(time + ' - Hết chỗ');
-                        } else {
-                            $(element).removeAttr('disabled');
-                        }
-                    });
-                } else {
-                    times.each(function (index, element) {
-                        if (index === 0) {
-                            return;
-                        }
-                        $(element).removeAttr('disabled');
-                        $(element).text($(element).text().replace(' - Hết chỗ', ''));
-                    });
-                }
-            });
-
-            category_element.on('change', function () {
-                let category_id = $(this).val();
-
-                if (category_id !== '-1') {
-                    let url = '{{ route('reservations.getServices', ['category' => '__id']) }}';
-                    url = url.replace('__id', category_id);
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (data) {
-                            service_element.empty();
-                            service_element.append('<option value="-1">- Chọn dịch vụ -</option>');
-                            $.each(data.services, function (key, value) {
-                                service_element.append(`<option value="${value.id}">${value.name}</option>`);
-                            });
-                        }
-                    });
-                } else {
-                    service_element.empty();
-                    service_element.append('<option value="-1">- Chọn dịch vụ -</option>');
-                }
-            });
-
-            service_element.on('change', function () {
-                let service_id = $(this).val();
-
-                if (service_id !== '-1') {
-                    let url = '{{ route('reservations.getPrices', ['service' => '__id']) }}';
-                    url = url.replace('__id', service_id);
-                    $.ajax({
-                        url: url,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (data) {
-                            price_element.empty();
-                            price_element.append('<option value="-1">- Chọn -</option>');
-                            $.each(data.prices, function (key, value) {
-                                let price = parseFloat(value.price.replace(/[^\d.-]/g, ''))
-                                let price_format = price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND'
-                                price_element.append(`<option value="${value.id}">${value.duration}' - ${price_format}</option>`);
-                            });
-                        }
-                    });
-                } else {
-                    price_element.empty();
-                    price_element.append('<option value="-1">- Chọn -</option>');
-                }
-            });
-
-            price_element.on('change', function () {
-                voucher_element.show();
-
-                let duration_price = $(this).children("option:selected").text();
-                let dataArray = duration_price.split('-');
-                let price = dataArray[1].trim();
-                let price_value = parseFloat(price.replace(/[^\d.-]/g, ''));
-                isNaN(price_value) ? price_value = 0 : price_value;
-                let price_format = price_value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND';
-                total_price_element.text(price_format);
-
-                voucher_element.on('change', function () {
-                    if ($(this).val() === '-1') {
-                        total_price_element.text(price_format);
-                        return;
-                    }
-                    let voucher_type = $(this).children("option:selected").data('type');
-                    let voucher_value = $(this).children("option:selected").data('value');
-                    let min_spend = $(this).children("option:selected").data('min-spend');
-                    let max_spend = $(this).children("option:selected").data('max-spend');
-                    let min_spend_value = parseFloat(min_spend.replace(/[^\d.-]/g, ''));
-                    let min_spend_format = min_spend_value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND';
-
-                    if (min_spend > price_value) {
-                        total_price_element.text(price_format);
-                        voucher_error.text('Voucher này chỉ áp dụng cho đơn hàng từ ' + min_spend_format + ' trở lên');
-                        return;
-                    } else {
-                        voucher_error.text('');
-                    }
-
-                    let total_price = total_price_element.text();
-                    let total_price_value = parseFloat(total_price.replace(/[^\d.-]/g, ''));
-                    isNaN(total_price_value) ? total_price_value = 0 : total_price_value;
-                    let total_price_after_discount = 0;
-                    let discount = 0;
-                    if (voucher_type === {{ VoucherTypeEnum::PHAN_TRAM }}) {
-                        discount = total_price_value * voucher_value / 100;
-                        if (discount > max_spend) {
-                            discount = max_spend;
-                            $('#max_discount').text('Tối đa' + max_spend + ' VND');
-
-                        }
-                        total_price_after_discount = total_price_value - discount;
-                        discount_price_element.text(discount + ' VND');
-                    } else {
-                        total_price_after_discount = total_price_value - voucher_value;
-                        discount_price_element.text(voucher_value + ' VND');
-                    }
-                    let total_price_after_discount_format = total_price_after_discount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' VND';
-                    total_price_element.text(total_price_after_discount_format);
+                $(".product").each(function () {
+                    console.log($(this).find(".price").text())
+                    let price = parseFloat($(this).find(".price").text().replace(/\D./g, ''));
+                    console.log(price)
+                    total += price;
                 });
+                let formattedPrice = total.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                sub_price_element.text(formattedPrice);
+                total_price_element.text(formattedPrice);
+            }
+
+            voucher_element.on('change', function () {
+                let price = sub_price_element.text();
+                let price_value = parseFloat(price.replace(/[^\d]/g, ''));
+                let price_format = price_value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+
+                if ($(this).val() === '-1') {
+                    total_price_element.text(price_format);
+                    discount_price_element.text('');
+                    return;
+                }
+                let voucher_type = $(this).children("option:selected").data('type');
+                let voucher_value = $(this).children("option:selected").data('value');
+                let min_spend = $(this).children("option:selected").data('min-spend');
+                let max_spend = $(this).children("option:selected").data('max-spend');
+                let min_spend_value = parseFloat(min_spend.replace(/[^\d.-]/g, ''));
+                let min_spend_format = min_spend_value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})
+
+                if (min_spend > price_value) {
+                    total_price_element.text(price_format);
+                    alert_element.text('Voucher này chỉ áp dụng cho đơn hàng từ ' + min_spend_format + ' trở lên');
+                    return;
+                } else {
+                    alert_element.text('Sử dụng voucher để giảm giá !');
+                }
+
+                let total_price = total_price_element.text();
+                let total_price_value = parseFloat(total_price.replace(/[^\d]/g, ''));
+                isNaN(total_price_value) ? total_price_value = 0 : total_price_value;
+                let total_price_after_discount = 0;
+                let discount = 0;
+                if (voucher_type === {{ VoucherTypeEnum::PHAN_TRAM }}) {
+                    discount = total_price_value * voucher_value / 100;
+                    if (discount > max_spend) {
+                        discount = max_spend;
+                        $('#max_discount').text('Tối đa: ' + max_spend + ' đ');
+
+                    }
+                    total_price_after_discount = total_price_value - discount;
+                    discount_price_element.text(discount + ' đ');
+                } else {
+                    total_price_after_discount = total_price_value - voucher_value;
+                    discount_price_element.text(voucher_value + ' đ');
+                }
+                let total_price_after_discount_format = total_price_after_discount.toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                })
+                total_price_element.text(total_price_after_discount_format);
             });
+        });
             @if(session('success'))
             $.notify('{{ session('success') }}', "success");
             @endif
             @if(session('error'))
             $.notify('{{ session('error') }}', "error");
             @endif
-        })
     </script>
 @endpush

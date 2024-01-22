@@ -5,16 +5,19 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\TourController;
 use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\TimeController;
+use App\Http\Controllers\Admin\DestinationController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Customer\AccountController;
-use App\Http\Controllers\Customer\AppointmentController;
-use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\ReservationController;
+use App\Http\Controllers\Customer\FavoriteController;
 use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\ShopController;
 use App\Http\Controllers\Customer\VnpayController;
+use App\Models\Destination;
+use App\Models\Reservation;
+use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -92,50 +95,39 @@ Route::group([
         });
 
         Route::group([
-            'controller' => TimeController::class,
-            'as' => 'times.',
-            'prefix' => 'times',
+            'controller' => DestinationController::class,
+            'as' => 'destinations.',
+            'prefix' => 'destinations',
         ], function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
+            Route::post('/', 'store')->name('store');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
 
         Route::group([
-            'controller' => ProductController::class,
-            'as' => 'products.',
-            'prefix' => 'products',
+            'controller' => TourController::class,
+            'as' => 'tours.',
+            'prefix' => 'tours',
         ], function () {
             Route::get('/', 'index')->name('index');
             Route::get('/api', 'api')->name('api');
             Route::get('/create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::get('/price', 'create_price')->name('create_price');
+            Route::post('/price', 'store_price')->name('store_price');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
             Route::patch('/{id}/reviews/{reviewId}', 'review')->name('review');
         });
 
         Route::group([
-            'controller' => \App\Http\Controllers\Admin\AppointmentController::class,
-            'as' => 'appointments.',
-            'prefix' => 'appointments',
-        ], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/api', 'api')->name('api');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::patch('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
-        });
-
-        Route::group([
-            'controller' => \App\Http\Controllers\Admin\OrderController::class,
-            'as' => 'orders.',
-            'prefix' => 'orders',
+            'controller' => \App\Http\Controllers\Admin\ReservationController::class,
+            'as' => 'reservations.',
+            'prefix' => 'reservations',
         ], function () {
             Route::get('/', 'index')->name('index');
             Route::get('/api', 'api')->name('api');
@@ -190,9 +182,8 @@ Route::group([
     'controller' => ShopController::class,
 ], function () {
     Route::get('/', 'index')->name('home');
-    Route::get('/services', 'services')->name('services');
-    Route::get('/products', 'products')->name('products');
-    Route::get('/product/{id}', 'product')->name('product');
+    Route::get('/tours', 'tours')->name('tours');
+    Route::get('/tours/{id}', 'tour')->name('tour');
     Route::get('/blogs', 'blogs')->name('blogs');
     Route::get('/blog/{id}', 'blog')->name('blog');
 });
@@ -201,35 +192,9 @@ Route::group([
 Route::group([
     'prefix' => 'reservations',
     'as' => 'reservations.',
-    'controller' => AppointmentController::class,
+    'controller' => ReservationController::class,
 ], function () {
-    Route::get('/', 'create')->name('booking');
-    Route::get('/{id}', 'show')->name('show');
-    Route::get('/get-services', 'getServices')->name('getServices');
-    Route::get('/get-prices', 'getPrices')->name('getPrices');
-    Route::get('/get-times', 'getTimes')->name('getTimes');
-    Route::post('/', 'store')->name('store');
-    Route::delete('/{id}', 'destroy')->name('destroy');
-});
-
-Route::group([
-    'prefix' => 'cart',
-    'as' => 'cart.',
-    'controller' => CartController::class,
-    'middleware' => ['auth', 'verified']
-], function () {
-    Route::get('/', 'index')->name('index');
-    Route::post('/', 'store')->name('store');
-    Route::put('/{id}', 'update')->name('update');
-    Route::delete('/{id}', 'destroy')->name('destroy');
-});
-
-Route::group([
-    'prefix' => 'orders',
-    'as' => 'orders.',
-    'controller' => OrderController::class,
-    'middleware' => ['auth', 'verified']
-], function () {
+    Route::get('/{id}/booking', 'create')->name('booking');
     Route::get('/', 'index')->name('index');
     Route::get('/{id}/edit', 'edit')->name('edit');
     Route::get('/{id}', 'show')->name('show');
@@ -239,13 +204,15 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'vnpay',
-    'as' => 'vnpay.',
-    'controller' => VnpayController::class,
+    'prefix' => 'favorite',
+    'as' => 'favorite.',
+    'controller' => FavoriteController::class,
     'middleware' => ['auth', 'verified']
 ], function () {
-    Route::get('/create', 'create')->name('create');
-    Route::get('/return', 'return')->name('return');
+    Route::get('/', 'index')->name('index');
+    Route::post('/', 'store')->name('store');
+    Route::put('/{id}', 'update')->name('update');
+    Route::delete('/{id}', 'destroy')->name('destroy');
 });
 
 Route::group([
@@ -261,4 +228,4 @@ Route::group([
 Route::post('/{id}/reviews', [ShopController::class, 'review'])->middleware([
     'auth',
     'verified',
-])->name('products.review');
+])->name('tours.review');

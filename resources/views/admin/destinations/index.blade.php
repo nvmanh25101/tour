@@ -1,27 +1,36 @@
 @extends('admin.layouts.master')
 @push('css')
-    <meta name="csrf_token" content="{{ csrf_token() }}"/>
-    <link href="{{ asset('datetimepicker/DateTimePicker.css') }}" rel="stylesheet" type="text/css">
 @endpush
 @section('content')
-    <div class="col-12">
-        <button id="create" class="btn btn-outline-primary" type="button">Thêm mới
-        </button>
+    <div class="col-12 mt-4">
+        <a id="create" class="btn btn-outline-primary" href="{{ route('admin.destinations.create') }}">Thêm mới
+        </a>
     </div>
-    <div class="row mb-3 mt-2" id="list">
-        @foreach($times as $time)
-            <div class="col-2 d-flex">
-                <input class="form-control" type="text" data-field="time" data-id="{{ $time->id }}"
-                       value="{{ $time->time }}" readonly>
-                <form action="{{ route('admin.times.destroy', $time->id) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn-delete btn btn-danger"><i class='mdi mdi-delete'></i></button>
-                </form>
-            </div>
+    <table class="table table-striped table-centered mb-0">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Tên</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($destinations as $item)
+            <tr>
+                <td>{{ $item->id }}</td>
+                <td>{{ $item->name }}</td>
+                <td class="table-action">
+                    <a href="{{ route('admin.destinations.edit', $item) }}" class="action-icon me-4"> <i class="mdi mdi-pencil"></i></a>
+                    <form action="{{ route('admin.destinations.destroy', $item) }}" method="post" class="action-icon">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="action-icon btn"><i class='mdi mdi-delete'></i></button>
+                    </form>
+                </td>
+            </tr>
         @endforeach
-        <div id="dtBox"></div>
-    </div>
+        </tbody>
+    </table>
 @endsection
 @push('js')
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
@@ -53,7 +62,7 @@
                     if (type === 'SET') {
                         let id = oInputElement.getAttribute('data-id')
                         $.ajax({
-                            url: '{{ route('admin.times.store') }}',
+                            url: '{{ route('admin.destinations.store') }}',
                             type: 'POST',
                             dataType: 'json',
                             data: {

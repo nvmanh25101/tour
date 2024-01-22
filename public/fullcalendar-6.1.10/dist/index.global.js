@@ -3003,7 +3003,7 @@ var FullCalendar = (function (exports) {
             return range;
         }
         // Computes the range that will represent the element/cells for *rendering*,
-        // but which may have voided days/times.
+        // but which may have voided days/destinations.
         // not responsible for trimming hidden days.
         buildRenderRange(currentRange, currentRangeUnit, isRangeAllDay) {
             return currentRange;

@@ -1335,7 +1335,7 @@ $.extend(Buttons.prototype, {
 
 		if (options.closeButton) {
 			display
-				.prepend('<div class="dtb-popover-close">&times;</div>')
+				.prepend('<div class="dtb-popover-close">&destinations;</div>')
 				.addClass('dtb-collection-closeable');
 		}
 

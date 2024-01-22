@@ -1,3 +1,14 @@
+body[data-leftbar-theme=dark] .left-side-menu,
+body[data-leftbar-theme=dark] .left-side-menu .logo {
+    background-color: #4e73df !important;
+    background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%) !important;
+}
+
+body[data-leftbar-theme=dark] .side-nav .side-nav-link,
+body[data-leftbar-theme=dark] .side-nav .side-nav-second-level li a {
+    color: rgba(255,255,255,.8);
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;

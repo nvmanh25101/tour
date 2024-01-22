@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Models\Category;
 use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class CategoryController extends Controller
@@ -23,9 +24,6 @@ class CategoryController extends Controller
         view()->share('ControllerName', $this->ControllerName);
         view()->share('pageTitle', $pageTitle);
 
-        $arrCategoryType = TypeEnum::getArrayView();
-        view()->share('arrCategoryType', $arrCategoryType);
-
         $arrCategoryStatus = StatusEnum::getArrayView();
         view()->share('arrCategoryStatus', $arrCategoryStatus);
     }
@@ -38,9 +36,6 @@ class CategoryController extends Controller
     public function api()
     {
         return DataTables::of(Category::query())
-            ->editColumn('type', function ($object) {
-                return TypeEnum::getKeyByValue($object->type);
-            })
             ->editColumn('status', function ($object) {
                 return StatusEnum::getKeyByValue($object->status);
             })
@@ -55,17 +50,15 @@ class CategoryController extends Controller
                     $query->where('status', $keyword);
                 }
             })
-            ->filterColumn('type', function ($query, $keyword) {
-                if ($keyword !== '-1') {
-                    $query->where('type', $keyword);
-                }
-            })
             ->make(true);
     }
 
     public function store(StoreRequest $request)
     {
-        if (Category::query()->create($request->validated())) {
+        $path = Storage::disk('public')->putFile('categories', $request->file('image'));
+        $arr = $request->validated();
+        $arr['image'] = $path;
+        if (Category::query()->create($arr)) {
             return redirect()->route('admin.categories.index')->with(['success' => 'Thêm mới thành công']);
         }
         return redirect()->back()->withErrors('message', 'Thêm mới thất bại');
@@ -96,7 +89,16 @@ class CategoryController extends Controller
     public function update(UpdateRequest $request, $categoryId)
     {
         $category = Category::query()->findOrFail($categoryId);
-        $category->fill($request->validated());
+
+        $arr = $request->validated();
+        if ($request->hasFile('image')) {
+            if (Storage::disk('public')->exists($category->image)) {
+                Storage::disk('public')->delete($category->image);
+            }
+            $path = Storage::disk('public')->putFile('categories', $request->file('image'));
+            $arr['image'] = $path;
+        }
+        $category->fill($arr);
         if ($category->save()) {
             return redirect()->route('admin.categories.index')->with(['success' => 'Cập nhật thành công']);
         }
@@ -105,10 +107,9 @@ class CategoryController extends Controller
 
     public function destroy($categoryId)
     {
-        if (Tour::query()->where('category_id', $categoryId)->exists() || Category::query()->where('parent_id',
-                $categoryId)->exists()) {
+        if (Tour::query()->where('category_id', $categoryId)->exists()) {
             return response()->json([
-                'error' => 'Không thể xóa danh mục này vì có sản phẩm thuộc danh mục này',
+                'error' => 'Không thể xóa danh mục này vì có tour thuộc danh mục này',
             ]);
         }
 

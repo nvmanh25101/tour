@@ -98,7 +98,7 @@ FullCalendar.GoogleCalendar = (function (exports, core, internal) {
     }
     function gcalItemToRawEventDef(item, gcalTimezone) {
         let url = item.htmlLink || null;
-        // make the URLs for each event show times in the correct timezone
+        // make the URLs for each event show destinations in the correct timezone
         if (url && gcalTimezone) {
             url = injectQsComponent(url, 'ctz=' + gcalTimezone);
         }

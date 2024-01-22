@@ -1,4 +1,4 @@
-@php use App\Enums\OrderPaymentEnum;use App\Enums\OrderPaymentStatusEnum;use App\Enums\OrderStatusEnum; @endphp
+@php use App\Enums\PaymentEnum;use App\Enums\OrderPaymentStatusEnum;use App\Enums\OrderStatusEnum; @endphp
 @extends('customer.layouts.master')
 @push('css')
 @endpush
@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label>Hình thức thanh toán</label>
                     <input type="text" class="form-control" name="payment_method" readonly
-                           value="{{ OrderPaymentEnum::getKeyByValue($order->payment_method)  }}">
+                           value="{{ PaymentEnum::getKeyByValue($order->payment_method)  }}">
                 </div>
             </div>
             <div class="col-6">

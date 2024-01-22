@@ -4,11 +4,11 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-final class AppointmentStatusEnum extends Enum
+final class TourVehicleEnum extends Enum
 {
-    public const CHO_XAC_NHAN = 0;
-    public const XAC_NHAN = 1;
-    public const TU_CHOI = 2;
+    public const O_TO = 0;
+    public const MAY_BAY = 1;
+    public const TAU_HOA = 2;
 
 
     public static function getKeyByValue($value): string
@@ -19,9 +19,9 @@ final class AppointmentStatusEnum extends Enum
     public static function getArrayView(): array
     {
         return [
-            'Chờ xác nhận' => self::CHO_XAC_NHAN,
-            'Xác nhận' => self::XAC_NHAN,
-            'Từ chối' => self::TU_CHOI,
+            'Ô tô' => self::O_TO,
+            'Máy bay' => self::MAY_BAY,
+            'Tàu hỏa' => self::TAU_HOA,
         ];
     }
 }

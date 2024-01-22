@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Customer;
 
-use App\Enums\OrderPaymentEnum;
+use App\Enums\PaymentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -19,7 +19,7 @@ class CheckoutRequest extends FormRequest
             "payment_method" => [
                 'required',
                 'integer',
-                Rule::in(OrderPaymentEnum::asArray()),
+                Rule::in(PaymentEnum::asArray()),
             ],
         ];
     }

@@ -13,11 +13,10 @@
           id="bootstrap-stylesheet">
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/app-creative.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
-    <link href="{{ asset('css/app-creative-dark.min.css') }}" rel="stylesheet" type="text/css" id="light-style">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
-    <link href="{{ asset('css/customer/base.css') }}" rel="stylesheet" type="text/css" id="light-style">
+    <link href="{{ asset('css/customer/base.css') }}" rel="stylesheet" type="text/css">
     @stack('css')
 </head>

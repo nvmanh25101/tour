@@ -4,10 +4,14 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-final class ProductStatusEnum extends Enum
+final class PaymentEnum extends Enum
 {
-    public const NGUNG_HOAT_DONG = 0;
-    public const HOAT_DONG = 1;
+    public const TAI_CUA_HANG = 0;
+    public const CHUYEN_KHOAN = 1;
+    public const TAI_NHA = 2;
+
+    public const TAI_VAN_PHONG = 3;
+
 
 
     public static function getKeyByValue($value): string
@@ -18,8 +22,8 @@ final class ProductStatusEnum extends Enum
     public static function getArrayView(): array
     {
         return [
-            'Ngừng hoạt động' => self::NGUNG_HOAT_DONG,
-            'Hoạt động' => self::HOAT_DONG,
+            'Tại cửa hàng' => self::TAI_CUA_HANG,
+            'Chuyển khoản' => self::CHUYEN_KHOAN,
         ];
     }
 }

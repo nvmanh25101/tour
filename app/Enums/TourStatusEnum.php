@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Enums\Category;
+namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-
-final class TypeEnum extends Enum
+final class TourStatusEnum extends Enum
 {
-    public const SAN_PHAM = 0;
-    public const DICH_VU = 1;
+    public const NGUNG_HOAT_DONG = 0;
+    public const HOAT_DONG = 1;
+
 
     public static function getKeyByValue($value): string
     {
@@ -18,8 +18,8 @@ final class TypeEnum extends Enum
     public static function getArrayView(): array
     {
         return [
-            'Sản phẩm' => self::SAN_PHAM,
-            'Dịch vụ' => self::DICH_VU,
+            'Ngừng hoạt động' => self::NGUNG_HOAT_DONG,
+            'Hoạt động' => self::HOAT_DONG,
         ];
     }
 }

@@ -83,7 +83,7 @@
                         <!-- action buttons-->
                         <div class="row mt-4">
                             <div class="col-sm-6">
-                                <a href="{{ route('customers.products') }}"
+                                <a href="{{ route('customers.tours') }}"
                                    class="btn text-muted d-none d-sm-inline-block btn-link font-weight-semibold">
                                     <i class="mdi mdi-arrow-left"></i> Tiếp tục mua sắm </a>
                             </div> <!-- end col -->

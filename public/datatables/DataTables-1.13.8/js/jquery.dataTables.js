@@ -10836,7 +10836,7 @@
 
 		/**
 		 * When vertical (y) scrolling is enabled, DataTables will force the height of
-		 * the table's viewport to the given height at all times (useful for layout).
+		 * the table's viewport to the given height at all destinations (useful for layout).
 		 * However, this can look odd when filtering data down to a small data set,
 		 * and the footer is left "floating" further down. This parameter (when
 		 * enabled) will cause DataTables to collapse the table's viewport down when
@@ -11131,7 +11131,7 @@
 		 * The information element can be used to convey information about the current
 		 * state of the table. Although the internationalisation options presented by
 		 * DataTables are quite capable of dealing with most customisations, there may
-		 * be times where you wish to customise the string further. This callback
+		 * be destinations where you wish to customise the string further. This callback
 		 * allows you to do exactly that.
 		 *  @type function
 		 *  @param {object} oSettings DataTables settings object
@@ -11861,10 +11861,10 @@
 
 
 			/**
-			 * If can be useful to append extra information to the info string at times,
+			 * If can be useful to append extra information to the info string at destinations,
 			 * and this variable does exactly that. This information will be appended to
 			 * the `info` (`infoEmpty` and `infoFiltered` in whatever combination they are
-			 * being used) at all times.
+			 * being used) at all destinations.
 			 *  @type string
 			 *  @default <i>Empty string</i>
 			 *

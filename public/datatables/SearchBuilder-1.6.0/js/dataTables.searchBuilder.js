@@ -2426,7 +2426,7 @@ var DataTable = $.fn.dataTable;
                 clearAll: 'Clear All',
                 condition: 'Condition',
                 data: 'Data',
-                "delete": '&times',
+                "delete": '&destinations',
                 deleteTitle: 'Delete filtering rule',
                 left: '<',
                 leftTitle: 'Outdent criteria',
@@ -2497,7 +2497,7 @@ var DataTable = $.fn.dataTable;
                     .addClass(this.classes.add)
                     .addClass(this.classes.button)
                     .attr('type', 'button'),
-                clear: $$2('<button>&times</button>')
+                clear: $$2('<button>&destinations</button>')
                     .addClass(this.classes.button)
                     .addClass(this.classes.clearGroup)
                     .attr('type', 'button'),
@@ -3185,7 +3185,7 @@ var DataTable = $.fn.dataTable;
                 clearAll: 'Clear All',
                 condition: 'Condition',
                 data: 'Data',
-                "delete": '&times',
+                "delete": '&destinations',
                 deleteTitle: 'Delete filtering rule',
                 left: '<',
                 leftTitle: 'Outdent criteria',
@@ -3718,7 +3718,7 @@ var DataTable = $.fn.dataTable;
                     }
                 },
                 data: 'Data',
-                "delete": '&times',
+                "delete": '&destinations',
                 deleteTitle: 'Delete filtering rule',
                 left: '<',
                 leftTitle: 'Outdent criteria',

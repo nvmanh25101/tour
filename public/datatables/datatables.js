@@ -10848,7 +10848,7 @@
 
 		/**
 		 * When vertical (y) scrolling is enabled, DataTables will force the height of
-		 * the table's viewport to the given height at all times (useful for layout).
+		 * the table's viewport to the given height at all destinations (useful for layout).
 		 * However, this can look odd when filtering data down to a small data set,
 		 * and the footer is left "floating" further down. This parameter (when
 		 * enabled) will cause DataTables to collapse the table's viewport down when
@@ -11143,7 +11143,7 @@
 		 * The information element can be used to convey information about the current
 		 * state of the table. Although the internationalisation options presented by
 		 * DataTables are quite capable of dealing with most customisations, there may
-		 * be times where you wish to customise the string further. This callback
+		 * be destinations where you wish to customise the string further. This callback
 		 * allows you to do exactly that.
 		 *  @type function
 		 *  @param {object} oSettings DataTables settings object
@@ -11873,10 +11873,10 @@
 
 
 			/**
-			 * If can be useful to append extra information to the info string at times,
+			 * If can be useful to append extra information to the info string at destinations,
 			 * and this variable does exactly that. This information will be appended to
 			 * the `info` (`infoEmpty` and `infoFiltered` in whatever combination they are
-			 * being used) at all times.
+			 * being used) at all destinations.
 			 *  @type string
 			 *  @default <i>Empty string</i>
 			 *
@@ -17296,7 +17296,7 @@ $.extend(Buttons.prototype, {
 
 		if (options.closeButton) {
 			display
-				.prepend('<div class="dtb-popover-close">&times;</div>')
+				.prepend('<div class="dtb-popover-close">&destinations;</div>')
 				.addClass('dtb-collection-closeable');
 		}
 
@@ -19984,7 +19984,7 @@ $.extend(Responsive.prototype, {
 		}
 
 		// It is unsafe to insert elements with the same name into the DOM
-		// multiple times. For example, cloning and inserting a checked radio
+		// multiple destinations. For example, cloning and inserting a checked radio
 		// clears the chcecked state of the original radio.
 		$(clonedTable).find('[name]').removeAttr('name');
 
@@ -20187,7 +20187,7 @@ Responsive.display = {
 									.append(render())
 							)
 							.append(
-								$('<div class="dtr-modal-close">&times;</div>').click(function () {
+								$('<div class="dtr-modal-close">&destinations;</div>').click(function () {
 									close();
 								})
 							)
@@ -24931,7 +24931,7 @@ var DataTable = $.fn.dataTable;
                 clearAll: 'Clear All',
                 condition: 'Condition',
                 data: 'Data',
-                "delete": '&times',
+                "delete": '&destinations',
                 deleteTitle: 'Delete filtering rule',
                 left: '<',
                 leftTitle: 'Outdent criteria',
@@ -25002,7 +25002,7 @@ var DataTable = $.fn.dataTable;
                     .addClass(this.classes.add)
                     .addClass(this.classes.button)
                     .attr('type', 'button'),
-                clear: $$2('<button>&times</button>')
+                clear: $$2('<button>&destinations</button>')
                     .addClass(this.classes.button)
                     .addClass(this.classes.clearGroup)
                     .attr('type', 'button'),
@@ -25690,7 +25690,7 @@ var DataTable = $.fn.dataTable;
                 clearAll: 'Clear All',
                 condition: 'Condition',
                 data: 'Data',
-                "delete": '&times',
+                "delete": '&destinations',
                 deleteTitle: 'Delete filtering rule',
                 left: '<',
                 leftTitle: 'Outdent criteria',
@@ -26223,7 +26223,7 @@ var DataTable = $.fn.dataTable;
                     }
                 },
                 data: 'Data',
-                "delete": '&times',
+                "delete": '&destinations',
                 deleteTitle: 'Delete filtering rule',
                 left: '<',
                 leftTitle: 'Outdent criteria',
@@ -27168,7 +27168,7 @@ var DataTable = $.fn.dataTable;
                 };
                 // If a custom function is in place
                 if (typeof comp.value === 'function') {
-                    // Count the number of times the function evaluates to true for the original data in the Table
+                    // Count the number of destinations the function evaluates to true for the original data in the Table
                     for (var i = 0; i < tableValsTotal.length; i++) {
                         if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
                             comparisonObj.total++;
@@ -27187,7 +27187,7 @@ var DataTable = $.fn.dataTable;
             return this.s.dt.i18n('searchPanes.count', this.c.i18n.count).replace(/{total}/g, row.total);
         };
         /**
-         * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of times a specific value is shown
+         * Overridden in SearchPaneViewTotal and SearchPaneCascade to get the number of destinations a specific value is shown
          *
          * Here it is blanked so that it takes no action
          *
@@ -27963,7 +27963,7 @@ var DataTable = $.fn.dataTable;
             emptyMessage: null,
             hideCount: false,
             i18n: {
-                clearPane: '&times;',
+                clearPane: '&destinations;',
                 count: '{total}',
                 emptyMessage: '<em>No data</em>'
             },
@@ -28243,10 +28243,10 @@ var DataTable = $.fn.dataTable;
                 .replace(/{shown}/g, row.shown);
         };
         /**
-         * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+         * Overrides the blank method in SearchPane to return the number of destinations a given value is currently being displayed
          *
          * @param filter The filter value
-         * @returns number - The number of times the value is shown
+         * @returns number - The number of destinations the value is shown
          */
         SearchPaneViewTotal.prototype._getShown = function (filter) {
             return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
@@ -28423,7 +28423,7 @@ var DataTable = $.fn.dataTable;
                 };
                 // If a custom function is in place
                 if (typeof comp.value === 'function') {
-                    // Count the number of times the function evaluates to true for the original data in the Table
+                    // Count the number of destinations the function evaluates to true for the original data in the Table
                     for (var i = 0; i < tableValsTotal.length; i++) {
                         if (comp.value.call(this.s.dt, tableValsTotal[i], allRows[0][i])) {
                             comparisonObj.total++;
@@ -28457,10 +28457,10 @@ var DataTable = $.fn.dataTable;
                 .replace(/{shown}/g, row.shown);
         };
         /**
-         * Overrides the blank method in SearchPane to return the number of times a given value is currently being displayed
+         * Overrides the blank method in SearchPane to return the number of destinations a given value is currently being displayed
          *
          * @param filter The filter value
-         * @returns number - The number of times the value is shown
+         * @returns number - The number of destinations the value is shown
          */
         SearchPaneCascade.prototype._getShown = function (filter) {
             return this.s.rowData.binsShown && this.s.rowData.binsShown[filter] ?
@@ -29390,7 +29390,7 @@ var DataTable = $.fn.dataTable;
             filterChanged: undefined,
             i18n: {
                 clearMessage: 'Clear All',
-                clearPane: '&times;',
+                clearPane: '&destinations;',
                 collapse: {
                     0: 'SearchPanes',
                     _: 'SearchPanes (%d)'

@@ -3,20 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\Category\StatusEnum;
-use App\Enums\Category\TypeEnum;
-use App\Enums\ProductStatusEnum;
+use App\Enums\TourStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Product\StoreRequest;
-use App\Http\Requests\Admin\Product\UpdateRequest;
+use App\Http\Requests\Admin\Tour\StoreRequest;
+use App\Http\Requests\Admin\Tour\UpdateRequest;
 use App\Models\Category;
+use App\Models\Destination;
+use App\Models\Price;
+use App\Models\Service;
 use App\Models\Tour;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
-class ProductController extends Controller
+class TourController extends Controller
 {
-    public string $ControllerName = 'Sản phẩm';
+    public string $ControllerName = 'Tour';
 
     public function __construct()
     {
@@ -25,13 +29,13 @@ class ProductController extends Controller
         view()->share('ControllerName', $this->ControllerName);
         view()->share('pageTitle', $pageTitle);
 
-        $arrProductStatus = ProductStatusEnum::getArrayView();
-        view()->share('arrProductStatus', $arrProductStatus);
+        $arrTourStatus = TourStatusEnum::getArrayView();
+        view()->share('arrTourStatus', $arrTourStatus);
     }
 
     public function index()
     {
-        return view('admin.products.index');
+        return view('admin.tours.index');
     }
 
     public function api()
@@ -40,17 +44,14 @@ class ProductController extends Controller
             ->addColumn('category_name', function ($object) {
                 return $object->category->name;
             })
-            ->addColumn('price_format', function ($object) {
-                return $object->price_format;
-            })
             ->editColumn('status', function ($object) {
-                return ProductStatusEnum::getKeyByValue($object->status);
+                return TourStatusEnum::getKeyByValue($object->status);
             })
             ->addColumn('edit', function ($object) {
-                return route('admin.products.edit', $object);
+                return route('admin.tours.edit', $object);
             })
             ->addColumn('destroy', function ($object) {
-                return route('admin.products.destroy', $object);
+                return route('admin.tours.destroy', $object);
             })
             ->filterColumn('status', function ($query, $keyword) {
                 if ($keyword !== '-1') {
@@ -70,47 +71,54 @@ class ProductController extends Controller
         $path = Storage::disk('public')->putFile('images', $request->file('image'));
         $arr = $request->validated();
         $arr['image'] = $path;
-        $product = Tour::query()->create($arr);
-        if ($product) {
-            return redirect()->route('admin.products.index')->with(['success' => 'Thêm mới thành công']);
-        }
-        return redirect()->back()->withErrors('message', 'Thêm mới thất bại');
+        $arr['admin_id'] = Auth::guard('admin')->user()->id;
+        $tour = Tour::query()->create($arr);
+        $tour->destinations()->attach($request->get('destinations'));
+        $tour->services()->attach($request->get('services'));
+
+        return redirect()->route('admin.tours.index')->with(['success' => 'Thêm mới thành công']);
     }
 
     public function create()
     {
         $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
-            ->where('type', '=', TypeEnum::SAN_PHAM)
             ->get(['id', 'name']);
+        $destinations = Destination::query()->get();
+        $services = Service::query()->get();
         return view(
-            'admin.products.create',
+            'admin.tours.create',
             [
                 'categories' => $categories,
+                'destinations' => $destinations,
+                'services' => $services,
             ]
         );
     }
 
-    public function edit($productId)
+    public function edit($tourId)
     {
         $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
-            ->where('type', '=', TypeEnum::SAN_PHAM)
             ->get(['id', 'name']);
-        $product = Tour::query()->findOrFail($productId);
-        $reviews = $product->reviews()->with('customer')->get();
+        $tour = Tour::query()->with('destinations')->findOrFail($tourId);
+        $reviews = $tour->reviews()->with('customer')->get();
+        $destinations = Destination::query()->get();
+        $services = Service::query()->get();
 
         return view(
-            'admin.products.edit',
+            'admin.tours.edit',
             [
-                'product' => $product,
+                'tour' => $tour,
                 'categories' => $categories,
                 'reviews' => $reviews,
+                'destinations' => $destinations,
+                'services' => $services,
             ]
         );
     }
 
-    public function destroy($productId)
+    public function destroy($tourId)
     {
-        Product::destroy($productId);
+        tour::destroy($tourId);
 
         return response()->json([
             'success' => 'Xóa thành công',
@@ -119,8 +127,8 @@ class ProductController extends Controller
 
     public function review(Request $request, $id, $reviewId)
     {
-        $product = Product::query()->findOrFail($id);
-        $review = $product->reviews()->findOrFail($reviewId);
+        $tour = Tour::query()->findOrFail($id);
+        $review = $tour->reviews()->findOrFail($reviewId);
         $review->update([
             'reply' => $request->get('reply'),
             'admin_id' => Auth::guard('admin')->user()->id,
@@ -129,22 +137,40 @@ class ProductController extends Controller
         return redirect()->back()->with(['success' => 'Phản hồi thành công']);
     }
 
-    public function update(UpdateRequest $request, $productId)
+    public function update(UpdateRequest $request, $tourId)
     {
-        $product = Tour::query()->findOrFail($productId);
+        $tour = Tour::query()->findOrFail($tourId);
+        $tour->destinations()->sync($request->get('destinations'));
+        $tour->services()->sync($request->get('services'));
         $arr = $request->validated();
         if ($request->hasFile('image')) {
-            if (Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+            if (Storage::disk('public')->exists($tour->image)) {
+                Storage::disk('public')->delete($tour->image);
             }
             $path = Storage::disk('public')->putFile('images', $request->file('image'));
             $arr['image'] = $path;
         }
-        $product->fill($arr);
+        $tour->fill($arr);
 
-        if ($product->save()) {
-            return redirect()->route('admin.products.index')->with(['success' => 'Cập nhật thành công']);
+        if ($tour->save()) {
+            return redirect()->route('admin.tours.index')->with(['success' => 'Cập nhật thành công']);
         }
         return redirect()->back()->withErrors('message', 'Cập nhật thất bại');
+    }
+
+    public function create_price()
+    {
+        $tours = Tour::query()->get();
+        return view('admin.tours.create_price', ['tours' => $tours]);
+    }
+
+    public function store_price(Request $request)
+    {
+        $arr['tour_id'] = $request->get('tour_id');
+        $arr['price'] = $request->get('price');
+        $arr['age_group'] = $request->get('age_group');
+        Price::query()->create($arr);
+
+        return redirect()->route('admin.tours.index')->with(['success' => 'Thêm mới thành công']);
     }
 }

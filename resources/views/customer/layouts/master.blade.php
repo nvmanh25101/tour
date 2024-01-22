@@ -1,7 +1,7 @@
 @include('customer.layouts.header')
 
 <body class="loading" data-layout="topnav"
-      data-layout-config='{"layoutBoxed":false,"darkMode":true,"showRightSidebarOnStart": true}'>
+      data-layout-config='{"layoutBoxed":false,"darkMode":false,"showRightSidebarOnStart": true}'>
 <div class="wrapper">
     <div class="content-page">
         <div class="content">
