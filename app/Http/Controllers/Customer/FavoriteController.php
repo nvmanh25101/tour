@@ -2,82 +2,60 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Enums\Category\StatusEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Favorite;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    public string $ControllerName = 'Giỏ hàng';
+    public string $ControllerName = 'Danh sách yêu thích';
 
     public function __construct()
     {
         view()->share('ControllerName', $this->ControllerName);
+
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)->get(['id', 'name']);
+        view()->share('categories', $categories);
     }
 
     public function index()
     {
-        $cart = Favorite::query()->where('customer_id', auth()->id())->first();
+        $favorite = Favorite::query()->where('customer_id', auth()->id())->first();
 
-        return view('customer.cart', [
-            'cart' => $cart,
+        return view('customer.favorite', [
+            'favorite' => $favorite,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $tourId)
     {
-        $cart = Favorite::query()->where('customer_id', auth()->id())->first();
-        if (!$cart) {
-            $cart = Favorite::query()->create([
+        $favorite = Favorite::query()->where('customer_id', auth()->id())->first();
+        if (!$favorite) {
+            $favorite = Favorite::query()->create([
                 'customer_id' => auth()->id()
             ]);
         }
-        $quantity = $request->get('quantity');
-        $product_id = $request->get('product_id');
-        $inventory = Tour::query()->findOrFail($product_id)->quantity;
-        if ($quantity > $inventory) {
-            return redirect()->back()->with([
-                'error' => 'Số lượng sản phẩm trong kho không đủ'
-            ]);
-        }
 
-        $cart->products()->attach($request->get('product_id'), [
-            'quantity' => $request->get('quantity')
+        $favorite->tours()->attach($tourId);
+
+        return redirect()->route('favorite.index', [
+            'favorite' => $favorite,
+        ])->with([
+            'success' => 'Thêm tour vào danh sách yêu thích thành công'
         ]);
-
-        return redirect()->route('cart.index')->with([
-            'success' => 'Thêm sản phẩm vào giỏ hàng thành công'
-        ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $cart = Favorite::query()->findOrFail($id);
-        $quantity = $request->get('quantity');
-        $product_id = $request->get('product_id');
-        $inventory = Tour::query()->findOrFail($product_id)->quantity;
-        if ($quantity > $inventory) {
-            return response()->json([
-                'error' => 'Số lượng sản phẩm trong kho không đủ'
-            ]);
-        }
-
-        $cart->products()->updateExistingPivot($request->get('product_id'), [
-            'quantity' => $request->get('quantity')
-        ]);
-
-        return redirect()->route('cart.index');
     }
 
     public function destroy(Request $request, $id)
     {
-        $cart = Favorite::query()->findOrFail($id);
+        $favorite = Favorite::query()->findOrFail($id);
 
-        $cart->products()->detach($request->get('product_id'));
+        $favorite->tours()->detach($request->get('tour_id'));
 
-        return redirect()->route('cart.index')->with([
-            'success' => 'Xóa sản phẩm khỏi giỏ hàng thành công'
+        return redirect()->route('favorite.index')->with([
+            'success' => 'Xóa tour khỏi danh sách yêu thích thành công'
         ]);
     }
 }

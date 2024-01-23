@@ -112,7 +112,7 @@
             </div>
             <div class="form-group">
                 <label>Dịch vụ</label>
-                <select class="form-control" name="destinations[]" multiple>
+                <select class="form-control" name="services[]" multiple>
                     @foreach($services as $service)
                         <option value="{{ $service->id }}"
                                 @if($tour->services)
@@ -190,7 +190,7 @@
                 </td>
                 <td>
                     @for($i=1; $i <= 5; $i++)
-                        @if($i < $review->rating)
+                        @if($i <= $review->rating)
                             <span class="star-full"><i
                                         class="mdi mdi-star"></i></span>
                         @else

@@ -1,4 +1,3 @@
-@php use App\Enums\AdminType; @endphp
 <div class="navbar-custom">
     <ul class="list-unstyled topbar-right-menu float-right mb-0">
         <li class="dropdown notification-list">

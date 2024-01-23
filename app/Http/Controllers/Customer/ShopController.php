@@ -22,6 +22,9 @@ class ShopController extends Controller
     public function __construct()
     {
         view()->share('ControllerName', $this->ControllerName);
+
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)->get(['id', 'name']);
+        view()->share('categories', $categories);
     }
 
     public function index(Request $request)
@@ -46,11 +49,16 @@ class ShopController extends Controller
     }
     public function tour(Request $request, $id)
     {
-        $tour = Tour::query()->findOrFail($id);
+        $tour = Tour::query()->with(['schedules', 'services', 'destinations'])->findOrFail($id);
         $reviews = $tour->reviews()->with('customer')->simplePaginate(5);
-        $order_count = Reservation::whereHas('tour', function ($query) use ($id) {
-            $query->where('tours.id', $id);
-        })->where('customer_id', auth()->user()->id)->count();
+        $customer = auth()->user();
+        if ($customer) {
+            $order_count = Reservation::whereHas('tour', function ($query) use ($id) {
+                $query->where('tours.id', $id);
+            })->where('customer_id', $customer->id)->count();
+        } else {
+            $order_count = 0;
+        }
 
         return view('customer.tour', [
             'tour' => $tour,
@@ -79,13 +87,13 @@ class ShopController extends Controller
 
     public function review(ReviewRequest $request, $id)
     {
-        $tour = Product::query()->findOrFail($id);
+        $tour = Tour::query()->findOrFail($id);
         $tour->reviews()->create([
             'rating' => $request->validated('rating'),
             'content' => $request->validated('content'),
             'customer_id' => auth()->user()->id
         ]);
 
-        return redirect()->route('customers.tour', $tour)->with('success', 'Đánh giá sản phẩm thành công');
+        return redirect()->route('customers.tour', $tour)->with('success', 'Đánh giá tour thành công');
     }
 }

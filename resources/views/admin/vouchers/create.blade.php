@@ -6,7 +6,7 @@
 @section('content')
     <form method="post" action="{{ route('admin.vouchers.store') }}" class="needs-validation" novalidate>
         @csrf
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-6">
                 <div class="form-group">
                     <label>Mã*</label>
@@ -30,17 +30,6 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="form-group">
-                    <label>Loại áp dụng*</label>
-                    <select class="form-control" name="applicable_type">
-                        <option value="-1">Chọn</option>
-                        @foreach($arrVoucherApplyType as $option => $value)
-                            <option value="{{ $value }}">
-                                {{ $option }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
                 <div class="form-group">
                     <label>Loại giảm*</label>
                     <select class="form-control" name="type">

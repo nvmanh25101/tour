@@ -24,6 +24,8 @@ final class PaymentEnum extends Enum
         return [
             'Tại cửa hàng' => self::TAI_CUA_HANG,
             'Chuyển khoản' => self::CHUYEN_KHOAN,
+            'Tại nhà' => self::TAI_NHA,
+            'Tại văn phòng' => self::TAI_VAN_PHONG,
         ];
     }
 }

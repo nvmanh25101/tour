@@ -1,7 +1,7 @@
 @php use App\Enums\PaymentEnum;use App\Enums\VoucherTypeEnum; @endphp
 @extends('customer.layouts.master')
 @push('css')
-    {{--    <link rel="stylesheet" href="{{ asset('css/customer/cart.css') }}">--}}
+    {{--    <link rel="stylesheet" href="{{ asset('css/customer/favorite.css') }}">--}}
 @endpush
 @section('carousel')
     <div class="text-center text-white d-flex align-items-center position-relative page-header"
@@ -77,7 +77,22 @@
                                                 <p class="mb-0 pl-3 pt-1">Thanh toán tại cửa hàng.</p>
                                             </div>
                                             <div class="col-sm-4 text-sm-right mt-3 mt-sm-0">
-                                                <img src="{{ asset('storage/cod.png') }}" height="22" alt="paypal-img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border p-3 mb-3 rounded">
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="BillingOptRadio5" name="payment_method"
+                                                           value="{{ PaymentEnum::TAI_VAN_PHONG }}"
+                                                           class="custom-control-input">
+                                                    <label class="custom-control-label font-16 font-weight-bold"
+                                                           for="BillingOptRadio5">Thanh toán tại văn phòng</label>
+                                                </div>
+                                                <p class="mb-0 pl-3 pt-1">Thanh toán tại văn phòng.</p>
+                                            </div>
+                                            <div class="col-sm-4 text-sm-right mt-3 mt-sm-0">
                                             </div>
                                         </div>
                                     </div>
@@ -85,7 +100,7 @@
 
                                     <div class="row mt-4">
                                         <div class="col-sm-6">
-                                            <a href="{{ route('cart.index') }}"
+                                            <a href="{{ route('favorite.index') }}"
                                                class="btn text-muted d-none d-sm-inline-block btn-link font-weight-semibold">
                                                 <i class="mdi mdi-arrow-left"></i> Quay trở lại giỏ hàng </a>
                                         </div> <!-- end col -->

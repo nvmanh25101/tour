@@ -26,9 +26,6 @@ class VoucherController extends Controller
         $arrVoucherType = VoucherTypeEnum::getArrayView();
         view()->share('arrVoucherType', $arrVoucherType);
 
-        $arrVoucherApplyType = VoucherApplyTypeEnum::getArrayView();
-        view()->share('arrVoucherApplyType', $arrVoucherApplyType);
-
         $arrVoucherStatus = VoucherStatusEnum::getArrayView();
         view()->share('arrVoucherStatus', $arrVoucherStatus);
     }
@@ -41,9 +38,6 @@ class VoucherController extends Controller
     public function api()
     {
         return DataTables::of(Voucher::query())
-            ->editColumn('applicable_type', function ($object) {
-                return VoucherApplyTypeEnum::getKeyByValue($object->type);
-            })
             ->editColumn('value', function ($object) {
                 return number_format($object->value).($object->type === VoucherTypeEnum::PHAN_TRAM ? '%' : ' VNĐ');
             })
@@ -65,11 +59,6 @@ class VoucherController extends Controller
             ->filterColumn('status', function ($query, $keyword) {
                 if ($keyword !== '-1') {
                     $query->where('status', $keyword);
-                }
-            })
-            ->filterColumn('applicable_type', function ($query, $keyword) {
-                if ($keyword !== '-1') {
-                    $query->where('type', $keyword);
                 }
             })
             ->make(true);

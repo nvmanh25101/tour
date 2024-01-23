@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Enums\Category\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\AccountRequest;
+use App\Models\Category;
 use App\Models\Customer;
 
 class AccountController extends Controller
@@ -13,17 +15,18 @@ class AccountController extends Controller
     public function __construct()
     {
         view()->share('ControllerName', $this->ControllerName);
+
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)->get(['id', 'name']);
+        view()->share('categories', $categories);
     }
 
     public function edit($id)
     {
-        $account = Customer::query()->with(['orders', 'reservations'])->findOrFail($id);
-        $orders = $account->orders()->orderByDesc('id')->paginate(15);
-        $reservations = $account->appointments()->orderByDesc('id')->paginate(5);
+        $account = Customer::query()->with(['reservations'])->findOrFail($id);
+        $reservations = $account->reservations()->orderByDesc('id')->paginate(5);
 
         return view('customer.account', [
             'account' => $account,
-            'orders' => $orders,
             'reservations' => $reservations
         ]);
     }

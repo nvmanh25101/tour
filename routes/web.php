@@ -117,8 +117,12 @@ Route::group([
             Route::get('/create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::get('/price', 'create_price')->name('create_price');
-            Route::post('/price', 'store_price')->name('store_price');
+            Route::get('/{id}/schedule', 'edit_schedule')->name('edit_schedule');
+            Route::put('/{id}/schedule', 'update_schedule')->name('update_schedule');
+            Route::get('/{id}/price', 'edit_price')->name('edit_price');
+            Route::put('/{id}/price', 'update_price')->name('update_price');
+            Route::get('/schedule', 'create_schedule')->name('create_schedule');
+            Route::post('/schedule', 'store_schedule')->name('store_schedule');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
             Route::patch('/{id}/reviews/{reviewId}', 'review')->name('review');
@@ -182,7 +186,6 @@ Route::group([
     'controller' => ShopController::class,
 ], function () {
     Route::get('/', 'index')->name('home');
-    Route::get('/tours', 'tours')->name('tours');
     Route::get('/tours/{id}', 'tour')->name('tour');
     Route::get('/blogs', 'blogs')->name('blogs');
     Route::get('/blog/{id}', 'blog')->name('blog');
@@ -210,8 +213,7 @@ Route::group([
     'middleware' => ['auth', 'verified']
 ], function () {
     Route::get('/', 'index')->name('index');
-    Route::post('/', 'store')->name('store');
-    Route::put('/{id}', 'update')->name('update');
+    Route::get('/{tourId}', 'store')->name('store');
     Route::delete('/{id}', 'destroy')->name('destroy');
 });
 

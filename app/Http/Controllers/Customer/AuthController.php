@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Enums\Category\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AuthRequest;
 use App\Http\Requests\Customer\RegisterRequest;
+use App\Models\Category;
 use App\Models\Customer;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -19,6 +21,9 @@ class AuthController extends Controller
     public function __construct()
     {
         view()->share('ControllerName', $this->ControllerName);
+
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)->get(['id', 'name']);
+        view()->share('categories', $categories);
     }
 
     public function register()

@@ -63,29 +63,31 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-4">
-                                        <label>Số người</label>
-                                        <select class="custom-select mb-3" name="number_people">
-                                            <option value="-1" selected>Số lượng*</option>
-                                            @for($i=1; $i<=10; $i++)
-                                                <option value="{{ $i }}">{{ $i }}</option>
-                                            @endfor
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-4">
-                                        <label>Email</label>
-                                        <input type="email" id="bookingEmail" name="email_contact"
-                                               class="form-control validate-control" placeholder="Email*"
-                                               required
-                                               @auth
-                                                   value="{{ auth()->user()->email }}"
-                                            @endauth
-                                        >
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label>Số người</label>
+                                            <select class="custom-select mb-3" name="number_people">
+                                                <option value="-1" selected>Số lượng*</option>
+                                                @for($i=1; $i<=10; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label>Email</label>
+                                            <input type="email" id="bookingEmail" name="email_contact"
+                                                   class="form-control validate-control" placeholder="Email*"
+                                                   required
+                                                   @auth
+                                                       value="{{ auth()->user()->email }}"
+                                                @endauth
+                                            >
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <label>Chọn thời gian</label>
                                         <div class="form-group col-4">
-                                            <input class="form-control" id="date" name="departure_date" placeholder="Chọn ngày">
+                                            <input class="form-control" id="date" name="departure_date" placeholder="Chọn ngày" required>
                                         </div>
                                     </div>
                                     <div class="row mt-4">
@@ -205,7 +207,6 @@
         $("#date").flatpickr({
             dateFormat: "d-m-Y",
             minDate: "today",
-            maxDate: new Date().fp_incr(15),
         });
         $(document).ready(function () {
             let voucher_element = $('#voucher');
@@ -220,9 +221,7 @@
                 let total = 0;
 
                 $(".product").each(function () {
-                    console.log($(this).find(".price").text())
-                    let price = parseFloat($(this).find(".price").text().replace(/\D./g, ''));
-                    console.log(price)
+                    let price = parseInt($(this).find(".price").text());
                     total += price;
                 });
                 let formattedPrice = total.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
@@ -232,7 +231,7 @@
 
             voucher_element.on('change', function () {
                 let price = sub_price_element.text();
-                let price_value = parseFloat(price.replace(/[^\d]/g, ''));
+                let price_value = parseInt(price.replace(/[^\d]/g, ''));
                 let price_format = price_value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
 
                 if ($(this).val() === '-1') {
@@ -244,7 +243,7 @@
                 let voucher_value = $(this).children("option:selected").data('value');
                 let min_spend = $(this).children("option:selected").data('min-spend');
                 let max_spend = $(this).children("option:selected").data('max-spend');
-                let min_spend_value = parseFloat(min_spend.replace(/[^\d.-]/g, ''));
+                let min_spend_value = parseInt(min_spend.replace(/[^\d.-]/g, ''));
                 let min_spend_format = min_spend_value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})
 
                 if (min_spend > price_value) {
@@ -256,7 +255,7 @@
                 }
 
                 let total_price = total_price_element.text();
-                let total_price_value = parseFloat(total_price.replace(/[^\d]/g, ''));
+                let total_price_value = parseInt(total_price.replace(/[^\d]/g, ''));
                 isNaN(total_price_value) ? total_price_value = 0 : total_price_value;
                 let total_price_after_discount = 0;
                 let discount = 0;
@@ -265,11 +264,16 @@
                     if (discount > max_spend) {
                         discount = max_spend;
                         $('#max_discount').text('Tối đa: ' + max_spend + ' đ');
-
+                    }
+                    if (discount > total_price_value) {
+                        discount = total_price_value;
                     }
                     total_price_after_discount = total_price_value - discount;
                     discount_price_element.text(discount + ' đ');
                 } else {
+                    if (voucher_value > total_price_value) {
+                        voucher_value = total_price_value;
+                    }
                     total_price_after_discount = total_price_value - voucher_value;
                     discount_price_element.text(voucher_value + ' đ');
                 }
@@ -279,12 +283,14 @@
                 })
                 total_price_element.text(total_price_after_discount_format);
             });
-        });
+
             @if(session('success'))
             $.notify('{{ session('success') }}', "success");
             @endif
             @if(session('error'))
             $.notify('{{ session('error') }}', "error");
             @endif
+        });
+
     </script>
 @endpush

@@ -1,6 +1,6 @@
 @extends('customer.layouts.master')
 @push('css')
-    <link rel="stylesheet" href="{{ asset('css/customer/cart.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/customer/favorite.css') }}">
 @endpush
 @section('carousel')
     <div class="text-center text-white d-flex align-items-center position-relative page-header"
@@ -17,50 +17,50 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="table-responsive">
                             <table class="table table-borderless table-centered mb-0">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th>Sản phẩm</th>
+                                    <th>Tour</th>
                                     <th>Giá</th>
-                                    <th>Số lượng</th>
-                                    <th>Tổng tiền</th>
                                     <th style="width: 50px;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($cart->products as $item)
-                                    <input type="hidden" name="product_id" value="{{ $item->id }}">
+                                @foreach($favorite->tours as $item)
+                                    <input type="hidden" name="tour_id" value="{{ $item->id }}">
                                     <tr class="product">
                                         <td>
                                             <img src="{{ asset('storage/' . $item->image) }}" alt="contact-img"
                                                  title="contact-img" class="rounded mr-3" height="64">
                                             <p class="m-0 d-inline-block align-middle product-name">
-                                                <a href="{{ route('customers.product', $item) }}"
+                                                <a href="{{ route('customers.tour', $item) }}"
                                                    class="text-body">{{ $item->name }}</a>
                                             </p>
                                         </td>
                                         <td>
-                                            <span class="price_unit">{{ $item->price }} đ</span>
+                                            <span class="price_unit">
+                                                @foreach($item->prices as $price)
+                                                    @php
+                                                        $stringToCheck = $price->age_group;
+
+                                                        $pattern = "NGƯỜI LỚN";
+
+                                                        $startsWithPattern = str_starts_with($stringToCheck, $pattern);
+                                                    @endphp
+                                                    @if($startsWithPattern)
+                                                        <span class="price-tour fs-5">{{ number_format($price->price) }} VND/người</span>
+                                                    @endif
+                                                @endforeach
+                                            </span>
                                         </td>
                                         <td>
-                                            <input type="number" min="1" value="{{ $item->pivot->quantity }}"
-                                                   max="{{ $item->quantity }}"
-                                                   class="form-control quantity"
-                                                   placeholder="Qty"
-                                                   style="width: 90px;">
-                                            @method('put')
-                                        </td>
-                                        <td>
-                                            <span class="price">{{ $item->price * $item->pivot->quantity }} đ</span>
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('cart.destroy', $item->pivot->cart_id) }}"
+                                            <form action="{{ route('favorite.destroy', $item->pivot->favorite_id) }}"
                                                   method="post">
                                                 @method('delete')
                                                 @csrf
-                                                <input type="hidden" name="product_id"
+                                                <input type="hidden" name="tour_id"
                                                        value="{{ $item->pivot->product_id }}">
                                                 <button type="submit" class="action-icon btn"><i
                                                         class="mdi mdi-delete"></i></button>
@@ -83,42 +83,14 @@
                         <!-- action buttons-->
                         <div class="row mt-4">
                             <div class="col-sm-6">
-                                <a href="{{ route('customers.tours') }}"
+                                <a href="{{ route('customers.home') }}"
                                    class="btn text-muted d-none d-sm-inline-block btn-link font-weight-semibold">
-                                    <i class="mdi mdi-arrow-left"></i> Tiếp tục mua sắm </a>
+                                    <i class="mdi mdi-arrow-left"></i> Tiếp tục xem tour </a>
                             </div> <!-- end col -->
-                            <div class="col-sm-6">
-                                <div class="text-sm-right">
-                                    <a href="{{ route('orders.index') }}" class="btn btn-danger">
-                                        <i class="mdi mdi-cart-plus mr-1"></i> Đặt hàng </a>
-                                </div>
-                            </div> <!-- end col -->
+
                         </div> <!-- end row-->
                     </div>
                     <!-- end col -->
-
-                    <div class="col-lg-4">
-                        <div class="border p-3 mt-4 mt-lg-0 rounded">
-                            <h4 class="header-title mb-3">Tóm tắt giỏ hàng</h4>
-
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <tbody>
-                                    <tr>
-                                        <td>Phí vận chuyển :</td>
-                                        <td>Miễn phí</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tổng tiền :</th>
-                                        <th><span id="totalPrice"></span></th>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- end table-responsive -->
-                        </div>
-                    </div> <!-- end col -->
-
                 </div> <!-- end row -->
             </div> <!-- end card-body-->
         </div> <!-- end card-->
@@ -130,57 +102,6 @@
 
     <script>
         $(document).ready(function () {
-            updateTotalPrice();
-
-            $(".quantity").on("input", function () {
-                updatePrice($(this));
-                updateTotalPrice();
-
-                let quantity = $(this).val();
-                let product_id = $(this).closest(".product").find("input[name='product_id']").val();
-                let method = $(this).closest(".product").find("input[name='_method']").val();
-                let alert_danger = $(".alert-danger");
-                alert_danger.removeClass("show");
-                alert_danger.addClass("d-none");
-                alert_danger.empty();
-                $.ajax({
-                    url: "{{ route('cart.update', $cart->id) }}",
-                    method: "PUT",
-                    dataType: "json",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        _method: method,
-                        product_id,
-                        quantity,
-                    },
-                    success: function (response) {
-                        alert_danger.removeClass("d-none");
-                        alert_danger.addClass("show");
-                        alert_danger.append(response.error);
-
-                    }
-                });
-            });
-
-            function updatePrice(element) {
-                let quantity = element.val();
-                let pricePerUnit = parseFloat(element.closest(".product").find(".price_unit").text());
-                let totalPrice = quantity * pricePerUnit;
-                let formattedPrice = totalPrice.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
-                element.closest(".product").find(".price").text(formattedPrice);
-            }
-
-            function updateTotalPrice() {
-                let total = 0;
-
-                $(".product").each(function () {
-                    let price = parseFloat($(this).find(".price").text().replace(/[^\d]/g, ''));
-                    total += price;
-                });
-                let formattedPrice = total.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
-                $("#totalPrice").text(formattedPrice);
-            }
-
             @if(session('success'))
             $.notify('{{ session('success') }}', "success");
             @endif

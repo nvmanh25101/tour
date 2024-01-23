@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Tour\UpdateRequest;
 use App\Models\Category;
 use App\Models\Destination;
 use App\Models\Price;
+use App\Models\Schedule;
 use App\Models\Service;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -53,6 +54,12 @@ class TourController extends Controller
             ->addColumn('destroy', function ($object) {
                 return route('admin.tours.destroy', $object);
             })
+            ->addColumn('schedule', function ($object) {
+                return route('admin.tours.edit_schedule', $object);
+            })
+            ->addColumn('price', function ($object) {
+                return route('admin.tours.edit_price', $object);
+            })
             ->filterColumn('status', function ($query, $keyword) {
                 if ($keyword !== '-1') {
                     $query->where('status', $keyword);
@@ -74,7 +81,16 @@ class TourController extends Controller
         $arr['admin_id'] = Auth::guard('admin')->user()->id;
         $tour = Tour::query()->create($arr);
         $tour->destinations()->attach($request->get('destinations'));
-        $tour->services()->attach($request->get('services'));
+        $tour->prices()->createMany([[
+            'tour_id' => $tour->id,
+            'age_group' => 'NGƯỜI LỚN  (10 tuổi trở lên)',
+        ], [
+            'tour_id' => $tour->id,
+            'age_group' => 'TRẺ EM  (Từ 2 - 10 tuổi)',
+        ], [
+            'tour_id' => $tour->id,
+            'age_group' => 'EM BÉ  (Dưới 2 Tuổi)',
+        ]]);
 
         return redirect()->route('admin.tours.index')->with(['success' => 'Thêm mới thành công']);
     }
@@ -114,6 +130,99 @@ class TourController extends Controller
                 'services' => $services,
             ]
         );
+    }
+    public function create_schedule()
+    {
+        $tours = Tour::query()->get();
+        return view('admin.tours.create_schedule', ['tours' => $tours]);
+    }
+
+    public function edit_schedule($tourId)
+    {
+        $tour = Tour::query()->findOrFail($tourId);
+        $schedules = $tour->schedules()->get();
+
+        return view(
+            'admin.tours.edit_schedule',
+            [
+                'tour' => $tour,
+                'schedules' => $schedules,
+            ]
+        );
+    }
+
+    public function edit_price($tourId)
+    {
+        $tour = Tour::query()->findOrFail($tourId);
+        $prices = $tour->prices()->get();
+
+        return view(
+            'admin.tours.edit_price',
+            [
+                'tour' => $tour,
+                'prices' => $prices,
+            ]
+        );
+    }
+
+    public function update_price(Request $request)
+    {
+        $priceIds = $request->get('price_id');
+        $age_groups = $request->get('age_group');
+        $prices = $request->get('price');
+        $result = array_map(function ($priceId, $age_group, $price ) {
+            return [
+                'price_id' => $priceId,
+                'age_group' => $age_group,
+                'price' => $price,
+            ];
+        }, $priceIds, $age_groups, $prices);
+
+        foreach ($result as $item) {
+            Price::query()->where('id', $item['price_id'])->update([
+                'age_group' => $item['age_group'],
+                'price' => $item['price'],
+            ]);
+        }
+
+        return redirect()->route('admin.tours.index')->with(['success' => 'Cập nhật thành công']);
+    }
+    public function store_schedule(Request $request)
+    {
+        $arr['tour_id'] = $request->get('tour_id');
+        $arr['activity'] = $request->get('activity');
+        $arr['day'] = $request->get('day');
+        $arr['description'] = $request->get('description');
+        Schedule::query()->create($arr);
+
+        return redirect()->route('admin.tours.index')->with(['success' => 'Thêm mới thành công']);
+    }
+
+    public function update_schedule(Request $request)
+    {
+        $scheduleIds = $request->get('schedule_id');
+        $days = $request->get('day');
+        $activities = $request->get('activity');
+        $descriptions = $request->get('description');
+
+        $result = array_map(function ($scheduleId, $day, $activity, $description) {
+            return [
+                'schedule_id' => $scheduleId,
+                'day' => $day,
+                'activity' => $activity,
+                'description' => $description,
+            ];
+        }, $scheduleIds, $days, $activities, $descriptions);
+
+        foreach ($result as $item) {
+            Schedule::query()->where('id', $item['schedule_id'])->update([
+                'day' => $item['day'],
+                'activity' => $item['activity'],
+                'description' => $item['description'],
+            ]);
+        }
+
+        return redirect()->route('admin.tours.index')->with(['success' => 'Cập nhật thành công']);
     }
 
     public function destroy($tourId)

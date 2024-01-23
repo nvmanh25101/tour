@@ -23,7 +23,7 @@ class Category extends Model
         self::where('id', $ids)->update(['status' => StatusEnum::NGUNG_HOAT_DONG]);
     }
 
-    public function products(): HasMany
+    public function tours(): HasMany
     {
         return $this->hasMany(Tour::class);
     }

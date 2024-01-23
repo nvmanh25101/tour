@@ -6,14 +6,14 @@
     <title>Đăng nhập | Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- App favicon -->
-    <link rel="shortcut icon" href="https://senhotelsgroup.com/favicon.ico">
+    <link rel="shortcut icon" href="https://www.vietnambooking.com/wp-content/themes/vietnambooking_master/images/favicon.ico">
     <!-- App css -->
     <link href="{{ asset('css/app-creative.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css">
 
     <style>
         .auth-fluid {
-            background: url("https://spaseekers.imgix.net/m/0/hey-spa-01-22.jpeg") right;
+            background: url("https://i.pinimg.com/564x/66/2f/94/662f94a6b5d4803c874f3747ed9790f6.jpg") right;
             background-size: contain;
         }
     </style>
@@ -71,9 +71,8 @@
 
     <div class="auth-fluid-right text-center">
         <div class="auth-user-testimonial">
-            <h2 class="mb-3">Lotus Spa!</h2>
-            <p class="lead">A Place where you could relax and enjoy with our
-                best services after working hours!
+            <h2 class="mb-3">VietNam Booking!</h2>
+            <p class="lead">Vietnam Booking - Niềm tin của bạn!
             </p>
             <p>
                 - Admin User

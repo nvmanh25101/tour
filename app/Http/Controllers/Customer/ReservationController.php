@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Enums\Category\StatusEnum;
 use App\Enums\Category\TypeEnum;
 use App\Enums\VoucherApplyTypeEnum;
 use App\Enums\VoucherStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CheckoutRequest;
 use App\Models\Appointment;
+use App\Models\Category;
 use App\Models\Reservation;
 use App\Models\Tour;
 use App\Models\Voucher;
@@ -22,20 +24,23 @@ class ReservationController extends Controller
     public function __construct()
     {
         view()->share('ControllerName', $this->ControllerName);
+
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)->get(['id', 'name']);
+        view()->share('categories', $categories);
     }
 
     public function show($id)
     {
-        $appointment = Reservation::query()->with(['service', 'voucher', 'admin'])->find($id);
+        $reservation = Reservation::query()->with(['tour', 'voucher', 'admin'])->find($id);
 
-        return view('customer.appointment', [
-            'appointment' => $appointment
+        return view('customer.reservation', [
+            'reservation' => $reservation
         ]);
     }
 
     public function store(Request $request)
     {
-        $arr = $request->except('_token');
+        $arr = $request->validated();
         $timestamp = now()->timestamp;
         $randomNumber = random_int(1000000000, 9999999999);
         $generatedCode = $timestamp.$randomNumber;
@@ -46,8 +51,7 @@ class ReservationController extends Controller
         $tour = Tour::query()->findOrFail($arr['tour_id']);
         $price = $tour->prices[0]->price;
         $arr['price'] = $price;
-        $arr['total_price'] = checkVoucher($request, Reservation::class, VoucherApplyTypeEnum::SAN_PHAM,
-            $price) ?? $price;
+        $arr['total_price'] = checkVoucher($request, Reservation::class, $price) ?? $price;
 
         $check_reservation = Reservation::query()->where('customer_id', Auth::guard('customer')->user()->id)
             ->whereDate('departure_date', $arr['departure_date'])

@@ -17,7 +17,7 @@
 
     <div class="col-12">
         <a href="{{ route('admin.tours.create') }}" class="btn btn-outline-primary">Thêm mới</a>
-        <a href="{{ route('admin.tours.create_price') }}" class="btn btn-outline-primary">Thêm giá</a>
+        <a href="{{ route('admin.tours.create_schedule') }}" class="btn btn-outline-primary">Lịch trình</a>
 
         <table id="data-table" class="table table-striped dt-responsive nowrap w-100">
             <thead>
@@ -30,6 +30,8 @@
                 <th>Trạng thái</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
+                <th>Lịch trình</th>
+                <th>Giá</th>
             </tr>
             </thead>
         </table>
@@ -83,6 +85,22 @@
                             @method('DELETE')
                             <button type="button" class="btn-delete btn btn-danger"><i class='mdi mdi-delete'></i></button>
                         </form>`;
+                        }
+                    },
+                    {
+                        data: 'schedule',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row, meta) {
+                            return `<a class="btn btn-primary" href="${data}"><i class='mdi mdi-pencil'></i></a>`;
+                        }
+                    },
+                    {
+                        data: 'price',
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row, meta) {
+                            return `<a class="btn btn-primary" href="${data}"><i class='mdi mdi-pencil'></i></a>`;
                         }
                     },
                 ]

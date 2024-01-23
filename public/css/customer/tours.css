@@ -1,6 +1,6 @@
-body {
-    background-color: #343a40;
-    color: #aab8c5;
+
+.master-row {
+    justify-content: center;
 }
 
 .page-header {
@@ -8,46 +8,32 @@ body {
     margin-bottom: 0;
 }
 
-.nav-link {
-    font-size: 1.6rem;
-}
-
 .btn-booking {
-    font-size: 1.6rem;
+    text-transform: uppercase;
+    padding: 8px 19px !important;
+    width: 100%;
 }
 
 .single-product-detail {
-    margin-top: 96px;
+    margin-top: 20px;
     padding-top: 40px;
 }
 
-.zoa-qtt .quantity-left-minus:before {
-    content: "";
-}
+/*.custom-accordion .card-header {*/
+/*    margin-top: 0;*/
+/*    background-color: var(--background);*/
+/*}*/
 
-.zoa-qtt .quantity-right-plus:before {
-    content: "";
-}
+/*.custom-accordion-title,*/
+/*.custom-accordion .accordion-arrow {*/
+/*    color: #FFFFFF;*/
+/*    font-size: 1.6rem;*/
+/*}*/
 
-.zoa-tab-collapse-block .panel-heading .accordion-toggle:before {
-    content: "";
-}
-
-.custom-accordion .card-header {
-    margin-top: 0;
-    background-color: var(--background);
-}
-
-.custom-accordion-title,
-.custom-accordion .accordion-arrow {
-    color: #FFFFFF;
-    font-size: 1.6rem;
-}
-
-.custom-accordion-title:focus,
-.panel-heading:focus {
-    color: #FFFFFF;
-}
+/*.custom-accordion-title:focus,*/
+/*.panel-heading:focus {*/
+/*    color: #FFFFFF;*/
+/*}*/
 
 .panel-heading:hover {
     color: #FFFFFF !important;
@@ -156,4 +142,8 @@ body {
 .alert-dismissible .close {
     position: relative;
     top: -7px;
+}
+
+.img-responsive {
+    max-width: 100%;
 }

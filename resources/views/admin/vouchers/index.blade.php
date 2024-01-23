@@ -5,18 +5,6 @@
 @endpush
 @section('content')
     <div class="col-4 d-flex mb-1">
-        <label class="me-1 d-flex align-items-center">Loại</label>
-        <select class="form-control" id="select-type">
-            <option value="-1">Tất cả</option>
-            @foreach($arrVoucherApplyType as $key => $value)
-                <option value="{{ $value }}">
-                    {{ $key }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <div class="col-4 d-flex mb-1">
         <label>Trạng thái</label>
         <select class="form-control" id="select-status">
             <option value="-1">Tất cả</option>
@@ -37,7 +25,6 @@
                 <th>#</th>
                 <th>Mã</th>
                 <th>Tên</th>
-                <th>Áp dụng</th>
                 <th>Giá trị</th>
                 <th>Số lượng</th>
                 <th>Ngày bắt đầu</th>
@@ -79,7 +66,6 @@
                     {data: 'id', name: 'id'},
                     {data: 'code', name: 'code'},
                     {data: 'name', name: 'name'},
-                    {data: 'applicable_type', name: 'applicable_type'},
                     {data: 'value', name: 'value'},
                     {data: 'uses_per_voucher', name: 'uses_per_voucher'},
                     {data: 'start_date', name: 'start_date'},

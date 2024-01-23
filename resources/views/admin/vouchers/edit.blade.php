@@ -36,21 +36,6 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label>Loại áp dụng</label>
-                        <select class="form-control" name="applicable_type">
-                            <option value="-1">Chọn</option>
-                            @foreach($arrVoucherApplyType as $option => $value)
-                                <option value="{{ $value }}"
-                                        @if($voucher->applicable_type === $value)
-                                            selected
-                                    @endif
-                                >
-                                    {{ $option }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label>Loại giảm</label>
                         <select class="form-control" name="type">
                             <option value="-1">Chọn</option>

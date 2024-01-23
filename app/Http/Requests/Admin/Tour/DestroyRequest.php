@@ -31,22 +31,22 @@ class DestroyRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'product' => $this->route('product')->id
+            'tour' => $this->route('tour')->id
         ]);
     }
 
     public function attributes(): array
     {
         return [
-            'product' => 'Sản phẩm',
+            'tour' => 'Tour',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'product.required' => ':attribute không được để trống',
-            'product.exists' => ':attribute không tồn tại',
+            'tour.required' => ':attribute không được để trống',
+            'tour.exists' => ':attribute không tồn tại',
         ];
     }
 }

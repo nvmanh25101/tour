@@ -4,27 +4,18 @@
     left: 0;
     right: 0;
     color: rgb(232, 230, 227);
-    height: 112px;
+    height: 90px;
     background-color: var(--background-navbar);
 }
 
-.nav-link {
-    font-size: 1rem;
-    color: #000000;
-    background-color: transparent;
-    text-transform: uppercase;
-    display: block;
-    min-width: 100px;
-    text-align: center;
-}
 
-.nav-user {
-    border: none;
-    padding: 2rem 1rem !important;
-}
+/*.nav-user {*/
+/*    border: none;*/
+/*    padding: 2rem 1rem !important;*/
+/*}*/
 
 .nav-logo {
-    width: 100px;
+    width: 200px;
     object-fit: fill;
 }
 

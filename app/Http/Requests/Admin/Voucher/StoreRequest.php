@@ -52,11 +52,6 @@ class StoreRequest extends FormRequest
                 'decimal:0,2',
                 'min:0'
             ],
-            'applicable_type' => [
-                'required',
-                'integer',
-                Rule::in(VoucherApplyTypeEnum::asArray()),
-            ],
             'type' => [
                 'required',
                 'integer',
@@ -101,9 +96,6 @@ class StoreRequest extends FormRequest
             'min_spend.min' => ':attribute ít nhất là 0.',
             'max_spend.decimal' => ':attribute không hợp lệ.(2 chữ số sau dấu phẩy)',
             'max_spend.min' => ':attribute ít nhất là 0.',
-            'applicable_type.required' => ':attribute không được để trống.',
-            'applicable_type.integer' => ':attribute không hợp lệ.',
-            'applicable_type.in' => ':attribute không hợp lệ.',
             'start_date.required' => ':attribute không được để trống.',
             'start_date.date_format' => ':attribute không hợp lệ.',
             'start_date.after_or_equal' => ':attribute phải lớn hơn hoặc bằng ngày hiện tại.',
@@ -130,7 +122,6 @@ class StoreRequest extends FormRequest
             'uses_per_voucher' => 'Số lần sử dụng cho mỗi voucher',
             'min_spend' => 'Số tiền tối thiểu',
             'max_spend' => 'Số tiền tối đa',
-            'applicable_type' => 'Loại áp dụng',
             'start_date' => 'Ngày bắt đầu',
             'end_date' => 'Ngày kết thúc',
             'value' => 'Mức giảm giá',

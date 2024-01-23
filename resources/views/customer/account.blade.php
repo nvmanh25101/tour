@@ -26,14 +26,10 @@
                     </li>
                     <li class="nav-item">
                         <a href="#orders" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                            Đơn hàng
+                            Đơn đặt tour
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#appointments" data-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
-                            Lịch đặt
-                        </a>
-                    </li>
+
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="settings">
@@ -111,8 +107,8 @@
                                         <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Mã đơn hàng</th>
-                                            <th>Ngày đặt hàng</th>
+                                            <th>Mã đơn</th>
+                                            <th>Ngày đặt</th>
                                             <th>Trạng thái</th>
                                             <th>Thanh toán</th>
                                             <th>Tổng tiền</th>
@@ -120,47 +116,40 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($orders as $key => $order)
+                                        @foreach($reservations as $key => $reservation)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ $order->code }}</td>
-                                                <td>{{ Carbon::parse($order->created_at)->format('d/m/Y') }}</td>
+                                                <td>{{ $reservation->code }}</td>
+                                                <td>{{ Carbon::parse($reservation->created_at)->format('d/m/Y') }}</td>
                                                 <td>
                                                     @foreach(OrderStatusEnum::asArray() as $key => $value)
                                                         @php $class = '' @endphp
                                                         @if($value === OrderStatusEnum::CHO_XAC_NHAN)
                                                             @php $class = 'warning' @endphp
-                                                        @elseif($value === OrderStatusEnum::CHO_LAY_HANG)
+                                                        @elseif($value === OrderStatusEnum::XAC_NHAN)
                                                             @php $class = 'primary' @endphp
-                                                        @elseif($value === OrderStatusEnum::DANG_GIAO)
-                                                            @php $class = 'info' @endphp
-                                                        @elseif($value === OrderStatusEnum::DA_GIAO)
-                                                            @php $class = 'success' @endphp
-                                                        @elseif($value === OrderStatusEnum::DA_HUY)
+                                                        @elseif($value === OrderStatusEnum::TU_CHOI)
                                                             @php $class = 'danger' @endphp
-                                                        @elseif($value === OrderStatusEnum::HOAN_THANH)
-                                                            @php $class = 'success' @endphp
                                                         @endif
-
-                                                        @if($order->status === $value)
+                                                        @if($reservation->status === $value)
                                                             <span
                                                                 class="badge badge-{{ $class }} p-1">{{ OrderStatusEnum::getKeyByValue($value) }}</span>
                                                         @endif
                                                     @endforeach
                                                 </td>
                                                 <td>
-                                                    @if($order->payment_status === OrderPaymentStatusEnum::CHUA_THANH_TOAN)
+                                                    @if($reservation->payment_status === OrderPaymentStatusEnum::CHUA_THANH_TOAN)
                                                         <span class="badge badge-warning p-1">Chưa thanh toán</span>
-                                                    @elseif($order->payment_status === OrderPaymentStatusEnum::DA_THANH_TOAN)
+                                                    @elseif($reservation->payment_status === OrderPaymentStatusEnum::DA_THANH_TOAN)
                                                         <span class="badge badge-success p-1">Đã thanh toán</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ number_format($order->total) }} đ</td>
+                                                <td>{{ number_format($reservation->total) }} đ</td>
                                                 <td>
-                                                    <a href="{{ route('orders.show', $order) }}"
+                                                    <a href="{{ route('reservations.show', $reservation) }}"
                                                        class="btn btn-sm btn-primary">Xem chi tiết</a>
-                                                    @if($order->status === OrderStatusEnum::CHO_XAC_NHAN)
-                                                        <form action="{{ route('orders.destroy', $order) }}"
+                                                    @if($reservation->status === OrderStatusEnum::CHO_XAC_NHAN)
+                                                        <form action="{{ route('reservations.destroy', $reservation) }}"
                                                               class="d-inline-block"
                                                               method="post">
                                                             @csrf
@@ -176,77 +165,13 @@
                                         </tbody>
                                     </table>
                                     <div class="float-right">
-                                        {{ $orders->links() }}
+                                        {{ $reservations->links() }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="tab-pane" id="appointments">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Mã lịch đặt</th>
-                                            <th>Ngày đặt</th>
-                                            <th>Trạng thái</th>
-                                            <th>Tổng tiền</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($reservations as $key => $item)
-                                            <tr>
-                                                <td>{{ $item->id }}</td>
-                                                <td>{{ Carbon::parse($item->date)->format('d/m/Y') }}</td>
-                                                <td>
-                                                    @foreach(AppointmentStatusEnum::asArray() as $key => $value)
-                                                        @php $class = '' @endphp
-                                                        @if($value === AppointmentStatusEnum::CHO_XAC_NHAN)
-                                                            @php $class = 'warning' @endphp
-                                                        @elseif($value === AppointmentStatusEnum::XAC_NHAN)
-                                                            @php $class = 'primary' @endphp
-                                                        @elseif($value === AppointmentStatusEnum::TU_CHOI)
-                                                            @php $class = 'danger' @endphp
-                                                        @endif
-
-                                                        @if($item->status === $value)
-                                                            <span
-                                                                class="badge badge-{{ $class }} p-1">{{ OrderStatusEnum::getKeyByValue($value) }}</span>
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ number_format($item->total_price) }} đ</td>
-                                                <td>
-                                                    <a href="{{ route('reservations.show', $item) }}"
-                                                       class="btn btn-sm btn-primary">Xem chi
-                                                        tiết</a>
-                                                    @if($item->status === OrderStatusEnum::CHO_XAC_NHAN)
-                                                        <form action="{{ route('reservations.destroy', $item) }}"
-                                                              class="d-inline-block"
-                                                              method="post">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button"
-                                                                    class="btn-delete btn btn-danger btn-sm">Hủy
-                                                            </button>
-                                                        </form>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                    <div class="float-right">
-                                        {{ $orders->links() }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- end settings content-->
                 </div> <!-- end tab-content -->
             </div> <!-- end card body -->

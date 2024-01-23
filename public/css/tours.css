@@ -12,7 +12,6 @@
     color: #1e1e1e;
 }
 
-
 .delete-price {
     height: 100%;
     background: none;
@@ -28,3 +27,4 @@
 .delete-price:hover {
     color: #1e1e1e;
 }
+

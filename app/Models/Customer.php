@@ -37,17 +37,13 @@ class Customer extends Authenticatable implements MustVerifyEmail
         QueuedVerifyEmailJob::dispatch($this);
     }
 
-    public function appointments(): HasMany
-    {
-        return $this->hasMany(Appointment::class);
-    }
 
-    public function cart(): HasOne
+    public function favorite(): HasOne
     {
         return $this->hasOne(Favorite::class);
     }
 
-    public function orders(): HasMany
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }
