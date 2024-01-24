@@ -69,6 +69,14 @@ class StoreRequest extends FormRequest
                 'integer',
                 'exists:categories,id',
             ],
+            'age_group' => [
+                'nullable',
+                'array',
+            ],
+            'price' => [
+                'nullable',
+                'array',
+            ],
         ];
     }
 

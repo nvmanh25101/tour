@@ -32,82 +32,6 @@ Route::group([
     ], function () {
         Route::get('/', [HomeController::class, 'index'])->name('dashboard');
         Route::group([
-            'middleware' => 'isSuperAdmin'
-        ], function () {
-            Route::group([
-                'controller' => AdminController::class,
-                'as' => 'employees.',
-                'prefix' => 'employees',
-            ], function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/api', 'api')->name('api');
-                Route::get('/resignation', 'resign')->name('resign');
-                Route::get('/resignList', 'resignList')->name('resignList');
-                Route::get('/create', 'create')->name('create');
-                Route::post('/', 'store')->name('store');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::put('/{id}', 'update')->name('update');
-                Route::delete('/{id}', 'destroy')->name('destroy');
-            });
-
-            Route::group([
-                'controller' => VoucherController::class,
-                'as' => 'vouchers.',
-                'prefix' => 'vouchers',
-            ], function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/api', 'api')->name('api');
-                Route::get('/create', 'create')->name('create');
-                Route::post('/', 'store')->name('store');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::put('/{id}', 'update')->name('update');
-                Route::delete('/{id}', 'destroy')->name('destroy');
-            });
-        });
-
-        Route::group([
-            'controller' => CategoryController::class,
-            'as' => 'categories.',
-            'prefix' => 'categories',
-        ], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/api', 'api')->name('api');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
-        });
-
-        Route::group([
-            'controller' => ServiceController::class,
-            'as' => 'services.',
-            'prefix' => 'services',
-        ], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/api', 'api')->name('api');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
-            Route::delete('/{id}/prices/{price_id}', 'destroyPrice')->name('destroyPrice');
-        });
-
-        Route::group([
-            'controller' => DestinationController::class,
-            'as' => 'destinations.',
-            'prefix' => 'destinations',
-        ], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}', 'update')->name('update');
-            Route::post('/', 'store')->name('store');
-            Route::delete('/{id}', 'destroy')->name('destroy');
-        });
-
-        Route::group([
             'controller' => TourController::class,
             'as' => 'tours.',
             'prefix' => 'tours',
@@ -119,8 +43,6 @@ Route::group([
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::get('/{id}/schedule', 'edit_schedule')->name('edit_schedule');
             Route::put('/{id}/schedule', 'update_schedule')->name('update_schedule');
-            Route::get('/{id}/price', 'edit_price')->name('edit_price');
-            Route::put('/{id}/price', 'update_price')->name('update_price');
             Route::get('/schedule', 'create_schedule')->name('create_schedule');
             Route::post('/schedule', 'store_schedule')->name('store_schedule');
             Route::put('/{id}', 'update')->name('update');
@@ -129,30 +51,111 @@ Route::group([
         });
 
         Route::group([
-            'controller' => \App\Http\Controllers\Admin\ReservationController::class,
-            'as' => 'reservations.',
-            'prefix' => 'reservations',
+            'middleware' => 'checkAdminRole'
         ], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/api', 'api')->name('api');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::patch('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
-        });
 
-        Route::group([
-            'controller' => BlogController::class,
-            'as' => 'blogs.',
-            'prefix' => 'blogs',
-        ], function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/api', 'api')->name('api');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/', 'store')->name('store');
-            Route::get('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::group([
+                'middleware' => 'isSuperAdmin'
+            ], function () {
+                Route::group([
+                    'controller' => AdminController::class,
+                    'as' => 'employees.',
+                    'prefix' => 'employees',
+                ], function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/api', 'api')->name('api');
+                    Route::get('/resignation', 'resign')->name('resign');
+                    Route::get('/resignList', 'resignList')->name('resignList');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/', 'store')->name('store');
+                    Route::get('/{id}/edit', 'edit')->name('edit');
+                    Route::put('/{id}', 'update')->name('update');
+                    Route::delete('/{id}', 'destroy')->name('destroy');
+                });
+
+                Route::group([
+                    'controller' => VoucherController::class,
+                    'as' => 'vouchers.',
+                    'prefix' => 'vouchers',
+                ], function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/api', 'api')->name('api');
+                    Route::get('/create', 'create')->name('create');
+                    Route::post('/', 'store')->name('store');
+                    Route::get('/{id}/edit', 'edit')->name('edit');
+                    Route::put('/{id}', 'update')->name('update');
+                    Route::delete('/{id}', 'destroy')->name('destroy');
+                });
+            });
+
+            Route::group([
+                'controller' => CategoryController::class,
+                'as' => 'categories.',
+                'prefix' => 'categories',
+            ], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/api', 'api')->name('api');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            Route::group([
+                'controller' => ServiceController::class,
+                'as' => 'services.',
+                'prefix' => 'services',
+            ], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/api', 'api')->name('api');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::delete('/{id}/prices/{price_id}', 'destroyPrice')->name('destroyPrice');
+            });
+
+            Route::group([
+                'controller' => DestinationController::class,
+                'as' => 'destinations.',
+                'prefix' => 'destinations',
+            ], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::post('/', 'store')->name('store');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            Route::group([
+                'controller' => \App\Http\Controllers\Admin\ReservationController::class,
+                'as' => 'reservations.',
+                'prefix' => 'reservations',
+            ], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/api', 'api')->name('api');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::patch('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            Route::group([
+                'controller' => BlogController::class,
+                'as' => 'blogs.',
+                'prefix' => 'blogs',
+            ], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/api', 'api')->name('api');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
         });
     });
 });

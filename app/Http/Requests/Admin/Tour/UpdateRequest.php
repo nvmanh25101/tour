@@ -72,6 +72,14 @@ class UpdateRequest extends FormRequest
                 'integer',
                 Rule::in(TourStatusEnum::asArray()),
             ],
+            'price' => [
+                'nullable',
+                'array',
+            ],
+            'price_id' => [
+                'required',
+                'array',
+            ],
         ];
     }
 

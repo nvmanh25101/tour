@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AdminType;
 use App\Enums\Category\StatusEnum;
 use App\Enums\TourStatusEnum;
 use App\Http\Controllers\Controller;
@@ -57,9 +58,6 @@ class TourController extends Controller
             ->addColumn('schedule', function ($object) {
                 return route('admin.tours.edit_schedule', $object);
             })
-            ->addColumn('price', function ($object) {
-                return route('admin.tours.edit_price', $object);
-            })
             ->filterColumn('status', function ($query, $keyword) {
                 if ($keyword !== '-1') {
                     $query->where('status', $keyword);
@@ -79,18 +77,24 @@ class TourController extends Controller
         $arr = $request->validated();
         $arr['image'] = $path;
         $arr['admin_id'] = Auth::guard('admin')->user()->id;
+
         $tour = Tour::query()->create($arr);
         $tour->destinations()->attach($request->get('destinations'));
-        $tour->prices()->createMany([[
-            'tour_id' => $tour->id,
-            'age_group' => 'NGƯỜI LỚN  (10 tuổi trở lên)',
-        ], [
-            'tour_id' => $tour->id,
-            'age_group' => 'TRẺ EM  (Từ 2 - 10 tuổi)',
-        ], [
-            'tour_id' => $tour->id,
-            'age_group' => 'EM BÉ  (Dưới 2 Tuổi)',
-        ]]);
+        $tour->services()->attach($request->get('services'));
+        $age_groups = $request->validated()['age_group'];
+        $prices = $request->validated()['price'];
+        $result = array_map(function ($age_group, $price ) {
+            return [
+                'age_group' => $age_group,
+                'price' => $price,
+            ];
+        }, $age_groups, $prices);
+
+        foreach ($result as $item) {
+            $item['tour_id'] = $tour->id;
+        }
+
+        $tour->prices()->createMany($result);
 
         return redirect()->route('admin.tours.index')->with(['success' => 'Thêm mới thành công']);
     }
@@ -115,7 +119,7 @@ class TourController extends Controller
     {
         $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)
             ->get(['id', 'name']);
-        $tour = Tour::query()->with('destinations')->findOrFail($tourId);
+        $tour = Tour::query()->with(['destinations', 'prices'])->findOrFail($tourId);
         $reviews = $tour->reviews()->with('customer')->get();
         $destinations = Destination::query()->get();
         $services = Service::query()->get();
@@ -151,41 +155,20 @@ class TourController extends Controller
         );
     }
 
-    public function edit_price($tourId)
+    public function update_price($priceIds, $prices)
     {
-        $tour = Tour::query()->findOrFail($tourId);
-        $prices = $tour->prices()->get();
-
-        return view(
-            'admin.tours.edit_price',
-            [
-                'tour' => $tour,
-                'prices' => $prices,
-            ]
-        );
-    }
-
-    public function update_price(Request $request)
-    {
-        $priceIds = $request->get('price_id');
-        $age_groups = $request->get('age_group');
-        $prices = $request->get('price');
-        $result = array_map(function ($priceId, $age_group, $price ) {
+        $result = array_map(function ($priceId, $price ) {
             return [
                 'price_id' => $priceId,
-                'age_group' => $age_group,
                 'price' => $price,
             ];
-        }, $priceIds, $age_groups, $prices);
+        }, $priceIds, $prices);
 
         foreach ($result as $item) {
             Price::query()->where('id', $item['price_id'])->update([
-                'age_group' => $item['age_group'],
                 'price' => $item['price'],
             ]);
         }
-
-        return redirect()->route('admin.tours.index')->with(['success' => 'Cập nhật thành công']);
     }
     public function store_schedule(Request $request)
     {
@@ -236,6 +219,11 @@ class TourController extends Controller
 
     public function review(Request $request, $id, $reviewId)
     {
+        $user = Auth::guard('admin')->user();
+        if ($user->role == AdminType::NHAN_VIEN) {
+            return redirect()->back()->withErrors('message', 'Bạn không có quyền truy cập');
+        }
+
         $tour = Tour::query()->findOrFail($id);
         $review = $tour->reviews()->findOrFail($reviewId);
         $review->update([
@@ -261,25 +249,14 @@ class TourController extends Controller
         }
         $tour->fill($arr);
 
+        $priceIds = $request->validated()['price_id'];
+        $prices = $request->validated()['price'];
+        $this->update_price($priceIds, $prices);
+
         if ($tour->save()) {
             return redirect()->route('admin.tours.index')->with(['success' => 'Cập nhật thành công']);
         }
         return redirect()->back()->withErrors('message', 'Cập nhật thất bại');
     }
 
-    public function create_price()
-    {
-        $tours = Tour::query()->get();
-        return view('admin.tours.create_price', ['tours' => $tours]);
-    }
-
-    public function store_price(Request $request)
-    {
-        $arr['tour_id'] = $request->get('tour_id');
-        $arr['price'] = $request->get('price');
-        $arr['age_group'] = $request->get('age_group');
-        Price::query()->create($arr);
-
-        return redirect()->route('admin.tours.index')->with(['success' => 'Thêm mới thành công']);
-    }
 }

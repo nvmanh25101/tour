@@ -31,7 +31,6 @@
                 <th>Sửa</th>
                 <th>Xóa</th>
                 <th>Lịch trình</th>
-                <th>Giá</th>
             </tr>
             </thead>
         </table>
@@ -59,7 +58,16 @@
                             '<span title="' + data + '">' + data.substr(0, 38) + '...</span>' :
                             data;
                     }
-                }],
+                },
+                    {
+                        "targets": 2,
+                        "data": "code",
+                        "render": function (data, type, row, meta) {
+                            return type === 'display' && data.length > 20 ?
+                                '<span title="' + data + '">' + data.substr(0, 18) + '...</span>' :
+                                data;
+                        }
+                    }],
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
@@ -89,14 +97,6 @@
                     },
                     {
                         data: 'schedule',
-                        orderable: false,
-                        searchable: false,
-                        render: function (data, type, row, meta) {
-                            return `<a class="btn btn-primary" href="${data}"><i class='mdi mdi-pencil'></i></a>`;
-                        }
-                    },
-                    {
-                        data: 'price',
                         orderable: false,
                         searchable: false,
                         render: function (data, type, row, meta) {

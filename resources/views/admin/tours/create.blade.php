@@ -37,7 +37,62 @@
                         src="#" alt="pic"/>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="mb-4 form-group">
+                        <div class="form-group">
+                            <label>Nhóm tuổi</label>
+                            <input type="text" class="form-control" name="age_group[]" placeholder=""
+                                   value="NGƯỜI LỚN  (10 tuổi trở lên)" required readonly>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="price">Giá tiền</label>
+                            <div class="input-group">
+                                <span class="input-group-text">VNĐ</span>
+                                <input type="number" name="price[]" id="price" min="1"
+                                       class="form__input form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-4 form-group">
+                        <div class="form-group">
+                            <label>Nhóm tuổi</label>
+                            <input type="text" class="form-control" name="age_group[]" placeholder=""
+                                   value="TRẺ EM  (Từ 2 - 10 tuổi)" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Giá tiền</label>
+                            <div class="input-group">
+                                <span class="input-group-text">VNĐ</span>
+                                <input type="number" name="price[]" id="price" min="1"
+                                       class="form__input form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-4 form-group">
+                        <div class="form-group">
+                            <label>Nhóm tuổi</label>
+                            <input type="text" class="form-control" name="age_group[]" placeholder=""
+                                   value="EM BÉ  (Dưới 2 Tuổi)" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Giá tiền</label>
+                            <div class="input-group">
+                                <span class="input-group-text">VNĐ</span>
+                                <input type="number" name="price[]" id="price" min="1"
+                                       class="form__input form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form-group mb-3">
                 <label>Giá bao gồm</label>
                 <textarea class="form-control" name="price_include" placeholder="Giá bao gồm"
