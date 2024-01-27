@@ -105,6 +105,7 @@
                                         </div> <!-- end col -->
                                     </div> <!-- end row -->
                                 </div>
+                                <input hidden id="tour_id" value="{{ $tour->id }}">
                                 <div class="col-lg-4">
                                     <div class="border p-3 mt-4 mt-lg-0 rounded">
                                         <h4 class="header-title mb-3">Tóm tắt đơn đặt tour</h4>
