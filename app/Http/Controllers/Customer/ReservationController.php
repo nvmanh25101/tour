@@ -50,7 +50,7 @@ class ReservationController extends Controller
 
         $arr['customer_id'] = Auth::guard('customer')->user()->id;
         $tour = Tour::query()->findOrFail($arr['tour_id']);
-        $price = $tour->prices[0]->price;
+        $price = $tour->prices[0]->price * $arr['number_people'];
         $arr['price'] = $price;
         $arr['total_price'] = checkVoucher($request, Reservation::class, $price) ?? $price;
 

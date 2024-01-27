@@ -4,7 +4,7 @@ html, body {
 
 :root {
     --background-primary: #0066d9;
-    --text-primary: #000000;
+    --text-primary: #0066d9;
     --background-navbar: #ffffff;
     --background: #ffffff;
 }
@@ -12,6 +12,22 @@ html, body {
 .text-primary {
     color: var(--text-primary) !important;
 }
+
+body,
+.table{
+ color: #000000;
+ font-size: 10px;
+}
+
+.table{
+    font-size: 1.2rem;
+}
+
+.list-group-item {
+    font-size: 1.2rem;
+}
+
+
 
 /*input::-webkit-outer-spin-button,*/
 /*input::-webkit-inner-spin-button {*/
@@ -43,13 +59,17 @@ html, body {
 }
 
 .nav-link {
-    font-size: 1rem;
+    font-size: 1.4rem;
     color: #000000;
     background-color: transparent;
     text-transform: uppercase;
     display: block;
     min-width: 100px;
     text-align: center;
+}
+
+.dropdown-menu {
+    font-size: 1.4rem;
 }
 
 
@@ -98,4 +118,8 @@ html, body {
 .dropdown-menu {
     top: 56px !important;
     left: -30px !important;
+}
+
+p {
+    font-size: 1.2rem;
 }

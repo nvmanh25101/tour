@@ -144,7 +144,7 @@
                                                         <span class="badge badge-success p-1">Đã thanh toán</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ number_format($reservation->total) }} đ</td>
+                                                <td>{{ number_format($reservation->total_price) }} đ</td>
                                                 <td>
                                                     <a href="{{ route('reservations.show', $reservation) }}"
                                                        class="btn btn-sm btn-primary">Xem chi tiết</a>

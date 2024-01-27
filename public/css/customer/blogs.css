@@ -1,5 +1,5 @@
 .nav-link {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: #000000;
     background-color: transparent;
     text-transform: uppercase;
@@ -15,6 +15,9 @@
 .page-header {
     margin-top: 96px;
     margin-bottom: 0;
+}
+.dropdown-item {
+    font-size: 1.6rem;
 }
 
 .btn-booking {

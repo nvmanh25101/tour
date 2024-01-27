@@ -69,12 +69,12 @@
                                             <div class="col-sm-8">
                                                 <div class="custom-control custom-radio">
                                                     <input type="radio" id="BillingOptRadio4" name="payment_method"
-                                                           value="{{ PaymentEnum::TAI_CUA_HANG }}"
+                                                           value="{{ PaymentEnum::TAI_NHA }}"
                                                            class="custom-control-input">
                                                     <label class="custom-control-label font-16 font-weight-bold"
-                                                           for="BillingOptRadio4">Thanh toán tại cửa hàng</label>
+                                                           for="BillingOptRadio4">Thanh toán tại nhà</label>
                                                 </div>
-                                                <p class="mb-0 pl-3 pt-1">Thanh toán tại cửa hàng.</p>
+                                                <p class="mb-0 pl-3 pt-1">Thanh toán tại nhà.</p>
                                             </div>
                                             <div class="col-sm-4 text-sm-right mt-3 mt-sm-0">
                                             </div>

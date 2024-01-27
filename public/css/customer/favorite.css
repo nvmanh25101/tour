@@ -1,3 +1,9 @@
-.product-name {
-    font-size: 0.9rem;
+.product-name,
+.btn {
+    font-size: 1.4rem;
 }
+
+.table .action-icon
+ {
+    font-size: 1.8rem;
+ }

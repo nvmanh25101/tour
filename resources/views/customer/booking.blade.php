@@ -124,7 +124,7 @@
                                                                 <br>
                                                             </p>
                                                         </td>
-                                                        <td class="text-right price">
+                                                        <td class="text-right price_tour">
                                                             {{ $tour->prices[0]->price }} đ
                                                         </td>
                                                     </tr>
@@ -137,14 +137,7 @@
                                                         0
                                                     </td>
                                                 </tr>
-                                                <tr class="text-right">
-                                                    <td>
-                                                        <h6 class="m-0">Phí vận chuyển:</h6>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        Miễn phí
-                                                    </td>
-                                                </tr>
+
                                                 <tr class="text-right">
                                                     <td>
                                                         <h6 class="m-0">Giảm giá:</h6>
@@ -215,14 +208,36 @@
             let alert_element = $('.alert-warning');
             let sub_price_element = $('#subPrice');
             let total_price_element = $('#totalPrice');
+            let number_people_element = $('select[name="number_people"]');
+            let price_tour = $('.price_tour')
 
             updateTotalPrice();
 
+            number_people_element.on('change', function () {
+                let number_people = $(this).val();
+                let price = price_tour.text();
+                let price_value = parseInt(price);
+                if (number_people > 0) {
+                    price_value = price_value * number_people;
+                }
+                let discount_price = discount_price_element.text();
+                let discount_price_value = parseInt(discount_price);
+                let total_price = price_value;
+                if (discount_price_value > 0) {
+                    total_price = price_value - discount_price_value;
+                }
+                let price_format = price_value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                let total_price_format = total_price.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                sub_price_element.text(price_format);
+                total_price_element.text(total_price_format);
+
+            });
+
             function updateTotalPrice() {
                 let total = 0;
-
                 $(".product").each(function () {
-                    let price = parseInt($(this).find(".price").text());
+                    let price = parseInt($(this).find(".price_tour").text());
+
                     total += price;
                 });
                 let formattedPrice = total.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
@@ -235,7 +250,7 @@
                 let price_value = parseInt(price.replace(/[^\d]/g, ''));
                 let price_format = price_value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
 
-                if ($(this).val() === '-1') {
+                if ($(this).val() === '') {
                     total_price_element.text(price_format);
                     discount_price_element.text('');
                     return;

@@ -106,7 +106,7 @@
                     <div class="card mb-4">
                         <div class="card-header panel-heading" id="headingFour">
                             <h5 class="m-0">
-                                <a class="custom-accordion-title d-block py-1"
+                                <a class="custom-accordion-title d-block py-1 fs-3"
                                    data-toggle="collapse" href="#collapseFour"
                                    aria-expanded="true" aria-controls="collapseFour">
                                     Chương trình tour
@@ -122,7 +122,7 @@
                                 @foreach($tour->schedules as $item)
                                     <div class="row">
                                         <div class="col-12">
-                                            <h5>Ngày: {{ $item->day }}: {{ $item->activity }}</h5>
+                                            <h5 class='fs-4 text-red'>Ngày: {{ $item->day }}: {{ $item->activity }}</h5>
                                             <p>{!! nl2br($item->description) !!}</p>
                                         </div>
                                     </div>
@@ -134,7 +134,7 @@
                         <div class="card-header panel-heading" id="headingFive">
 
                             <h5 class="m-0">
-                                <a class="custom-accordion-title collapsed d-block py-1"
+                                <a class="custom-accordion-title collapsed d-block py-1 fs-3"
                                    data-toggle="collapse" href="#collapseFive"
                                    aria-expanded="false" aria-controls="collapseFive">
                                     Dịch vụ bao gồm
@@ -198,22 +198,22 @@
                                 </table>
                                 <div class="">
                                     <h5>Giá tour bao gồm</h5>
-                                    <p>{!! nl2br($tour->price_include) !!}--}}</p>
+                                    <p>{!! nl2br($tour->price_include) !!}</p>
                                 </div>
                                 <div class="">
                                     <h5>Giá tour không bao gồm</h5>
-                                    <p>{!! nl2br($tour->price_exclude) !!}--}}</p>
+                                    <p>{!! nl2br($tour->price_exclude) !!}</p>
                                 </div>
                                 @if($tour->price_childen)
                                     <div class="">
                                         <h5>Giá tour khi có trẻ em</h5>
-                                        <p>{!! nl2br($tour->price_childen) !!}--}}</p>
+                                        <p>{!! nl2br($tour->price_childen) !!}</p>
                                     </div>
                                 @endif
                                 @if($tour->note)
                                     <div class="">
                                         Lưu ý: <br>
-                                        <p>{!! nl2br($tour->note) !!}--}}</p>
+                                        <p>{!! nl2br($tour->note) !!}</p>
                                     </div>
                                 @endif
                             </div>
@@ -222,7 +222,7 @@
                     <div class="card mb-4">
                         <div class="card-header panel-heading" id="headingSix">
                             <h5 class="m-0">
-                                <a class="custom-accordion-title collapsed d-block py-1"
+                                <a class="custom-accordion-title collapsed d-block py-1 fs-3"
                                    data-toggle="collapse" href="#collapseSix"
                                    aria-expanded="false" aria-controls="collapseSix">
                                     Đánh giá @if($reviews->count() > 0)
