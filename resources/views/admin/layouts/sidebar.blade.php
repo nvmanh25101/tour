@@ -32,20 +32,10 @@
             </li>
             @if (Auth::guard('admin')->user()->role === \App\Enums\AdminType::QUAN_LY)
                 <li class="side-nav-item">
-                    <a href="javascript: void(0);" class="side-nav-link" aria-expanded="false">
-{{--                        <i class="uil-store"></i>--}}
+                    <a href="{{ route('admin.employees.index') }}" class="side-nav-link" aria-expanded="false">
+    {{--                        <i class="uil-store"></i>--}}
                         <span> Quản lý nhân viên </span>
-                        <span class="menu-arrow"></span>
                     </a>
-                    <ul class="side-nav-second-level mm-collapse" aria-expanded="false" style="height: 0px;">
-                        <li>
-                            <a href="{{ route('admin.employees.index') }}">Nhân viên</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.employees.resign') }}">Nhân viên nghỉ việc</a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="side-nav-item">
                     <a href="{{ route('admin.vouchers.index') }}" class="side-nav-link">
                         <span>Voucher</span>

@@ -58,24 +58,6 @@ class AdminController extends Controller
             ->make(true);
     }
 
-    public function resign()
-    {
-        return view('admin.employees.resign');
-    }
-
-    public function resignList()
-    {
-        return DataTables::of(Admin::query()->onlyTrashed())
-            ->editColumn('role', function ($object) {
-                return AdminType::getKeyByValue($object->role);
-            })
-            ->filterColumn('role', function ($query, $keyword) {
-                if ($keyword !== '-1') {
-                    $query->where('role', $keyword);
-                }
-            })
-            ->make(true);
-    }
 
     public function store(StoreRequest $request)
     {
@@ -118,6 +100,18 @@ class AdminController extends Controller
 
     public function destroy($adminId)
     {
+        if (auth()->user()->id == $adminId) {
+            return response()->json([
+                'error' => 'Bạn không thể xóa chính mình',
+            ]);
+        }
+        $admin = Admin::query()->findOrFail($adminId);
+        if ($admin->role == AdminType::QUAN_LY) {
+            return response()->json([
+                'error' => 'Bạn không thể xóa quản lý',
+            ]);
+        }
+
         Admin::destroy($adminId);
 
         return response()->json([
