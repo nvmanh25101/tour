@@ -53,7 +53,6 @@ Route::group([
         Route::group([
             'middleware' => 'checkAdminRole'
         ], function () {
-
             Route::group([
                 'middleware' => 'isSuperAdmin'
             ], function () {
@@ -64,8 +63,6 @@ Route::group([
                 ], function () {
                     Route::get('/', 'index')->name('index');
                     Route::get('/api', 'api')->name('api');
-                    Route::get('/resignation', 'resign')->name('resign');
-                    Route::get('/resignList', 'resignList')->name('resignList');
                     Route::get('/create', 'create')->name('create');
                     Route::post('/', 'store')->name('store');
                     Route::get('/{id}/edit', 'edit')->name('edit');

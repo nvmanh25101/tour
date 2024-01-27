@@ -220,7 +220,7 @@ class TourController extends Controller
     public function review(Request $request, $id, $reviewId)
     {
         $user = Auth::guard('admin')->user();
-        if ($user->role == AdminType::NHAN_VIEN) {
+        if ($user->role !== AdminType::NHAN_VIEN) {
             return redirect()->back()->withErrors('message', 'Bạn không có quyền truy cập');
         }
 
