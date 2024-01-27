@@ -7,6 +7,7 @@ use App\Enums\Category\TypeEnum;
 use App\Enums\VoucherApplyTypeEnum;
 use App\Enums\VoucherStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\Reservation\StoreRequest;
 use App\Http\Requests\Customer\CheckoutRequest;
 use App\Models\Appointment;
 use App\Models\Category;
@@ -38,7 +39,7 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $arr = $request->validated();
         $timestamp = now()->timestamp;
