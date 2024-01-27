@@ -51,7 +51,7 @@ class AuthController extends Controller
     {
         $request->fulfill();
 
-        return redirect()->route('customers.login');
+        return redirect()->route('login');
     }
 
     public function processLogin(AuthRequest $request)

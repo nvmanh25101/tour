@@ -4,11 +4,21 @@
 @endpush
 @section('content')
     <div class="row engoc-row-equal">
+        @if ($category)
+        <h3 class="text-center">{{ $category->name }}</h3>
+
+        <div class="entry-image relative text-center mb-3">
+            <img width="600" height="400"
+                 src="{{ asset('storage/' . $category->image) }}"
+                 class="attachment-large size-large wp-post-image" alt=""></div>
+        <p>{!! nl2br($category->description) !!} </p>
+    @endif
         @if($tours->count() === 0)
             <div class="text-center">
                 <span class="fs-2">Không có tour nào</span>
             </div>
         @endif
+
         @foreach($tours as $tour)
                 <div class="col-md-6 col-lg-3">
 

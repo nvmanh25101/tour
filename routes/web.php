@@ -195,11 +195,11 @@ Route::group([
     Route::get('/blogs', 'blogs')->name('blogs');
     Route::get('/blog/{id}', 'blog')->name('blog');
 });
-//'middleware' => ['auth', 'verified']
 
 Route::group([
     'prefix' => 'reservations',
     'as' => 'reservations.',
+    'middleware' => ['auth', 'verified'],
     'controller' => ReservationController::class,
 ], function () {
     Route::get('/{id}/booking', 'create')->name('booking');
@@ -215,7 +215,7 @@ Route::group([
     'prefix' => 'favorite',
     'as' => 'favorite.',
     'controller' => FavoriteController::class,
-    'middleware' => ['auth', 'verified']
+    'middleware' => ['auth', 'verified'],
 ], function () {
     Route::get('/', 'index')->name('index');
     Route::get('/{tourId}', 'store')->name('store');

@@ -34,7 +34,7 @@ class ShopController extends Controller
             ->get(['id', 'name']);
 
         if ($category_filter) {
-            $category = Category::query()->where('id', $request->query('category'))->get();
+            $category = Category::query()->where('id', $request->query('category'))->first();
             $tours = Tour::query()->whereBelongsTo($category)->where('status', '=',
                 TourStatusEnum::HOAT_DONG)->simplePaginate(12);
         } else {
@@ -44,7 +44,8 @@ class ShopController extends Controller
         return view('customer.home', [
             'tours' => $tours,
             'categories' => $categories,
-            'category_filter' => $category_filter
+            'category_filter' => $category_filter,
+            'category' => $category ?? null,
         ]);
     }
     public function tour(Request $request, $id)
