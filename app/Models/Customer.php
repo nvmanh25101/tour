@@ -31,12 +31,6 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function sendEmailVerificationNotification()
-    {
-        //dispactches the job to the queue passing it this Customer object
-        QueuedVerifyEmailJob::dispatch($this);
-    }
-
 
     public function favorite(): HasOne
     {

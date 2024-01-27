@@ -51,7 +51,7 @@ class AuthController extends Controller
     {
         $request->fulfill();
 
-        return redirect()->route('customers.home');
+        return redirect()->route('customers.login');
     }
 
     public function processLogin(AuthRequest $request)

@@ -19,6 +19,8 @@ use App\Models\Destination;
 use App\Models\Reservation;
 use App\Models\Tour;
 use Illuminate\Support\Facades\Route;
+use App\Models\Category;
+use App\Enums\Category\StatusEnum;
 
 Route::group([
     'as' => 'admin.',
@@ -168,7 +170,10 @@ Route::group([
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'processLogin')->name('processLogin');
     Route::get('/email/verify', function () {
-        return view('customer.verify-email');
+        $categories = Category::query()->where('status', '=', StatusEnum::HOAT_DONG)->get(['id', 'name']);
+        return view('customer.verify-email', [
+            'categories' => $categories
+        ]);
     })->middleware('auth')->name('verification.notice');
     Route::get('/email/verify/{id}/{hash}', 'verifyEmail')
         ->middleware([
